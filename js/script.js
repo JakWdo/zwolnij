@@ -229,6 +229,7 @@ function initBoxBreathing() {
     const breathingBox = document.querySelector('.breathing-box');
     const boxTimer = document.querySelector('.box-timer');
     const progressBar = document.querySelector('.breathe-progress-bar');
+    const boxSides = document.querySelectorAll('.box-side');
     
     if (!startBtn || !stopBtn || !breathingBox || !boxTimer || !progressBar) return;
     
@@ -237,13 +238,15 @@ function initBoxBreathing() {
     let secondsLeft = 0;
     let totalDuration = 0;
     let elapsedTime = 0;
+    let cyclesCompleted = 0;
+    const maxCycles = 5; // Maksymalna liczba cykli oddechowych
     
     // Box Breathing: wdech (4s), zatrzymanie (4s), wydech (4s), zatrzymanie (4s)
     const phases = {
-        inhale: { duration: 4, text: 'Wdech', class: 'inhale' },
-        holdIn: { duration: 4, text: 'Zatrzymaj', class: 'hold' },
-        exhale: { duration: 4, text: 'Wydech', class: 'exhale' },
-        holdOut: { duration: 4, text: 'Zatrzymaj', class: 'hold' }
+        inhale: { duration: 4, text: 'Wdech', class: 'inhale', side: 'left-side' },
+        holdIn: { duration: 4, text: 'Zatrzymaj', class: 'hold', side: 'top-side' },
+        exhale: { duration: 4, text: 'Wydech', class: 'exhale', side: 'right-side' },
+        holdOut: { duration: 4, text: 'Zatrzymaj', class: 'hold', side: 'bottom-side' }
     };
     
     // Obliczanie całkowitego czasu jednego cyklu
@@ -251,22 +254,116 @@ function initBoxBreathing() {
         totalDuration += phases[phase].duration;
     }
     
+    // Tryb audio - dźwięki pomocnicze do ćwiczenia
+    // Tworzenie syntetyzatorów dźwięku dla różnych faz oddychania
+    let audioContext;
+    let audioEnabled = false;
+    
+    function initAudio() {
+        try {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            audioEnabled = true;
+        } catch (e) {
+            console.warn('Web Audio API nie jest obsługiwana w tej przeglądarce');
+            audioEnabled = false;
+        }
+    }
+    
+    // Funkcja do generowania dźwięku dla danej fazy
+    function playPhaseSound(phase) {
+        if (!audioEnabled || !audioContext) return;
+        
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        
+        // Różne częstotliwości dla różnych faz
+        switch (phase) {
+            case 'inhale':
+                oscillator.frequency.value = 196.00; // G3
+                break;
+            case 'holdIn':
+                oscillator.frequency.value = 246.94; // B3
+                break;
+            case 'exhale':
+                oscillator.frequency.value = 293.66; // D4
+                break;
+            case 'holdOut':
+                oscillator.frequency.value = 329.63; // E4
+                break;
+        }
+        
+        // Typ fali - bardziej miękkie brzmienie
+        oscillator.type = 'sine';
+        
+        // Dodanie filtra dla bardziej przyjemnego dźwięku
+        const filter = audioContext.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.value = 800;
+        filter.Q.value = 1;
+        
+        // Ustawienie głośności i wyciszania
+        gainNode.gain.value = 0.2;  // Niska głośność
+        gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + 0.5);
+        
+        // Podłączenie elementów
+        oscillator.connect(filter);
+        filter.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        
+        // Odtwarzanie dźwięku przez krótki czas
+        oscillator.start();
+        setTimeout(() => {
+            oscillator.stop();
+        }, 500);
+    }
+    
+    // Efekty wizualne przy zmianie fazy
+    function addTransitionEffect(phase) {
+        if (breathingBox) {
+            breathingBox.classList.add('phase-transition');
+            setTimeout(() => {
+                breathingBox.classList.remove('phase-transition');
+            }, 500);
+        }
+    }
+    
     startBtn.addEventListener('click', function() {
+        // Inicjalizacja audio przy pierwszym kliknięciu
+        if (!audioContext && !audioEnabled) {
+            initAudio();
+        }
+        
         startBreathing();
         startBtn.disabled = true;
         stopBtn.disabled = false;
+        
+        // Dodaj animację pulsu do przycisku
+        this.classList.add('clicked');
+        setTimeout(() => {
+            this.classList.remove('clicked');
+        }, 300);
     });
     
     stopBtn.addEventListener('click', function() {
         stopBreathing();
         startBtn.disabled = false;
         stopBtn.disabled = true;
+        
+        // Dodaj animację pulsu do przycisku
+        this.classList.add('clicked');
+        setTimeout(() => {
+            this.classList.remove('clicked');
+        }, 300);
     });
     
     function startBreathing() {
         // Resetowanie stanu
         elapsedTime = 0;
+        cyclesCompleted = 0;
         breathingBox.classList.remove('inhale', 'hold', 'exhale');
+        
+        // Czyszczenie aktywnych stron
+        boxSides.forEach(side => side.classList.remove('active'));
         
         // Rozpoczynamy od wdechu
         startPhase('inhale');
@@ -294,6 +391,42 @@ function initBoxBreathing() {
                         startPhase('holdOut');
                         break;
                     case 'holdOut':
+                        // Po zakończeniu jednego pełnego cyklu
+                        cyclesCompleted++;
+                        
+                        // Sprawdzenie, czy osiągnęliśmy maksymalną liczbę cykli
+                        if (cyclesCompleted >= maxCycles) {
+                            stopBreathing();
+                            startBtn.disabled = false;
+                            stopBtn.disabled = true;
+                            
+                            // Wyświetl komunikat o zakończeniu
+                            const breatheExercise = document.querySelector('.breathe-exercise');
+                            const completionMessage = document.createElement('div');
+                            completionMessage.className = 'completion-message';
+                            completionMessage.innerHTML = `
+                                <div class="success-icon">✓</div>
+                                <h3>Świetnie!</h3>
+                                <p>Ukończyłeś ${maxCycles} cykli oddechowych.</p>
+                            `;
+                            
+                            // Dodaje message po zakończeniu z animacją
+                            breatheExercise.appendChild(completionMessage);
+                            setTimeout(() => {
+                                completionMessage.classList.add('show');
+                            }, 100);
+                            
+                            // Usuń wiadomość po 5 sekundach
+                            setTimeout(() => {
+                                completionMessage.classList.remove('show');
+                                setTimeout(() => {
+                                    completionMessage.remove();
+                                }, 500);
+                            }, 5000);
+                            
+                            return;
+                        }
+                        
                         startPhase('inhale');
                         break;
                 }
@@ -310,19 +443,15 @@ function initBoxBreathing() {
         breathingBox.classList.remove('inhale', 'hold', 'exhale');
         breathingBox.classList.add(phases[phase].class);
         
-        // Podświetlenie aktywnej strony kwadratu
-        const allSides = document.querySelectorAll('.box-side');
-        allSides.forEach(side => side.classList.remove('active'));
+        // Odtwarzanie dźwięku dla tej fazy
+        playPhaseSound(phase);
         
-        if (phase === 'inhale') {
-            document.querySelector('.left-side').classList.add('active');
-        } else if (phase === 'holdIn') {
-            document.querySelector('.top-side').classList.add('active');
-        } else if (phase === 'exhale') {
-            document.querySelector('.right-side').classList.add('active');
-        } else if (phase === 'holdOut') {
-            document.querySelector('.bottom-side').classList.add('active');
-        }
+        // Dodanie efektu przejścia
+        addTransitionEffect(phase);
+        
+        // Podświetlenie aktywnej strony kwadratu
+        boxSides.forEach(side => side.classList.remove('active'));
+        document.querySelector(`.${phases[phase].side}`).classList.add('active');
     }
     
     function stopBreathing() {
@@ -333,8 +462,7 @@ function initBoxBreathing() {
         currentPhase = 'idle';
         
         // Usunięcie podświetlenia stron
-        const allSides = document.querySelectorAll('.box-side');
-        allSides.forEach(side => side.classList.remove('active'));
+        boxSides.forEach(side => side.classList.remove('active'));
     }
 }
 
@@ -559,7 +687,7 @@ function initEbookDownload() {
         setTimeout(() => {
             // W prawdziwej aplikacji tutaj byłby kod do rozpoczęcia pobierania pliku
             const link = document.createElement('a');
-            link.href = 'assets/ebooks/zwolnij-ebook.pdf'; // ścieżka do prawdziwego pliku
+            link.href = 'zwolnij/assets/ebooks/zwolnij-ebook.pdf'; // ścieżka do prawdziwego pliku
             link.download = 'Zwolnij-Praktyczny-Przewodnik.pdf';
             document.body.appendChild(link);
             link.click();
@@ -699,31 +827,99 @@ function initAdditionalAnimations() {
         parallaxBg.style.transform = `translateY(${scrollPosition * 0.2}px)`;
     });
     
-    // Efekt cienia dla elementów przy przewijaniu
-    const shadowElements = document.querySelectorAll('.add-shadow-on-scroll');
-    window.addEventListener('scroll', function() {
-        shadowElements.forEach(element => {
-            const rect = element.getBoundingClientRect();
-            const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+    // Animowane pojawienie się elementów przy scrollowaniu
+    const observeElements = document.querySelectorAll('.fade-in-section');
+    
+    if (observeElements.length > 0) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        observeElements.forEach(element => {
+            observer.observe(element);
+        });
+    }
+    
+    // Stagger effect dla powiązanych elementów
+    const staggerContainers = document.querySelectorAll('.stagger-delay');
+    
+    if (staggerContainers.length > 0) {
+        const staggerObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    staggerObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        staggerContainers.forEach(container => {
+            staggerObserver.observe(container);
+        });
+    }
+    
+    // Efekt ripple dla przycisków
+    const rippleButtons = document.querySelectorAll('.ripple-button');
+    
+    rippleButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            const rect = button.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
             
-            if (isVisible) {
-                const scrollPercent = 1 - (rect.top / window.innerHeight);
-                const shadowBlur = Math.min(20, scrollPercent * 30);
-                element.style.boxShadow = `0 ${shadowBlur}px ${shadowBlur * 2}px rgba(0, 0, 0, 0.1)`;
-            }
+            const ripple = document.createElement('span');
+            ripple.className = 'ripple';
+            ripple.style.left = `${x}px`;
+            ripple.style.top = `${y}px`;
+            
+            button.appendChild(ripple);
+            
+            setTimeout(() => {
+                ripple.remove();
+            }, 600);
         });
     });
     
-    // Dodanie efektu interaktywności dla elementów po najechaniu
-    const interactiveElements = document.querySelectorAll('.interactive');
+    // Animacje dla kart praktyk
+    const practiceCards = document.querySelectorAll('.practice-card');
     
-    interactiveElements.forEach(element => {
-        element.addEventListener('mouseenter', function() {
-            this.classList.add('hover-active');
+    practiceCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.classList.add('animate-on-hover');
         });
         
-        element.addEventListener('mouseleave', function() {
-            this.classList.remove('hover-active');
+        card.addEventListener('mouseleave', function() {
+            this.classList.remove('animate-on-hover');
+        });
+    });
+    
+    // Płynne przewijanie dla wszystkich linków wewnętrznych
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            if (this.getAttribute('href') !== '#') {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    
+                    // Dodanie efektu podświetlenia dla sekcji docelowej
+                    targetElement.classList.add('highlight-section');
+                    setTimeout(() => {
+                        targetElement.classList.remove('highlight-section');
+                    }, 1000);
+                }
+            }
         });
     });
 }
