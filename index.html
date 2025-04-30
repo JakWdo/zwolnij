@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Zwolnij tempo swojego życia. Odkryj, jak żyć wolniej i bardziej świadomie w świecie ciągłego pośpiechu.">
+    <meta name="keywords" content="slow living, zwolnienie tempa, stres, odpoczynek, mindfulness, uważność">
+    <meta name="author" content="Zwolnij. Movement">
+    <meta property="og:title" content="Zwolnij. | Czas na refleksję">
+    <meta property="og:description" content="Odkryj, jak żyć wolniej i bardziej świadomie w świecie ciągłego pośpiechu.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://twoja-nazwa-użytkownika.github.io/zwolnij-landing-page/">
+    <meta property="og:image" content="assets/images/og-image.jpg">
+    <title>Zwolnij. | Czas na refleksję</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/favicon.png">
+    <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png">
+    
+    <!-- Preload zasobów krytycznych -->
+    <link rel="preload" href="assets/videos/city-timelapse.mp4" as="video" type="video/mp4">
+    <link rel="preload" href="assets/fonts/marcellus-regular.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="assets/fonts/inter-regular.woff2" as="font" type="font/woff2" crossorigin>
+    
+    <!-- Fonty Google z opcją lokalnego hostowania -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Marcellus&display=swap" rel="stylesheet">
+    
+    <!-- AOS.js do animacji -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- Twój własny CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- Obsługa dark mode -->
+    <script>
+        // Sprawdzenie preferowanego motywu z systemu
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        } else {
+            document.documentElement.setAttribute('data-theme', 'light');
+        }
+    </script>
+</head>
+<body>
+    <!-- Przełącznik trybu ciemnego/jasnego -->
+    <button id="theme-toggle" class="theme-toggle" aria-label="Przełącz motyw ciemny/jasny">
+        <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+        <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+    </button>
+    
+    <!-- Nawigacja -->
+    <nav class="main-nav" id="main-nav">
+        <div class="container nav-container">
+            <a href="#" class="nav-logo">Zwolnij.</a>
+            <button class="menu-toggle" aria-label="Otwórz menu nawigacyjne" aria-expanded="false" aria-controls="nav-menu">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+            <ul id="nav-menu" class="nav-menu">
+                <li><a href="#manifesto" class="nav-link">Manifest</a></li>
+                <li><a href="#statistics" class="nav-link">Statystyki</a></li>
+                <li><a href="#practices" class="nav-link">Praktyki</a></li>
+                <li><a href="#breathe" class="nav-link">Oddychaj</a></li>
+                <li><a href="#quiz" class="nav-link">Test tempa</a></li>
+                <li><a href="#subscribe" class="nav-link cta">Dołącz</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <!-- Sekcja Hero z filmem time-lapse i animowanym napisem -->
+    <section class="hero">
+        <div class="video-container">
+            <video autoplay loop muted playsinline>
+                <source src="assets/videos/city-timelapse.mp4" type="video/mp4">
+                <source src="assets/videos/city-timelapse.webm" type="video/webm">
+                Twoja przeglądarka nie obsługuje odtwarzania wideo.
+            </video>
+        </div>
+        
+        <div class="hero-content">
+            <h1 class="hero-title" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true">
+                <span class="reveal-text">Zwolnij.</span>
+            </h1>
+            <p class="hero-subtitle" data-aos="fade-up" data-aos-delay="700" data-aos-duration="1500" data-aos-once="true">
+                Odkryj na nowo wartość spokojnego życia
+            </p>
+            <a href="#manifesto" class="cta-button" data-aos="fade-up" data-aos-delay="1400" data-aos-duration="1500" data-aos-once="true">
+                Dowiedz się więcej
+            </a>
+            
+            <!-- Licznik "czasu na stronie" -->
+            <div class="time-counter" data-aos="fade" data-aos-delay="2200" data-aos-duration="1500" data-aos-once="true">
+                <p>Spędzasz tutaj:</p>
+                <div id="time-display">00:00</div>
+            </div>
+        </div>
+        
+        <div class="scroll-indicator" data-aos="fade" data-aos-delay="2000" data-aos-duration="1500" data-aos-once="true">
+            <span class="scroll-icon"></span>
+            <span class="scroll-text">Przewiń w dół</span>
+        </div>
+    </section>
+    
+    <!-- Sekcja Manifest -->
+    <section id="manifesto" class="manifesto section">
+        <div class="container">
+            <h2 data-aos="fade-up" data-aos-duration="1500" data-aos-once="true">Manifest Spowolnienia</h2>
+            
+            <div class="manifesto-content">
+                <div class="manifesto-item" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true">
+                    <div class="manifesto-number">01</div>
+                    <h3>Uświadom sobie tempo</h3>
+                    <p>W świecie, który wymaga od nas nieustannego pośpiechu, pierwszym krokiem jest zauważenie własnego rytmu życia. Czy naprawdę musisz wszędzie biec?</p>
+                </div>
+                
+                <div class="manifesto-item" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="200">
+                    <div class="manifesto-number">02</div>
+                    <h3>Oddychaj świadomie</h3>
+                    <p>Zatrzymaj się kilka razy dziennie, by wziąć głęboki oddech. Te małe przerwy to pierwszy krok w kierunku spokojniejszego życia.</p>
+                </div>
+                
+                <div class="manifesto-item" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="400">
+                    <div class="manifesto-number">03</div>
+                    <h3>Redefiniuj sukces</h3>
+                    <p>Sukces to nie ilość wykonanych zadań, ale jakość doświadczonego życia. Przestań mierzyć swój dzień ilością "zrobionego".</p>
+                </div>
+                
+                <div class="manifesto-item" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="600">
+                    <div class="manifesto-number">04</div>
+                    <h3>Stwórz przestrzeń ciszy</h3>
+                    <p>Codzienna cisza jest niezbędna dla twojego umysłu. Zarezerwuj czas bez technologii, mediów społecznościowych i zewnętrznych bodźców.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Sekcja Statystyki -->
+    <section id="statistics" class="statistics section">
+        <div class="container">
+            <h2 data-aos="fade-up" data-aos-duration="1500" data-aos-once="true">Dlaczego warto zwolnić?</h2>
+            
+            <div class="stats-container">
+                <div class="stat-item" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true">
+                    <div class="stat-number" data-target="78">0</div>
+                    <div class="stat-percent">%</div>
+                    <p>dorosłych Polaków czuje się chronicznie zestresowanych codziennym tempem życia</p>
+                </div>
+                
+                <div class="stat-item" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="200">
+                    <div class="stat-number" data-target="5.4">0.0</div>
+                    <div class="stat-unit">h</div>
+                    <p>średni czas spędzany dziennie na przeglądaniu mediów społecznościowych i wiadomości</p>
+                </div>
+                
+                <div class="stat-item" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="400">
+                    <div class="stat-number" data-target="43">0</div>
+                    <div class="stat-percent">%</div>
+                    <p>osób przyznaje, że nie pamięta, kiedy ostatnio spędziło dzień bez cyfrowych rozpraszaczy</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="parallax-bg"></div>
+    </section>
+    
+    <!-- Sekcja Praktyki -->
+    <section id="practices" class="practices section">
+        <div class="container">
+            <h2 data-aos="fade-up" data-aos-duration="1500" data-aos-once="true">Codzienne praktyki</h2>
+            
+            <div class="practices-grid">
+                <div class="practice-card" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true">
+                    <div class="practice-icon">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20ZM12.5 7H11V13L16.25 16.15L17 14.92L12.5 12.25V7Z" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <h3>Poranna cisza</h3>
+                    <p>Zacznij dzień od 15 minut ciszy - bez telefonu, mediów społecznościowych czy wiadomości. Po prostu oddychaj, pij herbatę lub obserwuj otoczenie.</p>
+                    <a href="#" class="practice-link">Dowiedz się więcej</a>
+                </div>
+                
+                <div class="practice-card" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="200">
+                    <div class="practice-icon">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM19 19H5V5H19V19ZM17 12H7V10H17V12ZM13 16H7V14H13V16ZM7 8V6H17V8H7Z" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <h3>Jedno zadanie naraz</h3>
+                    <p>Zrezygnuj z multitaskingu. Wybierz jedno zadanie i poświęć mu pełną uwagę. Zauważ, jak zmienia się jakość twojej pracy i poziom stresu.</p>
+                    <a href="#" class="practice-link">Dowiedz się więcej</a>
+                </div>
+                
+                <div class="practice-card" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="400">
+                    <div class="practice-icon">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M17 7H7C5.9 7 5 7.9 5 9V15C5 16.1 5.9 17 7 17H17C18.1 17 19 16.1 19 15V9C19 7.9 18.1 7 17 7ZM17 15H7V9H17V15ZM2 4H22V20H2V4ZM4 6V18H20V6H4Z" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <h3>Cyfrowy detoks</h3>
+                    <p>Wyznacz jedno popołudnie w tygodniu bez elektroniki. Odkryj na nowo przyjemność z analogowych aktywności: czytania książek, spacerów, rozmów.</p>
+                    <a href="#" class="practice-link">Dowiedz się więcej</a>
+                </div>
+                
+                <div class="practice-card" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="600">
+                    <div class="practice-icon">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 3C7.03 3 3 7.03 3 12C3 16.97 7.03 21 12 21C16.97 21 21 16.97 21 12C21 7.03 16.97 3 12 3ZM5 12C5 8.14 8.14 5 12 5C15.86 5 19 8.14 19 12C19 15.86 15.86 19 12 19C8.14 19 5 15.86 5 12ZM12 8V13L16.25 15.52L17 14.24L13.5 12.15V8H12Z" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <h3>Świadome posiłki</h3>
+                    <p>Jedz bez pośpiechu, zwracając uwagę na smaki i tekstury. Odłóż telefon i wyłącz telewizor podczas posiłków.</p>
+                    <a href="#" class="practice-link">Dowiedz się więcej</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Nowa sekcja: Oddychaj (interaktywne ćwiczenie oddechowe) -->
+    <section id="breathe" class="breathe section">
+        <div class="container">
+            <h2 data-aos="fade-up" data-aos-duration="1500" data-aos-once="true">Zwolnij oddech. Zwolnij myśli.</h2>
+            <p class="breathe-intro" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="200">
+                Wykonaj krótkie ćwiczenie oddechowe. Całość zajmie Ci tylko 60 sekund.
+            </p>
+            
+            <div class="breathe-exercise" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="400">
+                <div class="breathe-circle">
+                    <div class="breathe-instruction">Wdech</div>
+                    <div class="breathe-timer">4</div>
+                </div>
+                
+                <div class="breathe-controls">
+                    <button id="start-breathing" class="breathe-button">Rozpocznij</button>
+                    <button id="stop-breathing" class="breathe-button breathe-button-stop" disabled>Zatrzymaj</button>
+                </div>
+                
+                <div class="breathe-progress">
+                    <div class="breathe-progress-bar"></div>
+                </div>
+            </div>
+            
+            <p class="breathe-quote" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="600">
+                "Oddech to most łączący życie z świadomością, który jednoczy twoje ciało z twoimi myślami." <br>— Thich Nhat Hanh
+            </p>
+        </div>
+    </section>
+    
+    <!-- Nowa sekcja: Quiz/Test "Jak szybko żyjesz?" -->
+    <section id="quiz" class="quiz section">
+        <div class="container">
+            <h2 data-aos="fade-up" data-aos-duration="1500" data-aos-once="true">Sprawdź swoje tempo życia</h2>
+            <p class="quiz-intro" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="200">
+                Odpowiedz na 5 prostych pytań, aby dowiedzieć się, czy żyjesz zbyt szybko.
+            </p>
+            
+            <div class="quiz-container" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="400">
+                <div id="quiz-questions">
+                    <!-- Pytanie 1 -->
+                    <div class="quiz-question active" data-question="1">
+                        <h3>1. Jak często sprawdzasz powiadomienia na swoim telefonie?</h3>
+                        <div class="quiz-options">
+                            <label class="quiz-option">
+                                <input type="radio" name="q1" value="1">
+                                <span class="radio-custom"></span>
+                                <span>Kilka razy w tygodniu</span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="q1" value="2">
+                                <span class="radio-custom"></span>
+                                <span>Raz dziennie</span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="q1" value="3">
+                                <span class="radio-custom"></span>
+                                <span>Kilka razy dziennie</span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="q1" value="4">
+                                <span class="radio-custom"></span>
+                                <span>Co godzinę lub częściej</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Pytanie 2 (pojawi się po odpowiedzi na pytanie 1) -->
+                    <div class="quiz-question" data-question="2">
+                        <h3>2. Czy potrafisz zjeść posiłek bez odwracania uwagi (telefon, TV, praca)?</h3>
+                        <div class="quiz-options">
+                            <label class="quiz-option">
+                                <input type="radio" name="q2" value="1">
+                                <span class="radio-custom"></span>
+                                <span>Zawsze jem świadomie, skupiając się tylko na posiłku</span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="q2" value="2">
+                                <span class="radio-custom"></span>
+                                <span>Większość posiłków jem bez rozpraszaczy</span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="q2" value="3">
+                                <span class="radio-custom"></span>
+                                <span>Rzadko jem bez dodatkowych zajęć</span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="q2" value="4">
+                                <span class="radio-custom"></span>
+                                <span>Prawie zawsze jem przy pracy/telefonie/TV</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Dodatkowe pytania 3-5 są w podobnym formacie -->
+                    <div class="quiz-question" data-question="3">
+                        <h3>3. Jak często czujesz, że nie masz na nic czasu?</h3>
+                        <div class="quiz-options">
+                            <label class="quiz-option">
+                                <input type="radio" name="q3" value="1">
+                                <span class="radio-custom"></span>
+                                <span>Rzadko lub nigdy</span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="q3" value="2">
+                                <span class="radio-custom"></span>
+                                <span>Czasami</span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="q3" value="3">
+                                <span class="radio-custom"></span>
+                                <span>Często</span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="q3" value="4">
+                                <span class="radio-custom"></span>
+                                <span>Prawie codziennie</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="quiz-question" data-question="4">
+                        <h3>4. Ile czasu dziennie spędzasz w ciszy, bez bodźców zewnętrznych?</h3>
+                        <div class="quiz-options">
+                            <label class="quiz-option">
+                                <input type="radio" name="q4" value="1">
+                                <span class="radio-custom"></span>
+                                <span>Ponad 30 minut</span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="q4" value="2">
+                                <span class="radio-custom"></span>
+                                <span>15-30 minut</span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="q4" value="3">
+                                <span class="radio-custom"></span>
+                                <span>5-15 minut</span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="q4" value="4">
+                                <span class="radio-custom"></span>
+                                <span>Mniej niż 5 minut lub wcale</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="quiz-question" data-question="5">
+                        <h3>5. Jak często wykonujesz kilka zadań jednocześnie?</h3>
+                        <div class="quiz-options">
+                            <label class="quiz-option">
+                                <input type="radio" name="q5" value="1">
+                                <span class="radio-custom"></span>
+                                <span>Rzadko, wolę skupić się na jednym zadaniu</span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="q5" value="2">
+                                <span class="radio-custom"></span>
+                                <span>Czasami, gdy jest to konieczne</span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="q5" value="3">
+                                <span class="radio-custom"></span>
+                                <span>Często, to mój typowy sposób pracy</span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="q5" value="4">
+                                <span class="radio-custom"></span>
+                                <span>Prawie zawsze, inaczej nie zdążyłbym/nie zdążyłabym ze wszystkim</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="quiz-navigation">
+                    <button id="prev-question" class="quiz-nav-button" disabled>Poprzednie</button>
+                    <button id="next-question" class="quiz-nav-button">Następne</button>
+                    <button id="submit-quiz" class="quiz-nav-button submit-button" style="display: none;">Sprawdź wynik</button>
+                </div>
+                
+                <div id="quiz-result" class="quiz-result" style="display: none;">
+                    <h3>Twój wynik: <span id="result-score"></span>/20</h3>
+                    <div id="result-description"></div>
+                    <button id="retake-quiz" class="quiz-button">Spróbuj ponownie</button>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Sekcja Zapisz się -->
+    <section id="subscribe" class="subscribe section">
+        <div class="container">
+            <h2 data-aos="fade-up" data-aos-duration="1500" data-aos-once="true">Dołącz do ruchu spowolnienia</h2>
+            <p data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="200">Otrzymuj cotygodniowe inspiracje, praktyczne wskazówki i refleksje na temat życia w spokojniejszym tempie.</p>
+            
+            <form class="subscribe-form" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="400">
+                <div class="form-group">
+                    <input type="text" id="name" placeholder="Twoje imię" required>
+                    <label for="name">Twoje imię</label>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="email" placeholder="Twój adres e-mail" required>
+                    <label for="email">Twój adres e-mail</label>
+                </div>
+                <button type="submit" class="submit-button">Zapisz się</button>
+            </form>
+            
+            <div class="form-message" style="display: none;">
+                <div class="success-message">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9 16.17L4.83 12L3.41 13.41L9 19L21 7L19.59 5.59L9 16.17Z" fill="currentColor"/>
+                    </svg>
+                    <p>Dziękujemy! Sprawdź swoją skrzynkę e-mail, aby potwierdzić subskrypcję.</p>
+                </div>
+            </div>
+            
+            <p class="form-disclaimer" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="600">* Obiecujemy nie spamować. W każdej chwili możesz się wypisać jednym kliknięciem.</p>
+        </div>
+    </section>
+    
+    <!-- Stopka -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-top">
+                    <div class="footer-branding">
+                        <div class="footer-logo">Zwolnij.</div>
+                        <p class="footer-tagline">Życie toczy się tu i teraz.</p>
+                    </div>
+                    
+                    <div class="footer-links-container">
+                        <div class="footer-links-column">
+                            <h3>Nawigacja</h3>
+                            <ul class="footer-links">
+                                <li><a href="#manifesto">Manifest</a></li>
+                                <li><a href="#statistics">Statystyki</a></li>
+                                <li><a href="#practices">Praktyki</a></li>
+                                <li><a href="#breathe">Oddychaj</a></li>
+                                <li><a href="#quiz">Test tempa</a></li>
+                            </ul>
+                        </div>
+                        
+                        <div class="footer-links-column">
+                            <h3>Zasoby</h3>
+                            <ul class="footer-links">
+                                <li><a href="#">Blog</a></li>
+                                <li><a href="#">Ćwiczenia</a></li>
+                                <li><a href="#">Książki</a></li>
+                                <li><a href="#">Partnerzy</a></li>
+                            </ul>
+                        </div>
+                        
+                        <div class="footer-links-column">
+                            <h3>Informacje</h3>
+                            <ul class="footer-links">
+                                <li><a href="#">O nas</a></li>
+                                <li><a href="#">Kontakt</a></li>
+                                <li><a href="#">Prywatność</a></li>
+                                <li><a href="#">Warunki</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="footer-bottom">
+                    <p class="copyright">© 2025 Zwolnij. Wszystkie prawa zastrzeżone.</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M22 12C22 6.48 17.52 2 12 2C6.48 2 2 6.48 2 12C2 16.84 5.44 20.87 10 21.8V15H8V12H10V9.5C10 7.57 11.57 6 13.5 6H16V9H14C13.45 9 13 9.45 13 10V12H16V15H13V21.95C18.05 21.45 22 17.19 22 12Z" fill="currentColor"/>
+                            </svg>
+                        </a>
+                        <a href="#" aria-label="Instagram">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2C14.717 2 15.056 2.01 16.122 2.06C17.187 2.11 17.912 2.277 18.55 2.525C19.21 2.779 19.766 3.123 20.322 3.678C20.8305 4.1779 21.224 4.78259 21.475 5.45C21.722 6.087 21.89 6.813 21.94 7.878C21.987 8.944 22 9.283 22 12C22 14.717 21.99 15.056 21.94 16.122C21.89 17.187 21.722 17.912 21.475 18.55C21.2247 19.2178 20.8311 19.8226 20.322 20.322C19.822 20.8303 19.2173 21.2238 18.55 21.475C17.913 21.722 17.187 21.89 16.122 21.94C15.056 21.987 14.717 22 12 22C9.283 22 8.944 21.99 7.878 21.94C6.813 21.89 6.088 21.722 5.45 21.475C4.78233 21.2245 4.17753 20.8309 3.678 20.322C3.16941 19.8222 2.77593 19.2175 2.525 18.55C2.277 17.913 2.11 17.187 2.06 16.122C2.013 15.056 2 14.717 2 12C2 9.283 2.01 8.944 2.06 7.878C2.11 6.812 2.277 6.088 2.525 5.45C2.77524 4.78218 3.1688 4.17732 3.678 3.678C4.17767 3.16923 4.78243 2.77573 5.45 2.525C6.088 2.277 6.812 2.11 7.878 2.06C8.944 2.013 9.283 2 12 2ZM12 7C10.6739 7 9.40215 7.52678 8.46447 8.46447C7.52678 9.40215 7 10.6739 7 12C7 13.3261 7.52678 14.5979 8.46447 15.5355C9.40215 16.4732 10.6739 17 12 17C13.3261 17 14.5979 16.4732 15.5355 15.5355C16.4732 14.5979 17 13.3261 17 12C17 10.6739 16.4732 9.40215 15.5355 8.46447C14.5979 7.52678 13.3261 7 12 7ZM18.5 6.75C18.5 6.41848 18.3683 6.10054 18.1339 5.86612C17.8995 5.6317 17.5815 5.5 17.25 5.5C16.9185 5.5 16.6005 5.6317 16.3661 5.86612C16.1317 6.10054 16 6.41848 16 6.75C16 7.08152 16.1317 7.39946 16.3661 7.63388C16.6005 7.8683 16.9185 8 17.25 8C17.5815 8 17.8995 7.8683 18.1339 7.63388C18.3683 7.39946 18.5 7.08152 18.5 6.75ZM12 9C12.7956 9 13.5587 9.31607 14.1213 9.87868C14.6839 10.4413 15 11.2044 15 12C15 12.7956 14.6839 13.5587 14.1213 14.1213C13.5587 14.6839 12.7956 15 12 15C11.2044 15 10.4413 14.6839 9.87868 14.1213C9.31607 13.5587 9 12.7956 9 12C9 11.2044 9.31607 10.4413 9.87868 9.87868C10.4413 9.31607 11.2044 9 12 9Z" fill="currentColor"/>
+                            </svg>
+                        </a>
+                        <a href="#" aria-label="Twitter">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M22.46 6C21.69 6.35 20.86 6.58 20 6.69C20.88 6.16 21.56 5.32 21.88 4.31C21.05 4.81 20.13 5.16 19.16 5.36C18.37 4.5 17.26 4 16 4C13.65 4 11.73 5.92 11.73 8.29C11.73 8.63 11.77 8.96 11.84 9.27C8.28 9.09 5.11 7.38 3 4.79C2.63 5.42 2.42 6.16 2.42 6.94C2.42 8.43 3.17 9.75 4.33 10.5C3.62 10.5 2.96 10.3 2.38 10V10.03C2.38 12.11 3.86 13.85 5.82 14.24C5.19072 14.4119 4.5301 14.4372 3.89 14.31C4.16161 15.1625 4.69354 15.9084 5.41106 16.4429C6.12859 16.9775 6.99546 17.2737 7.89 17.29C6.37367 18.4904 4.49404 19.1393 2.56 19.13C2.22 19.13 1.88 19.11 1.54 19.07C3.44 20.29 5.7 21 8.12 21C16 21 20.33 14.46 20.33 8.79C20.33 8.6 20.33 8.42 20.32 8.23C21.16 7.63 21.88 6.87 22.46 6Z" fill="currentColor"/>
+                            </svg>
+                        </a>
+                        <a href="#" aria-label="YouTube">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M21.543 6.498C22 8.28 22 12 22 12C22 12 22 15.72 21.543 17.502C21.289 18.487 20.546 19.262 19.605 19.524C17.896 20 12 20 12 20C12 20 6.107 20 4.395 19.524C3.45 19.258 2.708 18.484 2.457 17.502C2 15.72 2 12 2 12C2 12 2 8.28 2.457 6.498C2.711 5.513 3.454 4.738 4.395 4.476C6.107 4 12 4 12 4C12 4 17.896 4 19.605 4.476C20.55 4.742 21.292 5.516 21.543 6.498ZM10 15.5L16 12L10 8.5V15.5Z" fill="currentColor"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Przycisk powrotu do góry -->
+        <button id="back-to-top" class="back-to-top" aria-label="Powrót do góry">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 8L6 14L7.41 15.41L12 10.83L16.59 15.41L18 14L12 8Z" fill="currentColor"/>
+            </svg>
+        </button>
+    </footer>
+    
+    <!-- Skrypty JavaScript -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>
