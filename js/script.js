@@ -11,8 +11,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Inicjalizacja wszystkich modułów
-    initThemeToggle();
-    initNavigation();
     initLetterReveal();
     initTimeCounter();
     initScrollIndicator();
@@ -23,106 +21,47 @@ document.addEventListener('DOMContentLoaded', function() {
     initBackToTop();
     initParticleAnimation();
     initAdditionalAnimations();
+    initVideoFallback();
 });
 
-// ==============================================
-// Moduł: Przełącznik trybu ciemnego/jasnego
-// ==============================================
-function initThemeToggle() {
-    const themeToggle = document.getElementById('theme-toggle');
-    if (!themeToggle) return;
-
-    themeToggle.addEventListener('click', function() {
-        const currentTheme = document.documentElement.getAttribute('data-theme');
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        
-        document.documentElement.setAttribute('data-theme', newTheme);
-        localStorage.setItem('theme', newTheme);
-        
-        // Dodajemy animację podczas zmiany motywu
-        document.documentElement.classList.add('theme-transition');
-        setTimeout(() => {
-            document.documentElement.classList.remove('theme-transition');
-        }, 1000);
-    });
-
-    // Sprawdzenie zapisanego motywu w localStorage
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) {
-        document.documentElement.setAttribute('data-theme', savedTheme);
-    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        // Jeśli nie ma zapisanego motywu, sprawdzamy preferencje systemowe
-        document.documentElement.setAttribute('data-theme', 'dark');
-    }
-}
+// Usunięto funkcję initThemeToggle ponieważ przełącznik motywów został usunięty
 
 // ==============================================
-// Moduł: Nawigacja
+// Moduł: Obsługa fallbacku wideo
 // ==============================================
-function initNavigation() {
-    const nav = document.getElementById('main-nav');
-    const menuToggle = document.querySelector('.menu-toggle');
-    const navMenu = document.getElementById('nav-menu');
-    const navLinks = document.querySelectorAll('.nav-link');
+function initVideoFallback() {
+    const videoContainer = document.querySelector('.video-container');
+    const video = videoContainer ? videoContainer.querySelector('video') : null;
     
-    if (!nav || !menuToggle || !navMenu) return;
-
-    // Zmiana przezroczystości nawigacji podczas przewijania
+    if (!video || !videoContainer) return;
+    
+    // Obsługa błędu wideo
+    video.addEventListener('error', function() {
+        console.log('Nie można odtworzyć wideo - przełączanie na fallback');
+        videoContainer.classList.add('video-error');
+    });
+    
+    // Sprawdzenie, czy wideo zostało poprawnie załadowane
+    video.addEventListener('loadeddata', function() {
+        videoContainer.classList.remove('video-error');
+        console.log('Wideo załadowane pomyślnie');
+    });
+    
+    // Efekt parallax dla wideo podczas przewijania
     window.addEventListener('scroll', function() {
-        if (window.scrollY > 100) {
-            nav.classList.add('scrolled');
+        if (window.scrollY > 50) {
+            videoContainer.classList.add('scrolled');
         } else {
-            nav.classList.remove('scrolled');
+            videoContainer.classList.remove('scrolled');
         }
     });
     
-    // Obsługa menu mobilnego
-    menuToggle.addEventListener('click', function() {
-        menuToggle.classList.toggle('active');
-        navMenu.classList.toggle('active');
-        
-        // Aktualizacja atrybutu aria-expanded
-        const isExpanded = menuToggle.classList.contains('active');
-        menuToggle.setAttribute('aria-expanded', isExpanded);
-    });
-    
-    // Zamknięcie menu po kliknięciu na link
-    navLinks.forEach(link => {
-        link.addEventListener('click', function() {
-            menuToggle.classList.remove('active');
-            navMenu.classList.remove('active');
-            menuToggle.setAttribute('aria-expanded', 'false');
-        });
-    });
-    
-    // Aktywny link podczas przewijania
-    window.addEventListener('scroll', function() {
-        let current = '';
-        
-        const sections = document.querySelectorAll('section');
-        sections.forEach(section => {
-            const sectionTop = section.offsetTop;
-            const sectionHeight = section.clientHeight;
-            
-            if (window.scrollY >= (sectionTop - 300)) {
-                current = section.getAttribute('id');
-            }
-        });
-        
-        navLinks.forEach(link => {
-            link.classList.remove('active');
-            if (link.getAttribute('href') === `#${current}`) {
-                link.classList.add('active');
-            }
-        });
-    });
-    
-    // Płynne przewijanie do sekcji po kliknięciu linków
-    navLinks.forEach(anchor => {
+    // Obsługa płynnego przewijania przy kliknięciu na linki kotwiczne
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             const targetId = this.getAttribute('href');
             
-            if (targetId.startsWith('#') && targetId !== '#') {
+            if (targetId !== '#') {
                 e.preventDefault();
                 
                 const targetElement = document.querySelector(targetId);
