@@ -44,52 +44,30 @@
     </script>
 </head>
 <body>
-    <!-- Przełącznik trybu ciemnego/jasnego -->
-    <button id="theme-toggle" class="theme-toggle" aria-label="Przełącz motyw ciemny/jasny">
-        <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="5"></circle>
-            <line x1="12" y1="1" x2="12" y2="3"></line>
-            <line x1="12" y1="21" x2="12" y2="23"></line>
-            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-            <line x1="1" y1="12" x2="3" y2="12"></line>
-            <line x1="21" y1="12" x2="23" y2="12"></line>
-            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-        </svg>
-        <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-        </svg>
-    </button>
-    
-    <!-- Nawigacja -->
-    <nav class="main-nav" id="main-nav">
-        <div class="container nav-container">
-            <a href="#" class="nav-logo">Zwolnij.</a>
-            <button class="menu-toggle" aria-label="Otwórz menu nawigacyjne" aria-expanded="false" aria-controls="nav-menu">
-                <span class="hamburger-line"></span>
-                <span class="hamburger-line"></span>
-                <span class="hamburger-line"></span>
-            </button>
-            <ul id="nav-menu" class="nav-menu">
-                <li><a href="#manifesto" class="nav-link">Manifest</a></li>
-                <li><a href="#statistics" class="nav-link">Statystyki</a></li>
-                <li><a href="#practices" class="nav-link">Praktyki</a></li>
-                <li><a href="#breathe" class="nav-link">Oddychaj</a></li>
-                <li><a href="#quiz" class="nav-link">Test tempa</a></li>
-                <li><a href="#ebook" class="nav-link cta">Pobierz ebook</a></li>
-            </ul>
-        </div>
-    </nav>
+    <!-- Logo zamiast nawigacji (stałe w rogu) -->
+    <div class="fixed-logo">
+        <a href="#" class="site-logo">Zwolnij.</a>
+    </div>
     
     <!-- Sekcja Hero z filmem time-lapse i animowanym napisem -->
     <section class="hero">
         <div class="video-container">
+            <!-- WSKAZÓWKA: Zastąp poniższą ścieżkę URL właściwym adresem do swojego filmu time-lapse -->
+            <!-- Wideo powinno być w formacie MP4 i WEBM dla lepszej kompatybilności -->
+            <!-- Przykładowe filmiki można znaleźć na stronach jak Pexels czy Pixabay -->
+            <!-- Poniżej zalecana struktura plików wideo w projekcie: -->
+            <!--
+                /assets/videos/city-timelapse.mp4  
+                /assets/videos/city-timelapse.webm
+            -->
             <video autoplay loop muted playsinline>
                 <source src="assets/videos/city-timelapse.mp4" type="video/mp4">
                 <source src="assets/videos/city-timelapse.webm" type="video/webm">
                 Twoja przeglądarka nie obsługuje odtwarzania wideo.
             </video>
+            
+            <!-- Fallback: gradient tła jeśli wideo nie załaduje się poprawnie -->
+            <div class="video-fallback"></div>
         </div>
         
         <div class="animated-particles">
