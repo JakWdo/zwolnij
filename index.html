@@ -10,17 +10,17 @@
     <meta property="og:description" content="Odkryj, jak żyć wolniej i bardziej świadomie w świecie ciągłego pośpiechu.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://twoja-nazwa-użytkownika.github.io/zwolnij-landing-page/">
-    <meta property="og:image" content="assets/images/og-image.jpg">
+    <meta property="og:image" content="zwolnij/assets/images/og-image.jpg">
     <title>Zwolnij. | Czas na refleksję</title>
     
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="assets/images/favicon.png">
-    <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" href="zwolnij/assets/images/favicon.png">
+    <link rel="apple-touch-icon" href="zwolnij/assets/images/apple-touch-icon.png">
     
     <!-- Preload zasobów krytycznych -->
-    <link rel="preload" href="assets/videos/city-timelapse.mp4" as="video" type="video/mp4">
-    <link rel="preload" href="assets/fonts/marcellus-regular.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="assets/fonts/inter-regular.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="zwolnij/assets/videos/city-timelapse.mp4" as="video" type="video/mp4">
+    <link rel="preload" href="zwolnij/assets/fonts/marcellus-regular.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="zwolnij/assets/fonts/inter-regular.woff2" as="font" type="font/woff2" crossorigin>
     
     <!-- Fonty Google z opcją lokalnego hostowania -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -34,12 +34,12 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <!-- Sekcja Hero z filmem time-lapse i animowanym napisem -->
+    <!-- Sekcja Hero z filmem time-lapse -->
     <section class="hero">
         <div class="video-container">
-            <!-- Link do pobrania przykładowego wideo: https://pixabay.com/videos/city-night-lights-urban-traffic-8641/ -->
             <video autoplay loop muted playsinline>
-                <source src="assets/videos/city-timelapse.mp4" type="video/mp4">
+                <source src="zwolnij/assets/videos/city-timelapse.mp4" type="video/mp4">
+                <source src="zwolnij/assets/videos/city-timelapse.webm" type="video/webm">
                 Twoja przeglądarka nie obsługuje odtwarzania wideo.
             </video>
             
@@ -61,26 +61,19 @@
         </div>
         
         <div class="hero-content">
-            <h1 class="hero-title" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true">
+            <h1 class="hero-title">
                 <span class="reveal-text">Zwolnij.</span>
             </h1>
-            <p class="hero-subtitle" data-aos="fade-up" data-aos-delay="700" data-aos-duration="1500" data-aos-once="true">
+            <p class="hero-subtitle">
                 Odkryj na nowo wartość spokojnego życia
             </p>
-            <a href="#manifesto" class="cta-button pulse" data-aos="fade-up" data-aos-delay="1400" data-aos-duration="1500" data-aos-once="true">
-                Dowiedz się więcej
+            <a href="#manifesto" class="cta-button pulse">
+                Zacznij teraz
             </a>
-            
-            <!-- Licznik "czasu na stronie" -->
-            <div class="time-counter" data-aos="fade" data-aos-delay="2200" data-aos-duration="1500" data-aos-once="true">
-                <p>Spędzasz tutaj:</p>
-                <div id="time-display">00:00</div>
-            </div>
         </div>
         
-        <div class="scroll-indicator bounce" data-aos="fade" data-aos-delay="2000" data-aos-duration="1500" data-aos-once="true">
+        <div class="scroll-indicator bounce">
             <span class="scroll-icon"></span>
-            <span class="scroll-text">Przewiń w dół</span>
         </div>
     </section>
     
@@ -231,16 +224,17 @@
         </div>
     </section>
     
-    <!-- Nowa sekcja: Oddychaj (interaktywne ćwiczenie oddechowe - Box Breathing) -->
+    <!-- Sekcja Box Breathing -->
     <section id="breathe" class="breathe section">
         <div class="container">
-            <h2 data-aos="fade-up" data-aos-duration="1500" data-aos-once="true">Oddychaj rytmem 4-4-4-4</h2>
-            <p class="breathe-intro" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="200">
-                Wypróbuj ćwiczenie Box Breathing - technikę stosowaną przez komandosów i profesjonalistów w sytuacjach stresowych. Całość zajmie Ci tylko 60 sekund.
+            <h2>Oddychaj rytmem 4-4-4-4</h2>
+            <p class="breathe-intro">
+                Wypróbuj ćwiczenie Box Breathing - technikę stosowaną przez komandosów i profesjonalistów w sytuacjach stresowych.
             </p>
             
-            <div class="breathe-exercise" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="400">
+            <div class="breathe-exercise">
                 <div class="box-container">
+                    <div class="breathing-circle"></div>
                     <div class="breathing-box">
                         <div class="box-side top-side"><span>Zatrzymaj</span></div>
                         <div class="box-side right-side"><span>Wydech</span></div>
@@ -260,7 +254,7 @@
                 </div>
             </div>
             
-            <p class="breathe-quote" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="600">
+            <p class="breathe-quote">
                 "Oddech to most łączący życie z świadomością, który jednoczy twoje ciało z twoimi myślami." <br>— Thich Nhat Hanh
             </p>
         </div>
