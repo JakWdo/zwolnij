@@ -77,7 +77,7 @@
                 <li><a href="#practices" class="nav-link">Praktyki</a></li>
                 <li><a href="#breathe" class="nav-link">Oddychaj</a></li>
                 <li><a href="#quiz" class="nav-link">Test tempa</a></li>
-                <li><a href="#subscribe" class="nav-link cta">Dołącz</a></li>
+                <li><a href="#ebook" class="nav-link cta">Pobierz ebook</a></li>
             </ul>
         </div>
     </nav>
@@ -92,6 +92,19 @@
             </video>
         </div>
         
+        <div class="animated-particles">
+            <span class="particle"></span>
+            <span class="particle"></span>
+            <span class="particle"></span>
+            <span class="particle"></span>
+            <span class="particle"></span>
+            <span class="particle"></span>
+            <span class="particle"></span>
+            <span class="particle"></span>
+            <span class="particle"></span>
+            <span class="particle"></span>
+        </div>
+        
         <div class="hero-content">
             <h1 class="hero-title" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true">
                 <span class="reveal-text">Zwolnij.</span>
@@ -99,7 +112,7 @@
             <p class="hero-subtitle" data-aos="fade-up" data-aos-delay="700" data-aos-duration="1500" data-aos-once="true">
                 Odkryj na nowo wartość spokojnego życia
             </p>
-            <a href="#manifesto" class="cta-button" data-aos="fade-up" data-aos-delay="1400" data-aos-duration="1500" data-aos-once="true">
+            <a href="#manifesto" class="cta-button pulse" data-aos="fade-up" data-aos-delay="1400" data-aos-duration="1500" data-aos-once="true">
                 Dowiedz się więcej
             </a>
             
@@ -110,7 +123,7 @@
             </div>
         </div>
         
-        <div class="scroll-indicator" data-aos="fade" data-aos-delay="2000" data-aos-duration="1500" data-aos-once="true">
+        <div class="scroll-indicator bounce" data-aos="fade" data-aos-delay="2000" data-aos-duration="1500" data-aos-once="true">
             <span class="scroll-icon"></span>
             <span class="scroll-text">Przewiń w dół</span>
         </div>
@@ -155,23 +168,55 @@
             <h2 data-aos="fade-up" data-aos-duration="1500" data-aos-once="true">Dlaczego warto zwolnić?</h2>
             
             <div class="stats-container">
-                <div class="stat-item" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true">
+                <div class="stat-item hover-float" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true">
+                    <div class="stat-icon rotating">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20.5 13H19V7h1.5c.28 0 .5-.22.5-.5s-.22-.5-.5-.5H16V3c0-.55-.45-1-1-1s-1 .45-1 1v3h-3.5c-.28 0-.5.22-.5.5s.22.5.5.5H12v6h-1.5c-.28 0-.5.22-.5.5s.22.5.5.5H12v4h-1.5c-.28 0-.5.22-.5.5s.22.5.5.5h4c.55 0 1-.45 1-1v-4h1.5c.28 0 .5-.22.5-.5s-.22-.5-.5-.5H16V7h4.5c.28 0 .5-.22.5-.5s-.22-.5-.5-.5z" fill="currentColor"/>
+                        </svg>
+                    </div>
                     <div class="stat-number" data-target="78">0</div>
                     <div class="stat-percent">%</div>
                     <p>dorosłych Polaków czuje się chronicznie zestresowanych codziennym tempem życia</p>
+                    <div class="stat-bar">
+                        <div class="stat-bar-fill" style="width: 0%" data-width="78%"></div>
+                    </div>
                 </div>
                 
-                <div class="stat-item" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="200">
+                <div class="stat-item hover-float" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="200">
+                    <div class="stat-icon pulse">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z" fill="currentColor"/>
+                        </svg>
+                    </div>
                     <div class="stat-number" data-target="5.4">0.0</div>
                     <div class="stat-unit">h</div>
                     <p>średni czas spędzany dziennie na przeglądaniu mediów społecznościowych i wiadomości</p>
+                    <div class="stat-bar">
+                        <div class="stat-bar-fill" style="width: 0%" data-width="54%"></div>
+                    </div>
                 </div>
                 
-                <div class="stat-item" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="400">
+                <div class="stat-item hover-float" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="400">
+                    <div class="stat-icon">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M15 1H9v2h6V1zm-4 13h2V8h-2v6zm8.03-6.61l1.42-1.42c-.43-.51-.9-.99-1.41-1.41l-1.42 1.42C16.07 4.74 14.12 4 12 4c-4.97 0-9 4.03-9 9s4.02 9 9 9 9-4.03 9-9c0-2.12-.74-4.07-1.97-5.61zM12 20c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z" fill="currentColor"/>
+                        </svg>
+                    </div>
                     <div class="stat-number" data-target="43">0</div>
                     <div class="stat-percent">%</div>
                     <p>osób przyznaje, że nie pamięta, kiedy ostatnio spędziło dzień bez cyfrowych rozpraszaczy</p>
+                    <div class="stat-bar">
+                        <div class="stat-bar-fill" style="width: 0%" data-width="43%"></div>
+                    </div>
                 </div>
+            </div>
+            
+            <div class="animated-dots">
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
             </div>
         </div>
         
@@ -420,34 +465,68 @@
         </div>
     </section>
     
-    <!-- Sekcja Zapisz się -->
-    <section id="subscribe" class="subscribe section">
+    <!-- Sekcja z ebookiem do pobrania -->
+    <section id="ebook" class="ebook section">
         <div class="container">
-            <h2 data-aos="fade-up" data-aos-duration="1500" data-aos-once="true">Dołącz do ruchu spowolnienia</h2>
-            <p data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="200">Otrzymuj cotygodniowe inspiracje, praktyczne wskazówki i refleksje na temat życia w spokojniejszym tempie.</p>
+            <h2 data-aos="fade-up" data-aos-duration="1500" data-aos-once="true">Pobierz darmowy ebook</h2>
+            <p data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="200">Praktyczny przewodnik po technikach zwalniania tempa życia. 50 stron inspiracji i konkretnych ćwiczeń.</p>
             
-            <form class="subscribe-form" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="400">
-                <div class="form-group">
-                    <input type="text" id="name" placeholder="Twoje imię" required>
-                    <label for="name">Twoje imię</label>
+            <div class="ebook-container" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="400">
+                <div class="ebook-mockup">
+                    <div class="book">
+                        <div class="book-cover">
+                            <h3>ZWOLNIJ</h3>
+                            <p>Praktyczny przewodnik</p>
+                            <div class="book-spine"></div>
+                        </div>
+                        <div class="book-page"></div>
+                        <div class="book-page"></div>
+                        <div class="book-page"></div>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <input type="email" id="email" placeholder="Twój adres e-mail" required>
-                    <label for="email">Twój adres e-mail</label>
-                </div>
-                <button type="submit" class="submit-button">Zapisz się</button>
-            </form>
-            
-            <div class="form-message" style="display: none;">
-                <div class="success-message">
-                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M9 16.17L4.83 12L3.41 13.41L9 19L21 7L19.59 5.59L9 16.17Z" fill="currentColor"/>
-                    </svg>
-                    <p>Dziękujemy! Sprawdź swoją skrzynkę e-mail, aby potwierdzić subskrypcję.</p>
+                
+                <div class="ebook-info">
+                    <h3>Co znajdziesz w środku?</h3>
+                    <ul class="ebook-features">
+                        <li data-aos="fade-right" data-aos-duration="1000" data-aos-once="true" data-aos-delay="200">
+                            <span class="feature-icon">✓</span>
+                            <span>12 praktycznych ćwiczeń na każdy dzień</span>
+                        </li>
+                        <li data-aos="fade-right" data-aos-duration="1000" data-aos-once="true" data-aos-delay="300">
+                            <span class="feature-icon">✓</span>
+                            <span>Plan 30-dniowego wyzwania spowolnienia</span>
+                        </li>
+                        <li data-aos="fade-right" data-aos-duration="1000" data-aos-once="true" data-aos-delay="400">
+                            <span class="feature-icon">✓</span>
+                            <span>Techniki redukcji stresu i niepokoju</span>
+                        </li>
+                        <li data-aos="fade-right" data-aos-duration="1000" data-aos-once="true" data-aos-delay="500">
+                            <span class="feature-icon">✓</span>
+                            <span>Wywiady z ekspertami mindfulness</span>
+                        </li>
+                    </ul>
+                    
+                    <div class="download-counter">
+                        <div class="counter-value" id="download-count">14387</div>
+                        <div class="counter-label">osób już pobrało</div>
+                    </div>
+                    
+                    <a href="#" id="download-ebook" class="download-button">
+                        <span class="button-text">Pobierz bezpłatnie</span>
+                        <svg class="button-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z" fill="currentColor"/>
+                        </svg>
+                    </a>
                 </div>
             </div>
             
-            <p class="form-disclaimer" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="600">* Obiecujemy nie spamować. W każdej chwili możesz się wypisać jednym kliknięciem.</p>
+            <div id="download-success" class="download-success" style="display: none;">
+                <svg class="success-icon" viewBox="0 0 24 24" width="48" height="48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z" fill="currentColor"/>
+                </svg>
+                <h3>Pobieranie rozpoczęte!</h3>
+                <p>Dziękujemy za zainteresowanie naszym ebookiem. Jeśli pobieranie nie rozpoczęło się automatycznie, <a href="#" id="retry-download">kliknij tutaj</a>.</p>
+            </div>
         </div>
     </section>
     
@@ -470,26 +549,24 @@
                                 <li><a href="#practices">Praktyki</a></li>
                                 <li><a href="#breathe">Oddychaj</a></li>
                                 <li><a href="#quiz">Test tempa</a></li>
+                                <li><a href="#ebook">Pobierz ebook</a></li>
                             </ul>
                         </div>
                         
                         <div class="footer-links-column">
-                            <h3>Zasoby</h3>
+                            <h3>O projekcie</h3>
                             <ul class="footer-links">
-                                <li><a href="#">Blog</a></li>
-                                <li><a href="#">Ćwiczenia</a></li>
-                                <li><a href="#">Książki</a></li>
-                                <li><a href="#">Partnerzy</a></li>
+                                <li><a href="#manifesto">Idea</a></li>
+                                <li><a href="#ebook">Materiały</a></li>
+                                <li><a href="#" id="contact-trigger">Kontakt</a></li>
                             </ul>
                         </div>
                         
                         <div class="footer-links-column">
                             <h3>Informacje</h3>
                             <ul class="footer-links">
-                                <li><a href="#">O nas</a></li>
-                                <li><a href="#">Kontakt</a></li>
-                                <li><a href="#">Prywatność</a></li>
-                                <li><a href="#">Warunki</a></li>
+                                <li><a href="#" id="privacy-trigger">Polityka prywatności</a></li>
+                                <li><a href="#" id="terms-trigger">Warunki korzystania</a></li>
                             </ul>
                         </div>
                     </div>
