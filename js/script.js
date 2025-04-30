@@ -19,8 +19,10 @@ document.addEventListener('DOMContentLoaded', function() {
     initStatisticCounters();
     initBreathingExercise();
     initQuiz();
-    initSubscribeForm();
+    initEbookDownload();
     initBackToTop();
+    initParticleAnimation();
+    initAdditionalAnimations();
 });
 
 // ==============================================
@@ -258,6 +260,27 @@ function initStatisticCounters() {
     statNumbers.forEach(counter => {
         observer.observe(counter);
     });
+    
+    // Animacja pasków statystyk
+    const statBars = document.querySelectorAll('.stat-bar-fill');
+    if (statBars.length > 0) {
+        const barObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const bar = entry.target;
+                    const targetWidth = bar.dataset.width;
+                    setTimeout(() => {
+                        bar.style.width = targetWidth;
+                    }, 500);
+                    barObserver.unobserve(bar);
+                }
+            });
+        }, { threshold: 0.5 });
+        
+        statBars.forEach(bar => {
+            barObserver.observe(bar);
+        });
+    }
 }
 
 // ==============================================
@@ -541,57 +564,132 @@ function initQuiz() {
 }
 
 // ==============================================
-// Moduł: Obsługa formularza subskrypcji
+// Moduł: Obsługa pobierania ebooka
 // ==============================================
-function initSubscribeForm() {
-    const subscribeForm = document.querySelector('.subscribe-form');
-    const formMessage = document.querySelector('.form-message');
+function initEbookDownload() {
+    const downloadBtn = document.getElementById('download-ebook');
+    const downloadSuccess = document.getElementById('download-success');
+    const retryDownload = document.getElementById('retry-download');
+    const downloadCount = document.getElementById('download-count');
     
-    if (!subscribeForm || !formMessage) return;
+    if (!downloadBtn || !downloadSuccess || !retryDownload || !downloadCount) return;
     
-    subscribeForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const nameInput = this.querySelector('#name');
-        const emailInput = this.querySelector('#email');
-        
-        const name = nameInput.value.trim();
-        const email = emailInput.value.trim();
-        
-        if (name && email) {
-            // Symulacja wysyłki formularza (w prawdziwej aplikacji tutaj byłby kod do wysyłania danych do API)
-            subscribeForm.style.display = 'none';
-            formMessage.style.display = 'block';
-            
-            // Czyszczenie pól
-            nameInput.value = '';
-            emailInput.value = '';
-            
-            // Po 5 sekundach można ponownie wypełnić formularz
-            setTimeout(function() {
-                subscribeForm.style.display = 'flex';
-                formMessage.style.display = 'none';
-            }, 5000);
-        }
-    });
-    
-    // Efekt "focus" dla pól formularza
-    const formInputs = subscribeForm.querySelectorAll('input');
-    formInputs.forEach(input => {
-        // Aktualizacja stanu przy załadowaniu
-        if (input.value.trim() !== '') {
-            input.classList.add('has-value');
-        }
-        
-        // Aktualizacja stanu przy zmianie
-        input.addEventListener('input', function() {
-            if (this.value.trim() !== '') {
-                this.classList.add('has-value');
-            } else {
-                this.classList.remove('has-value');
+    // Animuj licznik pobrań przy załadowaniu sekcji
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                countUpAnimation(downloadCount, 14387, 3000);
+                observer.unobserve(entry.target);
             }
         });
+    }, { threshold: 0.5 });
+    
+    observer.observe(downloadCount);
+    
+    // Funkcja animująca zwiększanie się licznika
+    function countUpAnimation(element, target, duration) {
+        let start = 0;
+        const increment = Math.ceil(target / 100); // zwiększanie o 1% wartości docelowej
+        const stepTime = Math.floor(duration / 100);
+        
+        const timer = setInterval(() => {
+            start += increment;
+            if (start > target) {
+                element.textContent = target;
+                clearInterval(timer);
+            } else {
+                element.textContent = start;
+            }
+        }, stepTime);
+    }
+    
+    // Obsługa kliknięcia przycisku "Pobierz"
+    downloadBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // Symulacja pobierania - w rzeczywistej aplikacji tutaj byłby kod do pobierania pliku
+        downloadSuccess.style.display = 'block';
+        
+        // Aktualizacja licznika pobrań
+        const currentCount = parseInt(downloadCount.textContent);
+        downloadCount.textContent = currentCount + 1;
+        
+        // Dodanie animacji do przycisku
+        this.classList.add('shake');
+        setTimeout(() => {
+            this.classList.remove('shake');
+        }, 500);
+        
+        // Symulacja pobierania pliku
+        setTimeout(() => {
+            // W prawdziwej aplikacji tutaj byłby kod do rozpoczęcia pobierania pliku
+            const link = document.createElement('a');
+            link.href = 'assets/ebooks/zwolnij-ebook.pdf'; // ścieżka do prawdziwego pliku
+            link.download = 'Zwolnij-Praktyczny-Przewodnik.pdf';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }, 1000);
     });
+    
+    // Obsługa kliknięcia przycisku "Spróbuj ponownie"
+    retryDownload.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // Symulacja ponownego pobierania
+        const link = document.createElement('a');
+        link.href = 'assets/ebooks/zwolnij-ebook.pdf'; // ścieżka do prawdziwego pliku
+        link.download = 'Zwolnij-Praktyczny-Przewodnik.pdf';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        // Dodanie animacji do przycisku
+        this.classList.add('pulse');
+        setTimeout(() => {
+            this.classList.remove('pulse');
+        }, 1000);
+    });
+    
+    // Animacja 3D książki przy najechaniu myszką
+    const book = document.querySelector('.book');
+    if (book) {
+        document.addEventListener('mousemove', function(e) {
+            if (!isElementInViewport(book)) return;
+            
+            const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+            const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+            
+            book.style.transform = `rotateY(${-xAxis}deg) rotateX(${yAxis}deg)`;
+        });
+        
+        // Reset transformacji po wyjściu myszki
+        book.addEventListener('mouseleave', function() {
+            book.style.transform = 'rotateY(-30deg) rotateX(0deg)';
+            
+            // Stopniowy powrót do animacji float
+            setTimeout(() => {
+                book.style.transition = 'transform 3s ease';
+                book.style.animation = 'float 3s ease-in-out infinite';
+            }, 1000);
+        });
+        
+        book.addEventListener('mouseenter', function() {
+            book.style.transition = 'transform 0.2s ease';
+            book.style.animation = 'none';
+        });
+    }
+    
+    // Funkcja sprawdzająca, czy element jest w widoku
+    function isElementInViewport(el) {
+        const rect = el.getBoundingClientRect();
+        return (
+            rect.top >= 0 &&
+            rect.left >= 0 &&
+            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+            rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+        );
+    }
 }
 
 // ==============================================
@@ -617,4 +715,113 @@ function initBackToTop() {
             behavior: 'smooth'
         });
     });
+}
+
+// ==============================================
+// Moduł: Animacja cząsteczek
+// ==============================================
+function initParticleAnimation() {
+    const particles = document.querySelectorAll('.particle');
+    if (particles.length === 0) return;
+    
+    // Losowe animacje dla każdej cząsteczki
+    particles.forEach(particle => {
+        const randomX = Math.random() * 200 - 100; // -100 do 100
+        const randomY = Math.random() * 200 - 100; // -100 do 100
+        const randomDelay = Math.random() * 5;
+        const randomDuration = 15 + Math.random() * 20;
+        
+        particle.style.setProperty('--random-x', `${randomX}px`);
+        particle.style.setProperty('--random-y', `${randomY}px`);
+        particle.style.animationDelay = `${randomDelay}s`;
+        particle.style.animationDuration = `${randomDuration}s`;
+    });
+}
+
+// ==============================================
+// Moduł: Dodatkowe animacje i efekty
+// ==============================================
+function initAdditionalAnimations() {
+    // Efekt parallax dla tła
+    window.addEventListener('scroll', function() {
+        const parallaxBg = document.querySelector('.parallax-bg');
+        if (!parallaxBg) return;
+        
+        const scrollPosition = window.scrollY;
+        parallaxBg.style.transform = `translateY(${scrollPosition * 0.2}px)`;
+    });
+    
+    // Efekt skali dla elementów przy przewijaniu
+    const scaleElements = document.querySelectorAll('.scale-on-scroll');
+    const scaleObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('scale-active');
+            } else {
+                entry.target.classList.remove('scale-active');
+            }
+        });
+    }, { threshold: 0.2 });
+    
+    scaleElements.forEach(el => {
+        scaleObserver.observe(el);
+    });
+    
+    // Efekt typewriter dla wybranych nagłówków
+    const typewriterElements = document.querySelectorAll('.typewriter h3');
+    const typewriterObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.animation = 'typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite';
+                typewriterObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.5 });
+    
+    typewriterElements.forEach(el => {
+        typewriterObserver.observe(el);
+    });
+    
+    // Dodanie klasy "visible" do elementów po przewinięciu do nich
+    const fadeElements = document.querySelectorAll('.fade-in-element');
+    const fadeObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                setTimeout(() => {
+                    entry.target.classList.add('visible');
+                }, 300);
+                fadeObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1 });
+    
+    fadeElements.forEach(el => {
+        fadeObserver.observe(el);
+    });
+    
+    // Modal z informacjami prawnymi
+    const privacyTrigger = document.getElementById('privacy-trigger');
+    const termsTrigger = document.getElementById('terms-trigger');
+    const contactTrigger = document.getElementById('contact-trigger');
+    
+    if (privacyTrigger) {
+        privacyTrigger.addEventListener('click', function(e) {
+            e.preventDefault();
+            alert('Tu pojawiłaby się polityka prywatności. W tej wersji demonstracyjnej wyświetlamy tylko alert.');
+        });
+    }
+    
+    if (termsTrigger) {
+        termsTrigger.addEventListener('click', function(e) {
+            e.preventDefault();
+            alert('Tu pojawiłyby się warunki korzystania. W tej wersji demonstracyjnej wyświetlamy tylko alert.');
+        });
+    }
+    
+    if (contactTrigger) {
+        contactTrigger.addEventListener('click', function(e) {
+            e.preventDefault();
+            alert('Kontakt: zwolnij@example.com lub +48 123 456 789');
+        });
+    }
 }
