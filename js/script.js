@@ -644,7 +644,7 @@ function initEbookDownload() {
     function downloadEbook() {
         setTimeout(() => {
             const link = document.createElement('a');
-            link.href = 'assets/ebooks/zwolnij-ebook.pdf'; // Upewnij się, że ścieżka jest poprawna
+            link.href = 'zwolnij-ebook.pdf'; // Upewnij się, że ścieżka jest poprawna
             link.download = 'Zwolnij-Praktyczny-Przewodnik.pdf';
             document.body.appendChild(link);
             link.click();
