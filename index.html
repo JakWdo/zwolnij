@@ -12,32 +12,24 @@
     <meta property="og:url" content="https://twoja-nazwa-użytkownika.github.io/zwolnij-landing-page/">
     <meta property="og:image" content="assets/images/og-image.jpg">
     <title>Zwolnij. | Czas na refleksję</title>
-    
-    <!-- Favicon -->
+
     <link rel="icon" type="image/png" href="assets/images/favicon.png">
     <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png">
-    
-    <!-- Preload zasobów krytycznych -->
+
     <link rel="preload" href="assets/videos/city-timelapse.mp4" as="video" type="video/mp4">
     <link rel="preload" href="assets/fonts/marcellus-regular.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="assets/fonts/inter-regular.woff2" as="font" type="font/woff2" crossorigin>
-    
-    <!-- Fonty Google z opcją lokalnego hostowania -->
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Marcellus&display=swap" rel="stylesheet">
-    
-    <!-- AOS.js do animacji -->
+
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    
-    <!-- Twój własny CSS -->
-    <link rel="stylesheet" href="css/style.css">
-</head>
+
+    <link rel="stylesheet" href="css/style.css"> </head>
 <body>
-    <!-- Skip to content link dla dostępności -->
     <a href="#manifesto" class="skip-to-content">Przejdź do treści głównej</a>
-    
-    <!-- Ulepszona Sekcja Hero -->
+
     <section class="hero">
         <div class="video-container">
             <video autoplay loop muted playsinline aria-label="Szybkie tempo życia w mieście - timelapse">
@@ -45,15 +37,11 @@
                 <source src="assets/videos/city-timelapse.webm" type="video/webm">
                 Twoja przeglądarka nie obsługuje odtwarzania wideo.
             </video>
-            
-            <!-- Fallback: gradient tła jeśli wideo nie załaduje się poprawnie -->
             <div class="video-fallback"></div>
         </div>
-        
-        <!-- Interaktywne tło z animowanymi cząsteczkami -->
+
         <div class="interactive-particles" id="particles-js"></div>
-        
-        <!-- Animowany zegar z efektem spowolnienia -->
+
         <div class="hero-clock">
             <div class="clock-face">
                 <div class="clock-hour"></div>
@@ -67,7 +55,7 @@
                 </svg>
             </div>
         </div>
-        
+
         <div class="hero-content">
             <div class="typing-container">
                 <h1 class="hero-title">
@@ -80,37 +68,36 @@
                 </a>
             </div>
         </div>
-        
+
         <div class="scroll-indicator bounce">
             <span class="scroll-icon"></span>
             <span class="scroll-text">Przewiń w dół</span>
         </div>
     </section>
-    
-    <!-- Sekcja Manifest -->
+
     <section id="manifesto" class="manifesto section">
         <div class="container">
             <h2 data-aos="fade-up" data-aos-duration="1500" data-aos-once="true">Manifest Spowolnienia</h2>
-            
+
             <div class="manifesto-content">
                 <div class="manifesto-item" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true">
                     <div class="manifesto-number">01</div>
                     <h3>Uświadom sobie tempo</h3>
                     <p>W świecie, który wymaga od nas nieustannego pośpiechu, pierwszym krokiem jest zauważenie własnego rytmu życia. Czy naprawdę musisz wszędzie biec?</p>
                 </div>
-                
+
                 <div class="manifesto-item" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="200">
                     <div class="manifesto-number">02</div>
                     <h3>Oddychaj świadomie</h3>
                     <p>Zatrzymaj się kilka razy dziennie, by wziąć głęboki oddech. Te małe przerwy to pierwszy krok w kierunku spokojniejszego życia.</p>
                 </div>
-                
+
                 <div class="manifesto-item" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="400">
                     <div class="manifesto-number">03</div>
                     <h3>Redefiniuj sukces</h3>
                     <p>Sukces to nie ilość wykonanych zadań, ale jakość doświadczonego życia. Przestań mierzyć swój dzień ilością "zrobionego".</p>
                 </div>
-                
+
                 <div class="manifesto-item" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="600">
                     <div class="manifesto-number">04</div>
                     <h3>Stwórz przestrzeń ciszy</h3>
@@ -119,12 +106,11 @@
             </div>
         </div>
     </section>
-    
-    <!-- Sekcja Praktyki -->
+
     <section id="practices" class="practices section">
         <div class="container">
             <h2 data-aos="fade-up" data-aos-duration="1500" data-aos-once="true">Codzienne praktyki</h2>
-            
+
             <div class="practices-grid">
                 <div class="practice-card" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true">
                     <div class="practice-icon" aria-hidden="true">
@@ -135,7 +121,7 @@
                     <h3>Poranna cisza</h3>
                     <p>Zacznij dzień od 15 minut ciszy - bez telefonu, mediów społecznościowych czy wiadomości. Po prostu oddychaj, pij herbatę lub obserwuj otoczenie.</p>
                 </div>
-                
+
                 <div class="practice-card" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="200">
                     <div class="practice-icon" aria-hidden="true">
                         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -145,7 +131,7 @@
                     <h3>Jedno zadanie naraz</h3>
                     <p>Zrezygnuj z multitaskingu. Wybierz jedno zadanie i poświęć mu pełną uwagę. Zauważ, jak zmienia się jakość twojej pracy i poziom stresu.</p>
                 </div>
-                
+
                 <div class="practice-card" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="400">
                     <div class="practice-icon" aria-hidden="true">
                         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -155,7 +141,7 @@
                     <h3>Cyfrowy detoks</h3>
                     <p>Wyznacz jedno popołudnie w tygodniu bez elektroniki. Odkryj na nowo przyjemność z analogowych aktywności: czytania książek, spacerów, rozmów.</p>
                 </div>
-                
+
                 <div class="practice-card" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="600">
                     <div class="practice-icon" aria-hidden="true">
                         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -168,9 +154,8 @@
             </div>
         </div>
     </section>
-    
-    <!-- Sekcja Box Breathing - PRZEPROJEKTOWANA -->
-     <section id="breathe" class="breathe section">
+
+    <section id="breathe" class="breathe section">
         <div class="container"> <h2 data-aos="fade-up" data-aos-duration="1500" data-aos-once="true">Oddychaj świadomie</h2>
             <p class="breathe-intro" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="200">
                 Technika Box Breathing (kwadratowego oddechu) jest prostym, ale skutecznym narzędziem do uspokojenia umysłu i zmniejszenia stresu. Użyj poniższego ćwiczenia, aby znaleźć chwilę spokoju.
@@ -201,14 +186,10 @@
                         <li data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="600">Powtórz cykl 5-10 razy</li>
                     </ol>
                 </div> </div> </div> </section> <section id="ebook" class="ebook section">
-        </section>
-    
-    <!-- Sekcja z ebookiem -->
-    <section id="ebook" class="ebook section">
         <div class="container">
             <h2 data-aos="fade-up" data-aos-duration="1500" data-aos-once="true">Pobierz darmowy ebook</h2>
             <p data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="200">Praktyczny przewodnik po technikach zwalniania tempa życia.</p>
-            
+
             <div class="ebook-container" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="400">
                 <div class="ebook-info">
                     <h3>Co znajdziesz w środku?</h3>
@@ -238,7 +219,7 @@
                     </a>
                 </div>
             </div>
-            
+
             <div id="download-success" class="download-success" style="display: none;">
                 <svg class="success-icon" viewBox="0 0 24 24" width="48" height="48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                     <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z" fill="currentColor"/>
@@ -248,20 +229,16 @@
             </div>
         </div>
     </section>
-    
-    <!-- Przycisk powrotu do góry -->
+
     <button id="back-to-top" class="back-to-top" aria-label="Powrót do góry">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <path d="M12 8L6 14L7.41 15.41L12 10.83L16.59 15.41L18 14L12 8Z" fill="currentColor"/>
         </svg>
     </button>
-    
-    <!-- Skrypty JavaScript -->
+
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script src="js/script.js"></script>
-    
-    <!-- Element dla ogłoszeń do czytników ekranu -->
     <div aria-live="polite" aria-atomic="true" class="sr-only"></div>
 </body>
 </html>
