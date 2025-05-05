@@ -668,10 +668,10 @@ function initBoxBreathing() {
         breathingBall.classList.remove('inhale', 'hold-top', 'exhale', 'hold-bottom');
         // Wymuszenie reflow DOM
         void breathingBall.offsetWidth;
-        // Resetowanie pozycji
-        breathingBall.style.top = '-8px';
-        breathingBall.style.left = '50%';
-        breathingBall.style.transform = 'translateX(-50%)';
+        // Resetowanie pozycji do LEWEJ strony (dla wdechu)
+        breathingBall.style.top = '50%';
+        breathingBall.style.left = '-8px';
+        breathingBall.style.transform = 'translateY(-50%)';
         breathingBall.style.animation = '';
     }
     
