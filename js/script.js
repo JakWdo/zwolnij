@@ -11,12 +11,11 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Inicjalizacja wszystkich modułów
-    initEnhancedHero();         // Nowa funkcja dla ulepszonej sekcji Hero
+    initEnhancedHero();         
     initScrollIndicator();
-    initCardAnimations();       // Nowa funkcja dla animacji kart
-    initBoxBreathing();         // Używaj zaktualizowanej wersji z poruszającą się kulką
-    initQuiz();
-    initEbookDownload();        // Używaj zaktualizowanej wersji bez animacji książki
+    initCardAnimations();       
+    initBoxBreathing();         // Zupełnie nowa implementacja Box Breathing
+    initEbookDownload();        
     initBackToTop();
     initVideoFallback();
     
@@ -34,7 +33,6 @@ function initEnhancedHero() {
     initClockAnimation();
     initTypingEffect();
     initParticlesJS();
-    updateHeroStatistics();
 }
 
 // Animacja zegara w sekcji Hero
@@ -265,46 +263,6 @@ function createSimpleParticles(container) {
     document.head.appendChild(styleElement);
 }
 
-// Aktualizowanie statystyk w sekcji Hero
-function updateHeroStatistics() {
-    const stressStatEl = document.getElementById('stress-stat');
-    const timeStatEl = document.getElementById('time-stat');
-    
-    if (!stressStatEl || !timeStatEl) return;
-    
-    // W rzeczywistej aplikacji te dane mogłyby pochodzić z API
-    // Tutaj używamy rzeczywistych danych statystycznych
-    const stressPercentage = 76; // Aktualizacja do rzeczywistych danych
-    const screenTime = 5.2; // Aktualizacja do rzeczywistych danych w godzinach
-    
-    // Animacja liczb
-    animateValue(stressStatEl, 0, stressPercentage, 2000, '%');
-    animateValue(timeStatEl, 0, screenTime, 2000, 'h');
-}
-
-// Funkcja do animacji wartości liczbowych
-function animateValue(element, start, end, duration, suffix = '') {
-    let startTimestamp = null;
-    const step = (timestamp) => {
-        if (!startTimestamp) startTimestamp = timestamp;
-        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-        
-        // Obsługa liczb zmiennoprzecinkowych
-        const currentValue = progress * (end - start) + start;
-        const formatted = Number.isInteger(end) ? 
-            Math.floor(currentValue) : 
-            currentValue.toFixed(1);
-        
-        element.textContent = `${formatted}${suffix}`;
-        
-        if (progress < 1) {
-            window.requestAnimationFrame(step);
-        }
-    };
-    
-    window.requestAnimationFrame(step);
-}
-
 // ==============================================
 // Moduł: Obsługa wskaźnika przewijania
 // ==============================================
@@ -330,25 +288,25 @@ function initScrollIndicator() {
 }
 
 // ==============================================
-// Moduł: Ulepszony skrypt do obsługi kart i animacji podczas scrollowania
+// Moduł: Animacje kart
 // ==============================================
 function initCardAnimations() {
     // Inicjalizacja animacji dla kart
     initScrollReveal();
     initParallaxEffects();
-    initStatisticCounters();
     initCardHoverEffects();
-    initLazyLoading();
 }
 
 // Animacja ujawniania elementów podczas scrollowania
 function initScrollReveal() {
     // Pobierz wszystkie elementy, które mają być ujawnione
-    const revealElements = document.querySelectorAll('.manifesto-item, .practice-card, .stat-item');
+    const revealElements = document.querySelectorAll('.manifesto-item, .practice-card');
     
     // Dodaj klasę fade-in-element do wszystkich elementów
     revealElements.forEach(element => {
-        element.classList.add('fade-in-element');
+        if (!element.classList.contains('fade-in-element')) {
+            element.classList.add('fade-in-element');
+        }
     });
     
     // Funkcja sprawdzająca, czy element jest w widoku
@@ -387,10 +345,6 @@ function initScrollReveal() {
     document.querySelectorAll('.practices-grid > *').forEach((element, index) => {
         element.style.transitionDelay = `${index * 0.1}s`;
     });
-    
-    document.querySelectorAll('.stats-container > *').forEach((element, index) => {
-        element.style.transitionDelay = `${index * 0.1}s`;
-    });
 }
 
 // Efekty parallax dla elementów tła
@@ -411,94 +365,6 @@ function initParallaxEffects() {
             if (scrollPosition <= window.innerHeight) {
                 heroVideo.style.transform = `scale(1.05) translateY(${scrollPosition * 0.1}px)`;
             }
-        });
-    }
-}
-
-// Poprawiona animacja liczników statystyk z rzeczywistymi danymi
-function initStatisticCounters() {
-    const statNumbers = document.querySelectorAll('.stat-number');
-    if (statNumbers.length === 0) return;
-    
-    // Aktualizacja z rzeczywistymi wartościami
-    const realStats = {
-        0: 73, // Procent Polaków zestresowanych
-        1: 6.2, // Godziny spędzane w mediach
-        2: 48  // Procent osób bez cyfrowego detoksu
-    };
-    
-    // Funkcja do animacji licznika
-    function animateCounter(el, target, duration) {
-        let startTimestamp = null;
-        const start = parseFloat(el.textContent) || 0;
-        
-        // Obsługa liczb zmiennoprzecinkowych
-        const isFloat = target.toString().includes('.');
-        const decimals = isFloat ? target.toString().split('.')[1].length : 0;
-        
-        function step(timestamp) {
-            if (!startTimestamp) startTimestamp = timestamp;
-            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-            
-            // Obliczanie bieżącej wartości
-            const currentValue = progress * (target - start) + start;
-            
-            // Formatowanie liczby
-            el.textContent = isFloat 
-                ? currentValue.toFixed(decimals) 
-                : Math.floor(currentValue);
-            
-            if (progress < 1) {
-                window.requestAnimationFrame(step);
-            }
-        }
-        
-        window.requestAnimationFrame(step);
-    }
-    
-    // Observer do uruchamiania animacji, gdy element jest widoczny
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const el = entry.target;
-                const index = Array.from(statNumbers).indexOf(el);
-                const target = realStats[index] !== undefined ? realStats[index] : parseFloat(el.getAttribute('data-target'));
-                
-                animateCounter(el, target, 2000);
-                observer.unobserve(el);
-            }
-        });
-    }, { threshold: 0.5 });
-    
-    // Obserwowanie wszystkich liczników
-    statNumbers.forEach(counter => {
-        observer.observe(counter);
-    });
-    
-    // Animacja pasków statystyk
-    const statBars = document.querySelectorAll('.stat-bar-fill');
-    if (statBars.length > 0) {
-        const barObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const bar = entry.target;
-                    const targetWidth = bar.dataset.width;
-                    setTimeout(() => {
-                        bar.style.width = targetWidth;
-                    }, 500);
-                    barObserver.unobserve(bar);
-                }
-            });
-        }, { threshold: 0.5 });
-        
-        statBars.forEach((bar, index) => {
-            // Aktualizacja wartości szerokości paska
-            const statIndex = Math.min(index, Object.keys(realStats).length - 1);
-            const statValue = realStats[statIndex];
-            if (statValue !== undefined) {
-                bar.dataset.width = `${statValue}%`;
-            }
-            barObserver.observe(bar);
         });
     }
 }
@@ -539,462 +405,221 @@ function initCardHoverEffects() {
             }, 500);
         });
     });
-    
-    // Dodaj efekt fali (ripple) do kart praktyki
-    const practiceCards = document.querySelectorAll('.practice-card');
-    
-    practiceCards.forEach(card => {
-        card.addEventListener('click', function(e) {
-            const rect = this.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            
-            // Utwórz element fali
-            const ripple = document.createElement('span');
-            ripple.className = 'ripple-effect';
-            ripple.style.left = `${x}px`;
-            ripple.style.top = `${y}px`;
-            
-            // Dodaj do karty
-            this.appendChild(ripple);
-            
-            // Usuń po animacji
-            setTimeout(() => {
-                ripple.remove();
-            }, 800);
-        });
-    });
-    
-    // Dodaj style dla efektu ripple
-    const style = document.createElement('style');
-    style.textContent = `
-        .ripple-effect {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background-color: rgba(63, 81, 181, 0.3);
-            border-radius: 50%;
-            transform: scale(0);
-            animation: ripple 0.8s ease-out;
-            pointer-events: none;
-            z-index: 1;
-        }
-        
-        @keyframes ripple {
-            to {
-                transform: scale(30);
-                opacity: 0;
-            }
-        }
-    `;
-    document.head.appendChild(style);
-}
-
-// Lazy loading dla obrazów i innych zasobów
-function initLazyLoading() {
-    // Obsługa obrazów z lazy loading
-    const lazyImages = document.querySelectorAll('img[data-src]');
-    
-    if (lazyImages.length > 0) {
-        const imageObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const img = entry.target;
-                    img.src = img.dataset.src;
-                    img.classList.add('lazy-load');
-                    
-                    img.onload = function() {
-                        img.classList.add('loaded');
-                    };
-                    
-                    imageObserver.unobserve(img);
-                }
-            });
-        }, { threshold: 0.1, rootMargin: '200px' });
-        
-        lazyImages.forEach(img => {
-            imageObserver.observe(img);
-        });
-    }
 }
 
 // ==============================================
-// Moduł: Box Breathing - ćwiczenie oddechowe
+// Moduł: Box Breathing - NOWA IMPLEMENTACJA
 // ==============================================
 function initBoxBreathing() {
     const startBtn = document.getElementById('start-breathing');
     const stopBtn = document.getElementById('stop-breathing');
-    const breathingBall = document.querySelector('.breathing-ball');
-    const boxTimer = document.querySelector('.box-timer');
-    const progressBar = document.querySelector('.breathe-progress-bar');
-    const boxSides = document.querySelectorAll('.box-side');
+    const breathingBox = document.querySelector('.breathing-box');
+    const breathingTexts = document.querySelectorAll('.breathing-text');
+    const progressBar = document.querySelector('.breathing-progress');
+    const breathingInstruction = document.querySelector('.breathing-instruction');
     
-    if (!startBtn || !stopBtn || !breathingBall || !boxTimer || !progressBar) {
-        console.error('Elementy Box Breathing nie zostały znalezione');
+    // Sprawdź, czy elementy istnieją
+    if (!startBtn || !stopBtn || !breathingBox || !breathingTexts.length || !progressBar || !breathingInstruction) {
+        console.error('Nie znaleziono wszystkich elementów do ćwiczenia oddechowego');
         return;
     }
     
-    console.log('Box Breathing: Wszystkie elementy znalezione', { 
-        ball: breathingBall, 
-        timer: boxTimer, 
-        progressBar: progressBar 
-    });
+    console.log('Box Breathing: Wszystkie elementy znalezione');
     
     let breathingInterval;
-    let currentPhase = 'idle';
-    let secondsLeft = 0;
-    let totalDuration = 0;
+    let currentPhase = 0;
     let elapsedTime = 0;
     let cyclesCompleted = 0;
-    const maxCycles = 5; // Maksymalna liczba cykli oddechowych
+    let isBreathing = false;
     
-    // Box Breathing: wdech (4s), zatrzymanie (4s), wydech (4s), zatrzymanie (4s)
-    const phases = {
-        inhale: { duration: 4, text: 'Wdech', class: 'inhale', side: 'left-side' },
-        holdTop: { duration: 4, text: 'Zatrzymaj', class: 'hold-top', side: 'top-side' },
-        exhale: { duration: 4, text: 'Wydech', class: 'exhale', side: 'right-side' },
-        holdBottom: { duration: 4, text: 'Zatrzymaj', class: 'hold-bottom', side: 'bottom-side' }
-    }
+    // Konfiguracja faz oddychania
+    const phases = [
+        { name: 'inhale', text: 'Wdech (4s)', selector: '.phase-inhale' },
+        { name: 'hold1', text: 'Zatrzymaj (4s)', selector: '.phase-hold-1' },
+        { name: 'exhale', text: 'Wydech (4s)', selector: '.phase-exhale' },
+        { name: 'hold2', text: 'Zatrzymaj (4s)', selector: '.phase-hold-2' }
+    ];
     
-    // Obliczanie całkowitego czasu jednego cyklu
-    for (const phase in phases) {
-        totalDuration += phases[phase].duration;
-    }
+    const phaseDuration = 4; // 4 sekundy na każdą fazę
+    const totalCycleDuration = phaseDuration * phases.length; // Całkowity czas jednego cyklu
+    const maxCycles = 5; // Maksymalna liczba cykli
     
-    // Resetuj pozycję kulki do początkowej pozycji
-    function resetBallPosition() {
-        console.log('Resetowanie pozycji kulki');
-        breathingBall.style.animation = 'none';
-        breathingBall.classList.remove('inhale', 'hold-top', 'exhale', 'hold-bottom');
-        // Wymuszenie reflow DOM
-        void breathingBall.offsetWidth;
-        // Resetowanie pozycji do LEWEJ strony (dla wdechu)
-        breathingBall.style.top = '50%';
-        breathingBall.style.left = '-8px';
-        breathingBall.style.transform = 'translateY(-50%)';
-        breathingBall.style.animation = '';
-    }
-    
-    // Inicjalizuj i resetuj kulkę przy załadowaniu
-    resetBallPosition();
-    
-    startBtn.addEventListener('click', function() {
-        resetBallPosition();
-        startBreathing();
-        startBtn.disabled = true;
-        stopBtn.disabled = false;
-        
-        this.classList.add('clicked');
-        setTimeout(() => {
-            this.classList.remove('clicked');
-        }, 300);
-    });
-    
-    stopBtn.addEventListener('click', function() {
-        stopBreathing();
-        startBtn.disabled = false;
-        stopBtn.disabled = true;
-        
-        this.classList.add('clicked');
-        setTimeout(() => {
-            this.classList.remove('clicked');
-        }, 300);
-    });
-    
+    // Funkcja do rozpoczynania ćwiczenia
     function startBreathing() {
-        console.log('Rozpoczęcie ćwiczenia oddechowego');
-        // Resetowanie stanu
+        if (isBreathing) return;
+        
+        isBreathing = true;
+        currentPhase = 0;
         elapsedTime = 0;
         cyclesCompleted = 0;
         
-        // Czyszczenie aktywnych stron
-        boxSides.forEach(side => side.classList.remove('active'));
+        // Ukryj instrukcję
+        breathingInstruction.style.opacity = '0';
         
-        // Rozpoczynamy od wdechu
-        startPhase('inhale');
+        // Rozpocznij od pierwszej fazy
+        updateActivePhase();
         
-        // Główna pętla ćwiczenia
-        breathingInterval = setInterval(function() {
-            secondsLeft--;
-            boxTimer.textContent = secondsLeft;
-            elapsedTime++;
+        // Uruchom interwał do aktualizacji ćwiczenia
+        breathingInterval = setInterval(updateBreathing, 100); // Aktualizuj co 100ms dla płynniejszej animacji
+        
+        // Zaktualizuj przyciski
+        startBtn.disabled = true;
+        stopBtn.disabled = false;
+        
+        // Dodaj animację do przycisku
+        startBtn.classList.add('clicked');
+        setTimeout(() => {
+            startBtn.classList.remove('clicked');
+        }, 300);
+    }
+    
+    // Funkcja do zatrzymywania ćwiczenia
+    function stopBreathing() {
+        if (!isBreathing) return;
+        
+        clearInterval(breathingInterval);
+        isBreathing = false;
+        
+        // Resetuj wszystkie stany
+        resetBreathingState();
+        
+        // Pokaż instrukcję
+        breathingInstruction.style.opacity = '1';
+        breathingInstruction.textContent = 'Naciśnij przycisk poniżej, aby rozpocząć';
+        
+        // Zaktualizuj przyciski
+        startBtn.disabled = false;
+        stopBtn.disabled = true;
+        
+        // Dodaj animację do przycisku
+        stopBtn.classList.add('clicked');
+        setTimeout(() => {
+            stopBtn.classList.remove('clicked');
+        }, 300);
+    }
+    
+    // Funkcja do aktualizacji stanu ćwiczenia
+    function updateBreathing() {
+        elapsedTime += 0.1; // Zwiększ o 0.1s (100ms)
+        
+        // Oblicz aktualną fazę
+        const totalElapsedTime = elapsedTime % totalCycleDuration;
+        const newPhase = Math.floor(totalElapsedTime / phaseDuration);
+        
+        // Sprawdź, czy faza się zmieniła
+        if (newPhase !== currentPhase) {
+            currentPhase = newPhase;
+            updateActivePhase();
             
-            // Aktualizacja paska postępu
-            const progressPercent = (elapsedTime % totalDuration) / totalDuration * 100;
-            progressBar.style.width = `${progressPercent}%`;
-            
-            if (secondsLeft <= 0) {
-                // Przejście do następnej fazy
-                switch (currentPhase) {
-                    case 'inhale':
-                        startPhase('holdTop');
-                        break;
-                    case 'holdTop':
-                        startPhase('exhale');
-                        break;
-                    case 'exhale':
-                        startPhase('holdBottom');
-                        break;
-                    case 'holdBottom':
-                        // Po zakończeniu jednego pełnego cyklu
-                        cyclesCompleted++;
-                        
-                        // Sprawdzenie, czy osiągnęliśmy maksymalną liczbę cykli
-                        if (cyclesCompleted >= maxCycles) {
-                            stopBreathing();
-                            startBtn.disabled = false;
-                            stopBtn.disabled = true;
-                            
-                            // Wyświetl komunikat o zakończeniu
-                            const breatheExercise = document.querySelector('.breathe-exercise');
-                            const completionMessage = document.createElement('div');
-                            completionMessage.className = 'completion-message';
-                            completionMessage.innerHTML = `
-                                <div class="success-icon">✓</div>
-                                <h3>Świetnie!</h3>
-                                <p>Ukończyłeś ${maxCycles} cykli oddechowych.</p>
-                            `;
-                            
-                            // Dodaje message po zakończeniu z animacją
-                            breatheExercise.appendChild(completionMessage);
-                            setTimeout(() => {
-                                completionMessage.classList.add('show');
-                            }, 100);
-                            
-                            // Usuń wiadomość po 5 sekundach
-                            setTimeout(() => {
-                                completionMessage.classList.remove('show');
-                                setTimeout(() => {
-                                    completionMessage.remove();
-                                }, 500);
-                            }, 5000);
-                            
-                            return;
-                        }
-                        
-                        startPhase('inhale');
-                        break;
+            // Sprawdź, czy zakończono cykl
+            if (currentPhase === 0) {
+                cyclesCompleted++;
+                console.log(`Ukończono ${cyclesCompleted} cykli`);
+                
+                // Sprawdź, czy osiągnięto maksymalną liczbę cykli
+                if (cyclesCompleted >= maxCycles) {
+                    stopBreathing();
+                    showCompletionMessage();
+                    return;
                 }
             }
-        }, 1000);
+        }
+        
+        // Aktualizuj pasek postępu
+        updateProgressBar(totalElapsedTime);
     }
     
-    function startPhase(phase) {
-        console.log(`Rozpoczęcie fazy: ${phase}`);
-        currentPhase = phase;
-        secondsLeft = phases[phase].duration;
-        boxTimer.textContent = secondsLeft;
-        
-        // Aktualizacja klas CSS dla animacji
-        breathingBall.classList.remove('inhale', 'hold-top', 'exhale', 'hold-bottom');
-        
-        // Wymuś reflow DOM przed dodaniem nowej klasy
-        void breathingBall.offsetWidth;
-        
-        // Dodaj klasę dla aktualnej fazy
-        breathingBall.classList.add(phases[phase].class);
-        
-        // Podświetlenie aktywnej strony kwadratu
-        boxSides.forEach(side => side.classList.remove('active'));
-        document.querySelector(`.${phases[phase].side}`).classList.add('active');
-    }
-    
-    function stopBreathing() {
-        clearInterval(breathingInterval);
-        resetBallPosition();
-        boxTimer.textContent = '4';
-        progressBar.style.width = '0';
-        currentPhase = 'idle';
-        
-        // Usunięcie podświetlenia stron
-        boxSides.forEach(side => side.classList.remove('active'));
-    }
-}
-
-// ==============================================
-// Moduł: Quiz "Jak szybko żyjesz?"
-// ==============================================
-function initQuiz() {
-    const quizQuestions = document.querySelectorAll('.quiz-question');
-    const prevBtn = document.getElementById('prev-question');
-    const nextBtn = document.getElementById('next-question');
-    const submitBtn = document.getElementById('submit-quiz');
-    const retakeBtn = document.getElementById('retake-quiz');
-    const resultDiv = document.getElementById('quiz-result');
-    const resultScore = document.getElementById('result-score');
-    const resultDesc = document.getElementById('result-description');
-    
-    if (quizQuestions.length === 0 || !prevBtn || !nextBtn || !submitBtn || !resultDiv || !resultScore || !resultDesc) return;
-    
-    let currentQuestion = 1;
-    const totalQuestions = quizQuestions.length;
-    
-    // Funkcja do pokazywania pytania o danym numerze
-    function showQuestion(questionNumber) {
-        quizQuestions.forEach(question => {
-            question.classList.remove('active');
-            if (parseInt(question.dataset.question) === questionNumber) {
-                question.classList.add('active');
-            }
+    // Funkcja do aktualizacji aktywnej fazy
+    function updateActivePhase() {
+        // Usuń klasę aktywną ze wszystkich tekstów
+        breathingTexts.forEach(text => {
+            text.classList.remove('active');
+            text.classList.remove('pulse');
         });
         
-        // Aktualizacja stanu przycisków
-        prevBtn.disabled = questionNumber === 1;
-        nextBtn.style.display = questionNumber < totalQuestions ? 'block' : 'none';
-        submitBtn.style.display = questionNumber === totalQuestions ? 'block' : 'none';
-        
-        currentQuestion = questionNumber;
-    }
-    
-    // Obsługa przycisku "Poprzednie"
-    prevBtn.addEventListener('click', function() {
-        if (currentQuestion > 1) {
-            showQuestion(currentQuestion - 1);
-        }
-    });
-    
-    // Obsługa przycisku "Następne"
-    nextBtn.addEventListener('click', function() {
-        // Sprawdzamy, czy zaznaczono odpowiedź
-        const currentQuestionEl = document.querySelector(`.quiz-question[data-question="${currentQuestion}"]`);
-        const selectedOption = currentQuestionEl.querySelector('input[type="radio"]:checked');
-        
-        if (!selectedOption) {
-            // Dodaj delikatną animację potrząsania dla opcji
-            const options = currentQuestionEl.querySelectorAll('.quiz-option');
-            options.forEach(option => {
-                option.classList.add('shake');
-                setTimeout(() => {
-                    option.classList.remove('shake');
-                }, 500);
-            });
-            return;
+        // Dodaj klasę aktywną do bieżącej fazy
+        const activePhase = document.querySelector(phases[currentPhase].selector);
+        if (activePhase) {
+            activePhase.classList.add('active');
+            activePhase.classList.add('pulse');
+            
+            // Zaktualizuj instrukcję
+            breathingInstruction.style.opacity = '1';
+            breathingInstruction.textContent = phases[currentPhase].text;
         }
         
-        if (currentQuestion < totalQuestions) {
-            showQuestion(currentQuestion + 1);
-        }
-    });
-    
-    // Obsługa przycisku "Sprawdź wynik"
-    submitBtn.addEventListener('click', function() {
-        // Sprawdzamy, czy zaznaczono ostatnią odpowiedź
-        const lastQuestionEl = document.querySelector(`.quiz-question[data-question="${totalQuestions}"]`);
-        const selectedOption = lastQuestionEl.querySelector('input[type="radio"]:checked');
+        // Dodaj klasę do boxa w zależności od fazy
+        breathingBox.classList.remove('phase-inhale', 'phase-hold', 'phase-exhale');
         
-        if (!selectedOption) {
-            const options = lastQuestionEl.querySelectorAll('.quiz-option');
-            options.forEach(option => {
-                option.classList.add('shake');
-                setTimeout(() => {
-                    option.classList.remove('shake');
-                }, 500);
-            });
-            return;
-        }
-        
-        calculateResult();
-    });
-    
-    // Obliczanie wyniku
-    function calculateResult() {
-        let score = 0;
-        
-        // Zbieranie wszystkich zaznaczonych odpowiedzi
-        quizQuestions.forEach(question => {
-            const selectedOption = question.querySelector('input[type="radio"]:checked');
-            if (selectedOption) {
-                score += parseInt(selectedOption.value);
-            }
-        });
-        
-        // Wyświetlenie wyniku
-        resultScore.textContent = score;
-        
-        // Określenie opisu wyniku
-        let description = '';
-        if (score <= 8) {
-            description = `
-                <p>Gratulacje! Żyjesz w spokojnym, zrównoważonym tempie. Potrafisz docenić chwilę i nie dajesz się wciągnąć w wir codziennego pośpiechu.</p>
-                <p>Twoje podejście do życia sprzyja dbaniu o zdrowie psychiczne i fizyczne. Pamiętaj jednak, aby dzielić się swoim doświadczeniem z innymi i inspirować ich do zwolnienia tempa.</p>
-            `;
-        } else if (score <= 12) {
-            description = `
-                <p>Twoje tempo życia jest umiarkowane. Zazwyczaj potrafisz zachować równowagę, ale czasami dajesz się wciągnąć w wir codziennych obowiązków i pośpiechu.</p>
-                <p>Warto zastanowić się, w których obszarach możesz wprowadzić więcej spokoju i uważności. Praktyki z naszego manifestu mogą być dla Ciebie pomocne.</p>
-            `;
-        } else if (score <= 16) {
-            description = `
-                <p>Żyjesz dość szybko. Prawdopodobnie często czujesz się przytłoczony/a ilością obowiązków i brakiem czasu. Taki styl życia może prowadzić do przewlekłego stresu.</p>
-                <p>Spróbuj wdrożyć przynajmniej jedną praktykę z naszego manifestu. Nawet drobne zmiany mogą przynieść znaczącą poprawę jakości Twojego życia.</p>
-            `;
-        } else {
-            description = `
-                <p>Twoje tempo życia jest bardzo szybkie. Najprawdopodobniej żyjesz w ciągłym pośpiechu, co może prowadzić do wypalenia i problemów zdrowotnych.</p>
-                <p>Potrzebujesz pilnie wprowadzić zmiany w swoim codziennym funkcjonowaniu. Zacznij od małych kroków - codzienne 5 minut ciszy i świadomego oddychania może być dobrym początkiem.</p>
-            `;
-        }
-        
-        resultDesc.innerHTML = description;
-        
-        // Schowanie pytań, pokazanie wyniku
-        document.getElementById('quiz-questions').style.display = 'none';
-        document.querySelector('.quiz-navigation').style.display = 'none';
-        resultDiv.style.display = 'block';
-        
-        // Ogłoszenie dla czytników ekranu
-        if (window.announceToScreenReader) {
-            window.announceToScreenReader(`Twój wynik to ${score} punktów. ${description.replace(/<[^>]*>/g, ' ').substring(0, 100)}...`);
+        switch (phases[currentPhase].name) {
+            case 'inhale':
+                breathingBox.classList.add('phase-inhale');
+                break;
+            case 'exhale':
+                breathingBox.classList.add('phase-exhale');
+                break;
+            default:
+                breathingBox.classList.add('phase-hold');
+                break;
         }
     }
     
-    // Obsługa przycisku "Spróbuj ponownie"
-    retakeBtn.addEventListener('click', function() {
-        // Resetowanie quizu
-        quizQuestions.forEach(question => {
-            const radios = question.querySelectorAll('input[type="radio"]');
-            radios.forEach(radio => {
-                radio.checked = false;
-            });
+    // Funkcja do aktualizacji paska postępu
+    function updateProgressBar(totalElapsedTime) {
+        // Oblicz procent ukończenia bieżącej fazy
+        const phaseProgress = (totalElapsedTime % phaseDuration) / phaseDuration;
+        const phaseWidth = 100 / phases.length;
+        
+        // Oblicz całkowitą szerokość paska postępu
+        const totalProgress = (currentPhase * phaseWidth) + (phaseProgress * phaseWidth);
+        progressBar.style.width = `${totalProgress}%`;
+    }
+    
+    // Funkcja do resetowania stanu ćwiczenia
+    function resetBreathingState() {
+        // Usuń wszystkie aktywne klasy
+        breathingTexts.forEach(text => {
+            text.classList.remove('active');
+            text.classList.remove('pulse');
         });
         
-        // Powrót do pierwszego pytania
-        showQuestion(1);
+        // Resetuj pasek postępu
+        progressBar.style.width = '0%';
         
-        // Ukrycie wyniku, pokazanie pytań
-        document.getElementById('quiz-questions').style.display = 'block';
-        document.querySelector('.quiz-navigation').style.display = 'flex';
-        resultDiv.style.display = 'none';
+        // Resetuj klasy z boxa
+        breathingBox.classList.remove('phase-inhale', 'phase-hold', 'phase-exhale');
+    }
+    
+    // Funkcja wyświetlająca komunikat o ukończeniu ćwiczenia
+    function showCompletionMessage() {
+        // Utwórz element z komunikatem
+        const breatheExercise = document.querySelector('.breathe-exercise');
+        const completionMessage = document.createElement('div');
+        completionMessage.className = 'completion-message';
+        completionMessage.innerHTML = `
+            <div class="success-icon">✓</div>
+            <h3>Świetnie!</h3>
+            <p>Ukończyłeś ${maxCycles} cykli oddechowych.</p>
+        `;
         
-        // Ogłoszenie dla czytników ekranu
-        if (window.announceToScreenReader) {
-            window.announceToScreenReader('Quiz zresetowany. Zacznij od nowa.');
-        }
-    });
+        // Dodaj message i animuj pojawienie się
+        breatheExercise.appendChild(completionMessage);
+        setTimeout(() => {
+            completionMessage.classList.add('show');
+        }, 100);
+        
+        // Usuń wiadomość po 5 sekundach
+        setTimeout(() => {
+            completionMessage.classList.remove('show');
+            setTimeout(() => {
+                completionMessage.remove();
+            }, 500);
+        }, 5000);
+    }
     
-    // Dodanie obsługi kliknięcia na całą etykietę opcji
-    const quizOptions = document.querySelectorAll('.quiz-option');
-    quizOptions.forEach(option => {
-        option.addEventListener('click', function() {
-            const radio = this.querySelector('input[type="radio"]');
-            radio.checked = true;
-        });
-    });
-    
-    // Dodanie obsługi klawiatury dla opcji quizu
-    quizOptions.forEach(option => {
-        option.setAttribute('tabindex', '0');
-        option.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                const radio = this.querySelector('input[type="radio"]');
-                radio.checked = true;
-            }
-        });
-    });
-    
-    // Inicjalizacja - pokazanie pierwszego pytania
-    showQuestion(1);
+    // Przypisz obsługę zdarzeń do przycisków
+    startBtn.addEventListener('click', startBreathing);
+    stopBtn.addEventListener('click', stopBreathing);
 }
 
 // ==============================================
@@ -1004,9 +629,8 @@ function initEbookDownload() {
     const downloadBtn = document.getElementById('download-ebook');
     const downloadSuccess = document.getElementById('download-success');
     const retryDownload = document.getElementById('retry-download');
-    const downloadCount = document.getElementById('download-count');
     
-    if (!downloadBtn || !downloadSuccess || !retryDownload || !downloadCount) return;
+    if (!downloadBtn || !downloadSuccess || !retryDownload) return;
     
     // Funkcja do obsługi pobierania ebooka
     function downloadEbook() {
@@ -1014,7 +638,7 @@ function initEbookDownload() {
         setTimeout(() => {
             // W prawdziwej aplikacji tutaj byłby kod do rozpoczęcia pobierania pliku
             const link = document.createElement('a');
-            link.href = 'zwolnij/assets/ebooks/zwolnij-ebook.pdf'; // ścieżka do prawdziwego pliku
+            link.href = 'assets/ebooks/zwolnij-ebook.pdf'; // ścieżka do prawdziwego pliku
             link.download = 'Zwolnij-Praktyczny-Przewodnik.pdf';
             document.body.appendChild(link);
             link.click();
@@ -1217,7 +841,7 @@ function optimizeResourceLoading() {
     function preloadCriticalResources() {
         // Add preload links for critical resources
         const preloads = [
-            { href: 'zwolnij/assets/videos/city-timelapse.mp4', as: 'video', type: 'video/mp4' },
+            { href: 'assets/videos/city-timelapse.mp4', as: 'video', type: 'video/mp4' },
             { href: 'https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js', as: 'script' }
         ];
         
@@ -1254,17 +878,21 @@ function optimizeVideoPlayback() {
     });
     
     // Pause video when not in viewport to save resources
-    const videoObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                video.play();
-            } else {
-                video.pause();
-            }
-        });
-    }, { threshold: 0.1 });
-    
-    videoObserver.observe(video);
+    if ('IntersectionObserver' in window) {
+        const videoObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    video.play().catch(err => {
+                        console.warn('Auto-play prevented:', err);
+                    });
+                } else {
+                    video.pause();
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        videoObserver.observe(video);
+    }
 }
 
 // ==============================================
@@ -1289,7 +917,7 @@ function initAccessibility() {
 // Improve keyboard navigation
 function improveKeyboardNavigation() {
     // Add keyboard support for custom interactive elements
-    const interactiveElements = document.querySelectorAll('.manifesto-item, .practice-card, .stat-item');
+    const interactiveElements = document.querySelectorAll('.manifesto-item, .practice-card');
     
     interactiveElements.forEach(item => {
         // Make items focusable
@@ -1334,7 +962,7 @@ function ensureImageAccessibility() {
         let altText = '';
         
         // Try to get alt text from parent heading
-        const nearestHeading = img.closest('div').querySelector('h1, h2, h3, h4, h5, h6');
+        const nearestHeading = img.closest('div')?.querySelector('h1, h2, h3, h4, h5, h6');
         if (nearestHeading) {
             altText = nearestHeading.textContent;
         } else {
