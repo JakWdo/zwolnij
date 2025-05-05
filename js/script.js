@@ -9,16 +9,17 @@ document.addEventListener('DOMContentLoaded', function() {
         easing: 'ease-in-out',  // Rodzaj przejścia
         offset: 100  // Offset w pikselach
     });
+    console.log('AOS initialized.'); // Potwierdzenie inicjalizacji AOS
 
     // Inicjalizacja wszystkich modułów
-    initEnhancedHero();         
+    initEnhancedHero();
     initScrollIndicator();
-    initCardAnimations();       
+    initCardAnimations();
     initBoxBreathing();         // Zupełnie nowa implementacja Box Breathing
-    initEbookDownload();        
+    initEbookDownload();
     initBackToTop();
     initVideoFallback();
-    
+
     // Optymalizacje i dostępność
     optimizeAnimations();
     optimizeResourceLoading();
@@ -40,23 +41,23 @@ function initClockAnimation() {
     const clockHour = document.querySelector('.clock-hour');
     const clockMinute = document.querySelector('.clock-minute');
     const clockSecond = document.querySelector('.clock-second');
-    
+
     if (!clockHour || !clockMinute || !clockSecond) return;
-    
+
     // Ustawienie początkowych pozycji wskazówek zegara
     const now = new Date();
     const hours = now.getHours() % 12;
     const minutes = now.getMinutes();
     const seconds = now.getSeconds();
-    
+
     const hourDegrees = (hours * 30) + (minutes * 0.5); // 30 stopni na godzinę + 0.5 stopnia na minutę
     const minuteDegrees = minutes * 6; // 6 stopni na minutę
     const secondDegrees = seconds * 6; // 6 stopni na sekundę
-    
+
     clockHour.style.transform = `translateX(-50%) rotate(${hourDegrees}deg)`;
     clockMinute.style.transform = `translateX(-50%) rotate(${minuteDegrees}deg)`;
     clockSecond.style.transform = `translateX(-50%) rotate(${secondDegrees}deg)`;
-    
+
     // Dodanie interakcji do zegara
     const heroClock = document.querySelector('.hero-clock');
     if (heroClock) {
@@ -65,7 +66,7 @@ function initClockAnimation() {
             clockMinute.style.animationPlayState = 'paused';
             clockHour.style.animationPlayState = 'paused';
         });
-        
+
         heroClock.addEventListener('mouseleave', () => {
             clockSecond.style.animationPlayState = 'running';
             clockMinute.style.animationPlayState = 'running';
@@ -78,13 +79,13 @@ function initClockAnimation() {
 function initTypingEffect() {
     const typingText = document.querySelector('.typing-text');
     if (!typingText) return;
-    
+
     const text = typingText.textContent;
     typingText.textContent = '';
-    
+
     let i = 0;
     const typingSpeed = 150; // szybkość pisania w ms
-    
+
     function typeWriter() {
         if (i < text.length) {
             typingText.textContent += text.charAt(i);
@@ -95,7 +96,7 @@ function initTypingEffect() {
             typingText.classList.add('typing-complete');
         }
     }
-    
+
     // Opóźnienie rozpoczęcia animacji
     setTimeout(typeWriter, 500);
 }
@@ -104,7 +105,7 @@ function initTypingEffect() {
 function initParticlesJS() {
     const particlesContainer = document.getElementById('particles-js');
     if (!particlesContainer) return;
-    
+
     // Sprawdzenie, czy biblioteka particles.js jest załadowana
     if (typeof particlesJS !== 'undefined') {
         particlesJS('particles-js', {
@@ -201,7 +202,7 @@ function initParticlesJS() {
     } else {
         // Jeśli biblioteka nie jest załadowana, dodaj alternatywne tło
         console.warn('Particles.js nie jest załadowany. Używanie alternatywnego tła.');
-        
+
         // Proste cząsteczki za pomocą czystego JS
         createSimpleParticles(particlesContainer);
     }
@@ -212,26 +213,26 @@ function createSimpleParticles(container) {
     for (let i = 0; i < 50; i++) {
         const particle = document.createElement('div');
         particle.className = 'simple-particle';
-        
+
         // Losowa pozycja
         particle.style.top = `${Math.random() * 100}%`;
         particle.style.left = `${Math.random() * 100}%`;
-        
+
         // Losowy rozmiar
         const size = Math.random() * 5 + 2;
         particle.style.width = `${size}px`;
         particle.style.height = `${size}px`;
-        
+
         // Losowa przezroczystość
         particle.style.opacity = Math.random() * 0.5 + 0.1;
-        
+
         // Losowa animacja
         const animationDuration = Math.random() * 20 + 10;
         particle.style.animation = `floatParticle ${animationDuration}s infinite linear`;
-        
+
         container.appendChild(particle);
     }
-    
+
     // Dodanie stylu dla prostych cząsteczek
     const styleElement = document.createElement('style');
     styleElement.textContent = `
@@ -241,7 +242,7 @@ function createSimpleParticles(container) {
             border-radius: 50%;
             pointer-events: none;
         }
-        
+
         @keyframes floatParticle {
             0% {
                 transform: translate(0, 0);
@@ -269,14 +270,14 @@ function createSimpleParticles(container) {
 function initScrollIndicator() {
     const scrollIndicator = document.querySelector('.scroll-indicator');
     if (!scrollIndicator) return;
-    
+
     scrollIndicator.addEventListener('click', function() {
         const manifestoSection = document.getElementById('manifesto');
         if (manifestoSection) {
             manifestoSection.scrollIntoView({ behavior: 'smooth' });
         }
     });
-    
+
     // Ukrycie wskaźnika przewijania po przewinięciu
     window.addEventListener('scroll', function() {
         if (window.scrollY > 200) {
@@ -301,19 +302,19 @@ function initCardAnimations() {
 function initScrollReveal() {
     // Pobierz wszystkie elementy, które mają być ujawnione
     const revealElements = document.querySelectorAll('.manifesto-item, .practice-card');
-    
+
     // Dodaj klasę fade-in-element do wszystkich elementów
     revealElements.forEach(element => {
         if (!element.classList.contains('fade-in-element')) {
             element.classList.add('fade-in-element');
         }
     });
-    
+
     // Funkcja sprawdzająca, czy element jest w widoku
     function isElementInViewport(el) {
         const rect = el.getBoundingClientRect();
         const windowHeight = window.innerHeight || document.documentElement.clientHeight;
-        
+
         // Element jest widoczny, gdy jego górna krawędź jest pod górną krawędzią okna
         // i dolna krawędź jest nad dolną krawędzią okna
         return (
@@ -321,7 +322,7 @@ function initScrollReveal() {
             rect.bottom >= 0
         );
     }
-    
+
     // Funkcja obsługująca ujawnianie elementów
     function handleScrollReveal() {
         revealElements.forEach(element => {
@@ -330,18 +331,18 @@ function initScrollReveal() {
             }
         });
     }
-    
+
     // Wywołaj funkcję raz na początku, aby pokazać widoczne elementy
     handleScrollReveal();
-    
+
     // Nasłuchuj zdarzenia scroll
     window.addEventListener('scroll', handleScrollReveal);
-    
+
     // Dodaj opóźnienie do elementów, które pojawiają się jeden po drugim
     document.querySelectorAll('.manifesto-content > *').forEach((element, index) => {
         element.style.transitionDelay = `${index * 0.1}s`;
     });
-    
+
     document.querySelectorAll('.practices-grid > *').forEach((element, index) => {
         element.style.transitionDelay = `${index * 0.1}s`;
     });
@@ -351,12 +352,12 @@ function initScrollReveal() {
 function initParallaxEffects() {
     const parallaxBg = document.querySelector('.parallax-bg');
     if (!parallaxBg) return;
-    
+
     window.addEventListener('scroll', function() {
         const scrollPosition = window.scrollY;
         parallaxBg.style.transform = `translateY(${scrollPosition * 0.1}px)`;
     });
-    
+
     // Dodatkowe efekty parallax dla innych elementów
     const heroVideo = document.querySelector('.video-container video');
     if (heroVideo) {
@@ -373,31 +374,31 @@ function initParallaxEffects() {
 function initCardHoverEffects() {
     // Dodaj efekt 3D do kart w sekcji manifestu
     const manifestoItems = document.querySelectorAll('.manifesto-item');
-    
+
     manifestoItems.forEach(item => {
         item.addEventListener('mousemove', function(e) {
             const rect = this.getBoundingClientRect();
             const x = e.clientX - rect.left; // położenie x myszy względem karty
             const y = e.clientY - rect.top;  // położenie y myszy względem karty
-            
+
             // Obliczamy kąt obrotu (max 5 stopni)
             const rotateX = ((y - rect.height / 2) / rect.height) * -5;
             const rotateY = ((x - rect.width / 2) / rect.width) * 5;
-            
+
             // Zastosuj transformację
             this.style.transform = `translateY(-5px) perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-            
+
             // Dodaj dynamiczny efekt cienia
             const shadowX = (x - rect.width / 2) / 10;
             const shadowY = (y - rect.height / 2) / 10;
             this.style.boxShadow = `${shadowX}px ${shadowY}px 30px rgba(0, 0, 0, 0.15)`;
         });
-        
+
         // Reset po wyjściu kursora
         item.addEventListener('mouseleave', function() {
             this.style.transform = '';
             this.style.boxShadow = '';
-            
+
             // Dodaj animację powrotu
             this.style.transition = 'transform 0.5s ease, box-shadow 0.5s ease';
             setTimeout(() => {
@@ -408,13 +409,10 @@ function initCardHoverEffects() {
 }
 
 // ==============================================
-// Moduł: Box Breathing - NOWA IMPLEMENTACJA
-// ==============================================
-// ==============================================
-// Moduł: Box Breathing - NOWA IMPLEMENTACJA v2 (requestAnimationFrame)
+// Moduł: Box Breathing - POPRAWIONA IMPLEMENTACJA
 // ==============================================
 function initBoxBreathing() {
-    console.log('Inicjalizacja Box Breathing v2.1...'); // Log startowy
+    console.log('Inicjalizacja Box Breathing v2.1 (poprawiona)...'); // Log startowy
 
     // --- Konfiguracja ---
     const PHASES = [
@@ -427,35 +425,38 @@ function initBoxBreathing() {
     const TOTAL_CYCLE_DURATION = PHASES.reduce((sum, phase) => sum + phase.duration, 0);
 
     // --- Elementy DOM ---
+    const breatheSection = document.getElementById('breathe'); // Pobierz całą sekcję
     const startBtn = document.getElementById('start-breathing');
     const stopBtn = document.getElementById('stop-breathing');
     const breathingCircle = document.querySelector('.breathing-circle');
-    // Pobierz wszystkie etykiety faz
     const breathingTexts = PHASES.map(phase => document.querySelector(phase.selector));
     const instructionTextElement = document.querySelector('.breathing-circle .breathing-instruction');
-    const breatheExerciseContainer = document.querySelector('.breathe-exercise'); // Potrzebny do dodania komunikatu
+    const breatheExerciseContainer = document.querySelector('.breathe-exercise');
 
     // --- Sprawdzenie istnienia elementów ---
     let elementsMissing = false;
-    if (!startBtn) { console.error('Box Breathing Error: Nie znaleziono przycisku #start-breathing'); elementsMissing = true; }
-    if (!stopBtn) { console.error('Box Breathing Error: Nie znaleziono przycisku #stop-breathing'); elementsMissing = true; }
-    if (!breathingCircle) { console.error('Box Breathing Error: Nie znaleziono elementu .breathing-circle'); elementsMissing = true; }
-    if (!instructionTextElement) { console.error('Box Breathing Error: Nie znaleziono elementu .breathing-instruction wewnątrz .breathing-circle'); elementsMissing = true; }
-    if (!breatheExerciseContainer) { console.error('Box Breathing Error: Nie znaleziono kontenera .breathe-exercise'); elementsMissing = true; }
-    // Sprawdź, czy wszystkie teksty faz istnieją (jeśli są używane)
+    const missingElementsDetails = [];
+
+    if (!breatheSection) { console.error('Box Breathing Critical Error: Nie znaleziono sekcji #breathe'); elementsMissing = true; missingElementsDetails.push('sekcji #breathe'); }
+    if (!startBtn) { console.error('Box Breathing Error: Nie znaleziono przycisku #start-breathing'); elementsMissing = true; missingElementsDetails.push('przycisku #start-breathing'); }
+    if (!stopBtn) { console.error('Box Breathing Error: Nie znaleziono przycisku #stop-breathing'); elementsMissing = true; missingElementsDetails.push('przycisku #stop-breathing'); }
+    if (!breathingCircle) { console.error('Box Breathing Error: Nie znaleziono elementu .breathing-circle'); elementsMissing = true; missingElementsDetails.push('elementu .breathing-circle'); }
+    if (!instructionTextElement) { console.error('Box Breathing Error: Nie znaleziono elementu .breathing-instruction'); elementsMissing = true; missingElementsDetails.push('elementu .breathing-instruction'); }
+    if (!breatheExerciseContainer) { console.error('Box Breathing Error: Nie znaleziono kontenera .breathe-exercise'); elementsMissing = true; missingElementsDetails.push('kontenera .breathe-exercise'); }
+
     breathingTexts.forEach((el, index) => {
         if (!el) {
             console.warn(`Box Breathing Warning: Nie znaleziono etykiety fazy: ${PHASES[index].selector}`);
-            // Można kontynuować bez etykiet, ale warto o tym wiedzieć
+            // Nie traktujemy tego jako błąd krytyczny, ale warto wiedzieć
         }
     });
 
+    // *** POPRAWKA OBSŁUGI BŁĘDU ***
     if (elementsMissing) {
-        console.error('Box Breathing: Inicjalizacja przerwana z powodu braku elementów DOM.');
-        // Opcjonalnie: ukryj całą sekcję, jeśli brakuje kluczowych elementów
-        const breatheSection = document.getElementById('breathe');
-        if(breatheSection) breatheSection.style.display = 'none';
-        return; // Przerwij inicjalizację
+        console.error(`Box Breathing: Inicjalizacja przerwana z powodu braku kluczowych elementów DOM: ${missingElementsDetails.join(', ')}. Ćwiczenie oddechowe nie będzie działać, ale reszta strony powinna być widoczna.`);
+        // Zamiast ukrywać całą sekcję, po prostu przerywamy inicjalizację tej funkcji
+        // if(breatheSection) breatheSection.style.display = 'none'; // USUNIĘTO tę linię
+        return; // Przerwij inicjalizację TYLKO tej funkcji
     }
     console.log('Box Breathing: Wszystkie wymagane elementy DOM znalezione.');
 
@@ -472,14 +473,12 @@ function initBoxBreathing() {
         if (!isBreathing) return;
 
         if (cycleStartTime === 0) {
-             cycleStartTime = timestamp; // Ustaw czas startu przy pierwszej klatce
-             console.log(`Animation started at: ${timestamp}`);
+             cycleStartTime = timestamp;
         }
 
         const elapsedTotalTime = timestamp - cycleStartTime;
         const elapsedCycleTime = elapsedTotalTime % TOTAL_CYCLE_DURATION;
 
-        // Określenie aktualnej fazy
         let phaseElapsedTime = 0;
         let calculatedPhaseIndex = 0;
         for (let i = 0; i < PHASES.length; i++) {
@@ -490,113 +489,90 @@ function initBoxBreathing() {
             phaseElapsedTime += PHASES[i].duration;
         }
 
-        // Aktualizacja UI tylko jeśli faza się zmieniła
         if (calculatedPhaseIndex !== currentPhaseIndex) {
-            console.log(`Changing phase from ${currentPhaseIndex} to ${calculatedPhaseIndex} at ${elapsedTotalTime}ms`);
             currentPhaseIndex = calculatedPhaseIndex;
             updateActivePhase(currentPhaseIndex);
-            updateInstructionText(currentPhaseIndex); // Aktualizuj też główny tekst
+            updateInstructionText(currentPhaseIndex);
 
-            // Sprawdzenie ukończenia cyklu
             if (currentPhaseIndex === 0 && elapsedTotalTime > 100) {
                 let justCompletedCycles = Math.floor(elapsedTotalTime / TOTAL_CYCLE_DURATION);
-                 // Zliczaj tylko raz na cykl
                 if (justCompletedCycles > completedCycles) {
                     completedCycles = justCompletedCycles;
-                    console.log(`Ukończono cykl: ${completedCycles}`);
                     if (completedCycles >= TOTAL_CYCLES) {
-                        console.log('Osiągnięto maksymalną liczbę cykli.');
                         naturalStop = true;
-                        stopBreathing(); // Zakończ ćwiczenie
-                        return; // Wyjdź z pętli
+                        stopBreathing();
+                        return;
                     }
                 }
             }
         }
 
-        // Aktualizacja okręgu postępu w każdej klatce
         const progress = elapsedCycleTime / TOTAL_CYCLE_DURATION;
         updateProgressCircle(progress);
 
-        // Kontynuuj pętlę
         animationFrameId = requestAnimationFrame(animationLoop);
     }
 
     // --- Funkcje pomocnicze ---
     function updateActivePhase(activeIndex) {
         breathingTexts.forEach((text, index) => {
-            if (text) { // Sprawdź, czy element istnieje
-                 if (index === activeIndex) {
-                    text.classList.add('active');
-                 } else {
-                    text.classList.remove('active');
-                 }
+            if (text) {
+                 if (index === activeIndex) text.classList.add('active');
+                 else text.classList.remove('active');
             }
         });
-        // Dodaj klasę do okręgu dla ewentualnej stylizacji
-        breathingCircle.className = 'breathing-circle'; // Reset
+        breathingCircle.className = 'breathing-circle';
         breathingCircle.classList.add(`phase-${PHASES[activeIndex].name}`);
     }
 
     function updateProgressCircle(progress) {
-        // Używamy Math.min/max dla pewności, że wartość jest w zakresie 0-1
         const angle = Math.min(1, Math.max(0, progress)) * 360;
-        // Ustawienie zmiennej CSS --progress-angle
         breathingCircle.style.setProperty('--progress-angle', `${angle}deg`);
     }
 
     function updateInstructionText(phaseIndex) {
         const phase = PHASES[phaseIndex];
-        // Wyświetl nazwę fazy w centralnym miejscu
         instructionTextElement.textContent = `${phase.text}`;
     }
 
     function resetUI() {
-        console.log('Resetting UI...');
+        console.log('Resetting Box Breathing UI...');
         breathingTexts.forEach(text => { if(text) text.classList.remove('active'); });
-        updateProgressCircle(0); // Resetuj okrąg postępu
-        instructionTextElement.textContent = 'Rozpocznij'; // Tekst początkowy
-        breathingCircle.className = 'breathing-circle'; // Reset klas okręgu
+        updateProgressCircle(0);
+        instructionTextElement.textContent = 'Rozpocznij';
+        breathingCircle.className = 'breathing-circle';
 
-        // Usuń ewentualny komunikat o ukończeniu
         const existingCompletion = breatheExerciseContainer.querySelector('.completion-message');
         if (existingCompletion) {
-            console.log('Removing existing completion message.');
             existingCompletion.remove();
         }
     }
 
     function showCompletionMessage() {
-        console.log('Showing completion message.');
-         // Upewnij się, że kontener nadal istnieje
+        console.log('Showing Box Breathing completion message.');
         if (!breatheExerciseContainer) {
              console.error("Cannot show completion message: container not found.");
              return;
         }
-        // Usuń stary komunikat, jeśli jakimś cudem pozostał
          const existingCompletion = breatheExerciseContainer.querySelector('.completion-message');
          if (existingCompletion) existingCompletion.remove();
 
-        // Utwórz nowy komunikat
         const completionMessage = document.createElement('div');
         completionMessage.className = 'completion-message';
         completionMessage.innerHTML = `
             <div class="success-icon" aria-hidden="true">✓</div>
             <h3>Świetnie!</h3>
             <p>Ukończyłeś ${completedCycles} ${completedCycles === 1 ? 'cykl' : (completedCycles > 1 && completedCycles < 5 ? 'cykle' : 'cykli')} oddechowych.</p>
-        `; // Prosta obsługa liczby mnogiej
+        `;
 
         breatheExerciseContainer.appendChild(completionMessage);
-        // Pokaż z animacją
-        requestAnimationFrame(() => { // Użyj rAF dla pewności, że element jest w DOM
+        requestAnimationFrame(() => {
              completionMessage.classList.add('show');
         });
 
-        // Usuń wiadomość po 5 sekundach
         setTimeout(() => {
              if (completionMessage.parentNode) {
                  completionMessage.classList.remove('show');
-                 // Poczekaj na zakończenie animacji zanikania przed usunięciem
                  completionMessage.addEventListener('transitionend', () => {
                       if (completionMessage.parentNode) completionMessage.remove();
                  }, { once: true });
@@ -606,67 +582,54 @@ function initBoxBreathing() {
 
     // --- Funkcje Start/Stop ---
     function startBreathing() {
-        console.log('startBreathing called.');
         if (isBreathing) return;
         isBreathing = true;
         naturalStop = false;
-        currentPhaseIndex = -1; // Ustaw na -1, aby wymusić aktualizację przy pierwszej klatce
+        currentPhaseIndex = -1;
         cycleStartTime = 0;
         completedCycles = 0;
 
-        resetUI(); // Przygotuj UI przed startem
-        // updateActivePhase(0); // Nie ustawiaj aktywnej fazy tutaj, pętla to zrobi
+        resetUI();
 
         startBtn.disabled = true;
         stopBtn.disabled = false;
         startBtn.classList.add('clicked');
         setTimeout(() => startBtn.classList.remove('clicked'), 300);
 
-        // Rozpocznij pętlę animacji
-        console.log('Requesting animation frame...');
         animationFrameId = requestAnimationFrame(animationLoop);
     }
 
     function stopBreathing() {
-        console.log('stopBreathing called.');
         if (!isBreathing) return;
         isBreathing = false;
-        cancelAnimationFrame(animationFrameId); // Zatrzymaj pętlę
-        animationFrameId = null; // Wyczyść ID
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = null;
 
         startBtn.disabled = false;
         stopBtn.disabled = true;
-        // Dodaj efekt kliknięcia tylko jeśli przycisk jest faktycznie klikany
-        // (Tutaj jest to wywoływane programowo, więc pomijamy efekt)
-        // stopBtn.classList.add('clicked');
-        // setTimeout(() => stopBtn.classList.remove('clicked'), 300);
 
         if (naturalStop) {
              showCompletionMessage();
              naturalStop = false;
-        }
-        // Zawsze resetuj UI po zatrzymaniu (nawet naturalnym, bo komunikat jest osobno)
-        // ale z opóźnieniem, żeby komunikat był widoczny
-        if (!naturalStop) {
-             resetUI();
+             // Przy naturalnym stopie, resetujemy z opóźnieniem
+             setTimeout(resetUI, 500);
         } else {
-             // Przy naturalnym stopie, resetujemy z opóźnieniem, żeby użytkownik zdążył zobaczyć ostatni stan
-             setTimeout(resetUI, 500); // Krótkie opóźnienie
+             // Przy ręcznym zatrzymaniu, resetujemy od razu
+             resetUI();
         }
     }
 
     // --- Inicjalizacja ---
-    // Dodaj event listenery do przycisków
     startBtn.addEventListener('click', startBreathing);
     stopBtn.addEventListener('click', stopBreathing);
 
-    // Ustaw stan początkowy interfejsu
     startBtn.disabled = false;
     stopBtn.disabled = true;
     resetUI();
 
-    console.log('Box Breathing v2.1 zainicjowane pomyślnie.');
+    console.log('Box Breathing v2.1 (poprawiona) zainicjowane pomyślnie.');
 }
+
 
 // ==============================================
 // Moduł: Obsługa pobierania ebooka
@@ -675,60 +638,42 @@ function initEbookDownload() {
     const downloadBtn = document.getElementById('download-ebook');
     const downloadSuccess = document.getElementById('download-success');
     const retryDownload = document.getElementById('retry-download');
-    
+
     if (!downloadBtn || !downloadSuccess || !retryDownload) return;
-    
-    // Funkcja do obsługi pobierania ebooka
+
     function downloadEbook() {
-        // Symulacja pobierania pliku
         setTimeout(() => {
-            // W prawdziwej aplikacji tutaj byłby kod do rozpoczęcia pobierania pliku
             const link = document.createElement('a');
-            link.href = 'assets/ebooks/zwolnij-ebook.pdf'; // ścieżka do prawdziwego pliku
+            link.href = 'assets/ebooks/zwolnij-ebook.pdf'; // Upewnij się, że ścieżka jest poprawna
             link.download = 'Zwolnij-Praktyczny-Przewodnik.pdf';
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-            
-            // Pokazanie komunikatu o sukcesie
+
             downloadSuccess.style.display = 'block';
-            
-            // Dodanie efektu przewijania do komunikatu o sukcesie
+
             window.scrollTo({
-                top: downloadSuccess.offsetTop,
+                top: downloadSuccess.offsetTop - 100, // Przewiń trochę wyżej
                 behavior: 'smooth'
             });
-            
-            // Ogłoszenie dla czytników ekranu
+
             if (window.announceToScreenReader) {
                 window.announceToScreenReader('Pobieranie ebooka rozpoczęte. Sprawdź folder pobierania.');
             }
         }, 1000);
     }
-    
-    // Obsługa kliknięcia przycisku "Pobierz"
+
     downloadBtn.addEventListener('click', function(e) {
         e.preventDefault();
-        
-        // Dodanie animacji do przycisku
-        this.classList.add('shake');
-        setTimeout(() => {
-            this.classList.remove('shake');
-        }, 500);
-        
+        this.classList.add('clicked'); // Użyj klasy clicked
+        setTimeout(() => this.classList.remove('clicked'), 300);
         downloadEbook();
     });
-    
-    // Obsługa kliknięcia przycisku "Spróbuj ponownie"
+
     retryDownload.addEventListener('click', function(e) {
         e.preventDefault();
-        
-        // Dodanie animacji do przycisku
-        this.classList.add('pulse');
-        setTimeout(() => {
-            this.classList.remove('pulse');
-        }, 1000);
-        
+        this.classList.add('clicked');
+        setTimeout(() => this.classList.remove('clicked'), 300);
         downloadEbook();
     });
 }
@@ -739,46 +684,42 @@ function initEbookDownload() {
 function initVideoFallback() {
     const videoContainer = document.querySelector('.video-container');
     const video = videoContainer ? videoContainer.querySelector('video') : null;
-    
+
     if (!video || !videoContainer) return;
-    
-    // Obsługa błędu wideo
+
     video.addEventListener('error', function() {
-        console.log('Nie można odtworzyć wideo - przełączanie na fallback');
+        console.error('Video Error: Nie można odtworzyć wideo - przełączanie na fallback.');
         videoContainer.classList.add('video-error');
     });
-    
-    // Sprawdzenie, czy wideo zostało poprawnie załadowane
+
     video.addEventListener('loadeddata', function() {
         videoContainer.classList.remove('video-error');
-        console.log('Wideo załadowane pomyślnie');
+        console.log('Wideo załadowane pomyślnie.');
     });
-    
-    // Efekt parallax dla wideo podczas przewijania
-    window.addEventListener('scroll', function() {
-        if (window.scrollY > 50) {
-            videoContainer.classList.add('scrolled');
-        } else {
-            videoContainer.classList.remove('scrolled');
-        }
-    });
-    
-    // Obsługa płynnego przewijania przy kliknięciu na linki kotwiczne
+
+    // Usuń parallax scroll dla wideo, może powodować problemy wydajnościowe
+    // window.addEventListener('scroll', function() {
+    //     if (window.scrollY > 50) {
+    //         videoContainer.classList.add('scrolled');
+    //     } else {
+    //         videoContainer.classList.remove('scrolled');
+    //     }
+    // });
+
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             const targetId = this.getAttribute('href');
-            
-            if (targetId !== '#') {
+            if (targetId && targetId !== '#') {
                 e.preventDefault();
-                
                 const targetElement = document.querySelector(targetId);
                 if (targetElement) {
                     const offsetTop = targetElement.offsetTop;
-                    
                     window.scrollTo({
                         top: offsetTop,
                         behavior: 'smooth'
                     });
+                    // Opcjonalnie: ustaw focus na elemencie docelowym dla dostępności
+                    // setTimeout(() => targetElement.focus(), 1000); // Z opóźnieniem po scrollu
                 }
             }
         });
@@ -791,8 +732,7 @@ function initVideoFallback() {
 function initBackToTop() {
     const backToTopBtn = document.getElementById('back-to-top');
     if (!backToTopBtn) return;
-    
-    // Pokazywanie/ukrywanie przycisku w zależności od przewinięcia
+
     window.addEventListener('scroll', function() {
         if (window.scrollY > 500) {
             backToTopBtn.classList.add('visible');
@@ -800,9 +740,10 @@ function initBackToTop() {
             backToTopBtn.classList.remove('visible');
         }
     });
-    
-    // Obsługa kliknięcia przycisku
+
     backToTopBtn.addEventListener('click', function() {
+        this.classList.add('clicked');
+        setTimeout(() => this.classList.remove('clicked'), 300);
         window.scrollTo({
             top: 0,
             behavior: 'smooth'
@@ -811,86 +752,86 @@ function initBackToTop() {
 }
 
 // ==============================================
-// Optymalizacje wydajności
+// Optymalizacje wydajności (pozostawione bez zmian, ale potencjalnie do przeglądu)
 // ==============================================
-
-// Optimize animations with requestAnimationFrame
 function optimizeAnimations() {
-    // Check if browser supports requestAnimationFrame
-    const requestAnimFrame = window.requestAnimationFrame || 
-                            window.webkitRequestAnimationFrame || 
-                            window.mozRequestAnimationFrame || 
+    const requestAnimFrame = window.requestAnimationFrame ||
+                            window.webkitRequestAnimationFrame ||
+                            window.mozRequestAnimationFrame ||
                             function(callback) { window.setTimeout(callback, 1000/60); };
-    
     window.requestAnimFrame = requestAnimFrame;
-    
-    // Debounce scroll events
+
     let scrollTimeout;
-    function debounceScroll(func, wait = 10) {
+    function debounceScroll(func, wait = 15) { // Zwiększony lekko wait time
         clearTimeout(scrollTimeout);
         scrollTimeout = setTimeout(func, wait);
     }
-    
-    // Replace standard scroll listeners with debounced versions
+
     const originalAddEventListener = window.addEventListener;
+    let scrollListeners = []; // Przechowuj oryginalne listenery
+
     window.addEventListener = function(type, listener, options) {
         if (type === 'scroll') {
-            const debouncedListener = function(e) {
-                debounceScroll(() => listener(e));
-            };
-            return originalAddEventListener.call(this, type, debouncedListener, options);
+            scrollListeners.push({ listener, options }); // Zapisz listener
+            // Nie dodawaj listenera od razu
+            return;
         }
         return originalAddEventListener.call(this, type, listener, options);
     };
+
+    // Dodaj jeden główny listener scroll po załadowaniu DOM
+    document.addEventListener('DOMContentLoaded', () => {
+        originalAddEventListener.call(window, 'scroll', (e) => {
+            debounceScroll(() => {
+                scrollListeners.forEach(item => {
+                    try {
+                         item.listener(e); // Wywołaj zapisane listenery
+                    } catch (error) {
+                         console.error("Błąd w listenerze scroll:", error);
+                    }
+                });
+            });
+        });
+         // Wywołaj raz na starcie, aby zainicjować stany zależne od scrolla
+         scrollListeners.forEach(item => { try { item.listener({ type: 'scroll' }); } catch (error) {} });
+    });
 }
 
-// Optimize resource loading
 function optimizeResourceLoading() {
-    // Lazy load images when they enter viewport
+    // Lazy load images
     const lazyImages = document.querySelectorAll('img[data-src]');
     if (lazyImages.length > 0) {
         if ('IntersectionObserver' in window) {
-            const imageObserver = new IntersectionObserver((entries) => {
+            const imageObserver = new IntersectionObserver((entries, observer) => { // Dodano observer do argumentów
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         const img = entry.target;
                         img.src = img.dataset.src;
                         img.removeAttribute('data-src');
-                        imageObserver.unobserve(img);
+                        // Opcjonalnie: dodaj klasę po załadowaniu
+                        img.onload = () => img.classList.add('loaded');
+                        observer.unobserve(img); // Użyj observer z argumentów
                     }
                 });
-            });
-            
+            }, { rootMargin: "0px 0px 100px 0px" }); // Zacznij ładować 100px przed wejściem w viewport
+
             lazyImages.forEach(img => imageObserver.observe(img));
         } else {
-            // Fallback for browsers without IntersectionObserver
-            function lazyLoad() {
-                lazyImages.forEach(img => {
-                    if (img.getBoundingClientRect().top <= window.innerHeight && 
-                        img.getBoundingClientRect().bottom >= 0 && 
-                        getComputedStyle(img).display !== 'none') {
-                        img.src = img.dataset.src;
-                        img.removeAttribute('data-src');
-                    }
-                });
-            }
-            
-            // Initial check
-            lazyLoad();
-            // Add event listeners for scroll and resize
-            window.addEventListener('scroll', lazyLoad);
-            window.addEventListener('resize', lazyLoad);
+            // Fallback (uproszczony)
+            console.warn("IntersectionObserver not supported, fallback lazy loading may be less efficient.");
+            lazyImages.forEach(img => { img.src = img.dataset.src; img.removeAttribute('data-src'); });
         }
     }
-    
-    // Preload critical resources
+
+    // Preload critical resources (funkcja pozostawiona bez zmian)
     function preloadCriticalResources() {
-        // Add preload links for critical resources
         const preloads = [
-            { href: 'assets/videos/city-timelapse.mp4', as: 'video', type: 'video/mp4' },
-            { href: 'https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js', as: 'script' }
+            // Usunięto preload wideo, ponieważ jest duże i może blokować
+            // { href: 'assets/videos/city-timelapse.mp4', as: 'video', type: 'video/mp4' },
+            // Preload czcionek jest ważniejszy i obsługiwany przez <link> w HTML
+            // { href: 'https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js', as: 'script' } // Jeśli używane, można odkomentować
         ];
-        
+
         preloads.forEach(resource => {
             const link = document.createElement('link');
             link.rel = 'preload';
@@ -900,136 +841,140 @@ function optimizeResourceLoading() {
             document.head.appendChild(link);
         });
     }
-    
-    // Execute preloading
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', preloadCriticalResources);
-    } else {
-        preloadCriticalResources();
-    }
+
+    // Wykonaj preload tylko jeśli potrzebne
+    // preloadCriticalResources(); // Wywołanie opcjonalne
 }
 
-// Optimize video playback
+
 function optimizeVideoPlayback() {
     const video = document.querySelector('.video-container video');
     if (!video) return;
-    
-    // Reduce initial quality for faster playback
-    video.addEventListener('loadedmetadata', function() {
-        // Set initial quality to low res
-        if (video.videoHeight > 720) {
-            video.style.height = '720px';
-            video.style.objectFit = 'cover';
-        }
-    });
-    
-    // Pause video when not in viewport to save resources
+
+    // Usuń optymalizację jakości - może powodować problemy z responsywnością
+    // video.addEventListener('loadedmetadata', function() { ... });
+
+    // Pause video when not in viewport
     if ('IntersectionObserver' in window) {
         const videoObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    video.play().catch(err => {
-                        console.warn('Auto-play prevented:', err);
-                    });
-                } else {
-                    video.pause();
-                }
+                const videoElement = entry.target; // Użyj targetu z entry
+                 if (entry.isIntersecting) {
+                    // Sprawdź, czy użytkownik nie preferuje ograniczonego ruchu
+                    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                    if (!prefersReducedMotion) {
+                         videoElement.play().catch(err => {
+                              // Ignoruj błędy autoodtwarzania, przeglądarka może blokować
+                         });
+                    } else {
+                        videoElement.pause(); // Pauzuj, jeśli użytkownik ma włączone ograniczenie ruchu
+                    }
+                 } else {
+                    videoElement.pause();
+                 }
             });
-        }, { threshold: 0.1 });
-        
+        }, { threshold: 0.1 }); // Zmniejszony próg dla szybszej reakcji
+
         videoObserver.observe(video);
+    } else {
+         // Bez IntersectionObserver, wideo będzie odtwarzane cały czas
+         // Można dodać fallback oparty na scroll, ale jest mniej wydajny
     }
 }
 
 // ==============================================
-// Dostępność
+// Dostępność (funkcje pozostawione bez zmian, ale potencjalnie do przeglądu)
 // ==============================================
-
-// Improve keyboard navigation and screen reader support
 function initAccessibility() {
-    // Add skip to content link
-    const skipLink = document.createElement('a');
-    skipLink.href = '#manifesto';
-    skipLink.className = 'skip-to-content';
-    skipLink.textContent = 'Przejdź do treści głównej';
-    document.body.insertBefore(skipLink, document.body.firstChild);
-    
+    // Skip link jest już w HTML, więc ta część może być niepotrzebna
+    // const skipLink = document.createElement('a'); ...
+
     improveKeyboardNavigation();
     setupScreenReaderAnnouncements();
     ensureImageAccessibility();
     checkHeadingHierarchy();
 }
 
-// Improve keyboard navigation
 function improveKeyboardNavigation() {
-    // Add keyboard support for custom interactive elements
-    const interactiveElements = document.querySelectorAll('.manifesto-item, .practice-card');
-    
+    const interactiveElements = document.querySelectorAll('.manifesto-item, .practice-card, .cta-button, .download-button, #back-to-top');
+
     interactiveElements.forEach(item => {
-        // Make items focusable
-        item.setAttribute('tabindex', '0');
-        
-        // Add keyboard event handling
+        // Upewnij się, że elementy interaktywne są fokusowalne
+        if (!item.hasAttribute('tabindex') && item.tagName !== 'A' && item.tagName !== 'BUTTON') {
+             item.setAttribute('tabindex', '0');
+        }
+
         item.addEventListener('keydown', function(e) {
-            // If Enter or Space is pressed, trigger click
             if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                this.click();
+                // Dla linków, Enter powinien działać domyślnie
+                // Dla przycisków, Enter i Space powinny działać domyślnie
+                // Dla divów itp. symulujemy kliknięcie
+                if (item.tagName !== 'A' && item.tagName !== 'BUTTON') {
+                     e.preventDefault();
+                     this.click();
+                } else if (e.key === ' ' && item.tagName === 'A') {
+                    // Zapobiegaj przewijaniu strony spacją na linkach
+                    e.preventDefault();
+                    this.click();
+                }
             }
         });
     });
 }
 
-// Add screen reader announcements for dynamic content
+
 function setupScreenReaderAnnouncements() {
-    // Create an ARIA live region for announcements
-    const liveRegion = document.createElement('div');
-    liveRegion.setAttribute('aria-live', 'polite');
-    liveRegion.setAttribute('aria-atomic', 'true');
-    liveRegion.classList.add('sr-only'); // This class visually hides the element
-    document.body.appendChild(liveRegion);
-    
-    // Function to announce messages to screen readers
+    // Użyj istniejącego diva z HTML zamiast tworzyć nowy
+    const liveRegion = document.querySelector('[aria-live="polite"]');
+    if (!liveRegion) {
+         console.warn("Accessibility Warning: Nie znaleziono regionu ARIA live dla ogłoszeń.");
+         // Stwórz fallback, jeśli nie ma w HTML
+         const fallbackRegion = document.createElement('div');
+         fallbackRegion.setAttribute('aria-live', 'polite');
+         fallbackRegion.setAttribute('aria-atomic', 'true');
+         fallbackRegion.className = 'sr-only'; // Zakładamy, że ta klasa istnieje w CSS
+         document.body.appendChild(fallbackRegion);
+         window.announceToScreenReader = function(message) { fallbackRegion.textContent = message; setTimeout(() => { fallbackRegion.textContent = ''; }, 5000); };
+         return;
+    }
+
     window.announceToScreenReader = function(message) {
         liveRegion.textContent = message;
-        
-        // Clear after 5 seconds
         setTimeout(() => {
             liveRegion.textContent = '';
         }, 5000);
     };
 }
 
-// Add alt text to all images
 function ensureImageAccessibility() {
-    const images = document.querySelectorAll('img:not([alt])');
+    const images = document.querySelectorAll('img');
     images.forEach(img => {
-        // Extract alt text from context if possible
-        let altText = '';
-        
-        // Try to get alt text from parent heading
-        const nearestHeading = img.closest('div')?.querySelector('h1, h2, h3, h4, h5, h6');
-        if (nearestHeading) {
-            altText = nearestHeading.textContent;
-        } else {
-            // Use image filename as fallback
-            const filename = img.src.split('/').pop().split('.')[0];
-            altText = filename.replace(/[-_]/g, ' ');
+        if (!img.hasAttribute('alt') || img.getAttribute('alt').trim() === '') {
+            console.warn(`Accessibility Warning: Obrazek ${img.src} nie ma tekstu alternatywnego (alt).`);
+            // Prosty fallback, jeśli alt jest pusty
+            if (!img.hasAttribute('alt')) {
+                 const filename = img.src.split('/').pop().split('.')[0];
+                 const fallbackAlt = filename.replace(/[-_]/g, ' ');
+                 img.setAttribute('alt', fallbackAlt);
+            } else if (img.getAttribute('alt').trim() === '') {
+                // Jeśli alt jest celowo pusty, oznacz go jako prezentacyjny, jeśli to możliwe
+                // W przeciwnym razie, zostaw ostrzeżenie
+                 if(!img.closest('a')) { // Jeśli nie jest w linku
+                     img.setAttribute('role', 'presentation');
+                 }
+            }
         }
-        
-        img.setAttribute('alt', altText);
     });
 }
 
-// Ensure proper heading hierarchy
 function checkHeadingHierarchy() {
     const headings = Array.from(document.querySelectorAll('h1, h2, h3, h4, h5, h6'));
-    const headingLevels = headings.map(h => parseInt(h.tagName.substring(1)));
-    
-    // Log warnings for skipped heading levels
-    for (let i = 1; i < headingLevels.length; i++) {
-        if (headingLevels[i] > headingLevels[i-1] + 1) {
-            console.warn(`Heading hierarchy issue: Skipped from h${headingLevels[i-1]} to h${headingLevels[i]}`);
+    let lastLevel = 0;
+    headings.forEach(h => {
+        const currentLevel = parseInt(h.tagName.substring(1));
+        if (currentLevel > lastLevel + 1) {
+            console.warn(`Accessibility Warning: Pomięto poziom nagłówka. Przeskok z h${lastLevel} do h${currentLevel} w elemencie:`, h);
         }
-    }
+        lastLevel = currentLevel;
+    });
 }
