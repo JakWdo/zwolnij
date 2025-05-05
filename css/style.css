@@ -1154,23 +1154,24 @@ input {
 }
 
 @keyframes moveRight {
-    from { top: -8px; left: 50%; transform: translateX(-50%); }
-    to { top: -8px; left: calc(100% + 8px); transform: translateX(-100%); }
+    from { top: 50%; left: -8px; transform: translateY(-50%); }
+    to { top: -8px; left: 50%; transform: translate(-50%, 0); }
 }
 
+/* Dostosuj pozostałe animacje, aby tworzyły płynny ruch po kwadracie */
 @keyframes moveDown {
-    from { top: -8px; left: calc(100% + 8px); transform: translateX(-100%); }
-    to { top: calc(100% + 8px); left: calc(100% + 8px); transform: translateX(-100%); }
+    from { top: -8px; left: 50%; transform: translateX(-50%); }
+    to { top: 50%; right: -8px; transform: translateY(-50%); }
 }
 
 @keyframes moveLeft {
-    from { top: calc(100% + 8px); left: calc(100% + 8px); transform: translateX(-100%); }
-    to { top: calc(100% + 8px); left: -8px; transform: translateX(0); }
+    from { top: 50%; right: -8px; transform: translateY(-50%); }
+    to { top: calc(100% + 8px); left: 50%; transform: translateX(-50%); }
 }
 
 @keyframes moveUp {
-    from { top: calc(100% + 8px); left: -8px; transform: translateX(0); }
-    to { top: -8px; left: 50%; transform: translateX(-50%); }
+    from { top: calc(100% + 8px); left: 50%; transform: translateX(-50%); }
+    to { top: 50%; left: -8px; transform: translateY(-50%); }
 }
 
 .box-side {
