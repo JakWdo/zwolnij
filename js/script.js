@@ -654,7 +654,7 @@ function initBoxBreathing() {
         holdTop: { duration: 4, text: 'Zatrzymaj', class: 'hold-top', side: 'top-side' },
         exhale: { duration: 4, text: 'Wydech', class: 'exhale', side: 'right-side' },
         holdBottom: { duration: 4, text: 'Zatrzymaj', class: 'hold-bottom', side: 'bottom-side' }
-    };
+    }
     
     // Obliczanie całkowitego czasu jednego cyklu
     for (const phase in phases) {
