@@ -630,9 +630,15 @@ function initBoxBreathing() {
     const boxSides = document.querySelectorAll('.box-side');
     
     if (!startBtn || !stopBtn || !breathingBall || !boxTimer || !progressBar) {
-        console.error('Brakuje elementów potrzebnych do Box Breathing');
+        console.error('Elementy Box Breathing nie zostały znalezione');
         return;
     }
+    
+    console.log('Box Breathing: Wszystkie elementy znalezione', { 
+        ball: breathingBall, 
+        timer: boxTimer, 
+        progressBar: progressBar 
+    });
     
     let breathingInterval;
     let currentPhase = 'idle';
@@ -655,77 +661,24 @@ function initBoxBreathing() {
         totalDuration += phases[phase].duration;
     }
     
-    // Tryb audio - dźwięki pomocnicze do ćwiczenia
-    let audioContext;
-    let audioEnabled = false;
-    
-    function initAudio() {
-        try {
-            audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            audioEnabled = true;
-        } catch (e) {
-            console.warn('Web Audio API nie jest obsługiwana w tej przeglądarce');
-            audioEnabled = false;
-        }
-    }
-    
-    function playPhaseSound(phase) {
-        if (!audioEnabled || !audioContext) return;
-        
-        const oscillator = audioContext.createOscillator();
-        const gainNode = audioContext.createGain();
-        
-        // Różne częstotliwości dla różnych faz
-        switch (phase) {
-            case 'inhale':
-                oscillator.frequency.value = 196.00; // G3
-                break;
-            case 'holdTop':
-                oscillator.frequency.value = 246.94; // B3
-                break;
-            case 'exhale':
-                oscillator.frequency.value = 293.66; // D4
-                break;
-            case 'holdBottom':
-                oscillator.frequency.value = 329.63; // E4
-                break;
-        }
-        
-        oscillator.type = 'sine';
-        
-        const filter = audioContext.createBiquadFilter();
-        filter.type = 'lowpass';
-        filter.frequency.value = 800;
-        filter.Q.value = 1;
-        
-        gainNode.gain.value = 0.2;
-        gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + 0.5);
-        
-        oscillator.connect(filter);
-        filter.connect(gainNode);
-        gainNode.connect(audioContext.destination);
-        
-        oscillator.start();
-        setTimeout(() => {
-            oscillator.stop();
-        }, 500);
-    }
-    
-    // Resetuj pozycję kulki do startowej przed rozpoczęciem
+    // Resetuj pozycję kulki do początkowej pozycji
     function resetBallPosition() {
+        console.log('Resetowanie pozycji kulki');
         breathingBall.style.animation = 'none';
-        breathingBall.offsetHeight; // Wymuś reflow
+        breathingBall.classList.remove('inhale', 'hold-top', 'exhale', 'hold-bottom');
+        // Wymuszenie reflow DOM
+        void breathingBall.offsetWidth;
+        // Resetowanie pozycji
         breathingBall.style.top = '-8px';
         breathingBall.style.left = '50%';
         breathingBall.style.transform = 'translateX(-50%)';
         breathingBall.style.animation = '';
     }
     
+    // Inicjalizuj i resetuj kulkę przy załadowaniu
+    resetBallPosition();
+    
     startBtn.addEventListener('click', function() {
-        if (!audioContext && !audioEnabled) {
-            initAudio();
-        }
-        
         resetBallPosition();
         startBreathing();
         startBtn.disabled = true;
@@ -735,10 +688,6 @@ function initBoxBreathing() {
         setTimeout(() => {
             this.classList.remove('clicked');
         }, 300);
-        
-        if (window.announceToScreenReader) {
-            window.announceToScreenReader('Ćwiczenie oddechowe rozpoczęte');
-        }
     });
     
     stopBtn.addEventListener('click', function() {
@@ -750,22 +699,13 @@ function initBoxBreathing() {
         setTimeout(() => {
             this.classList.remove('clicked');
         }, 300);
-        
-        if (window.announceToScreenReader) {
-            window.announceToScreenReader('Ćwiczenie oddechowe zatrzymane');
-        }
     });
     
     function startBreathing() {
+        console.log('Rozpoczęcie ćwiczenia oddechowego');
         // Resetowanie stanu
         elapsedTime = 0;
         cyclesCompleted = 0;
-        
-        // Usuń wszystkie klasy przed rozpoczęciem
-        breathingBall.classList.remove('inhale', 'hold-top', 'exhale', 'hold-bottom');
-        
-        // Usuń pozostałe style animacji
-        breathingBall.style.animation = '';
         
         // Czyszczenie aktywnych stron
         boxSides.forEach(side => side.classList.remove('active'));
@@ -829,11 +769,6 @@ function initBoxBreathing() {
                                 }, 500);
                             }, 5000);
                             
-                            // Ogłoszenie dla czytników ekranu
-                            if (window.announceToScreenReader) {
-                                window.announceToScreenReader(`Świetnie! Ukończyłeś ${maxCycles} cykli oddechowych.`);
-                            }
-                            
                             return;
                         }
                         
@@ -845,44 +780,28 @@ function initBoxBreathing() {
     }
     
     function startPhase(phase) {
+        console.log(`Rozpoczęcie fazy: ${phase}`);
         currentPhase = phase;
         secondsLeft = phases[phase].duration;
         boxTimer.textContent = secondsLeft;
         
-        // Aktualizacja klas CSS dla animacji - WAŻNE: Pełne usunięcie i ponowne dodanie klas
+        // Aktualizacja klas CSS dla animacji
         breathingBall.classList.remove('inhale', 'hold-top', 'exhale', 'hold-bottom');
-        breathingBall.style.animation = 'none';
-        breathingBall.offsetHeight; // Wymuś reflow DOM
         
-        // Dodanie właściwej klasy z małym opóźnieniem dla pewności
-        setTimeout(() => {
-            breathingBall.style.animation = '';
-            breathingBall.classList.add(phases[phase].class);
-        }, 50);
+        // Wymuś reflow DOM przed dodaniem nowej klasy
+        void breathingBall.offsetWidth;
         
-        // Odtwarzanie dźwięku dla tej fazy
-        playPhaseSound(phase);
+        // Dodaj klasę dla aktualnej fazy
+        breathingBall.classList.add(phases[phase].class);
         
         // Podświetlenie aktywnej strony kwadratu
         boxSides.forEach(side => side.classList.remove('active'));
         document.querySelector(`.${phases[phase].side}`).classList.add('active');
-        
-        // Ogłoszenie dla czytników ekranu
-        if (window.announceToScreenReader) {
-            window.announceToScreenReader(phases[phase].text);
-        }
     }
     
     function stopBreathing() {
         clearInterval(breathingInterval);
-        
-        // Zatrzymanie wszystkich animacji
-        breathingBall.classList.remove('inhale', 'hold-top', 'exhale', 'hold-bottom');
-        breathingBall.style.animation = 'none';
-        
-        // Resetowanie pozycji kulki do pozycji początkowej
         resetBallPosition();
-        
         boxTimer.textContent = '4';
         progressBar.style.width = '0';
         currentPhase = 'idle';
