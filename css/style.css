@@ -784,9 +784,9 @@ input {
 .breathe {
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); /* Jasne, spokojne tło */
     text-align: center;
-    padding: var(--spacing-xl) 0; /* Użyj zdefiniowanych odstępów */
+    padding: var(--spacing-xl, 6rem) 0; /* Użyj zdefiniowanych odstępów lub domyślnych */
     position: relative;
-    overflow: hidden; /* Zapobiega wychodzeniu elementów poza sekcję */
+    overflow: hidden;
 }
 
 /* Opcjonalne: subtelne wzory tła dla sekcji */
@@ -798,22 +798,22 @@ input {
     width: 100%;
     height: 100%;
     background:
-        radial-gradient(circle at 10% 90%, rgba(63, 81, 181, 0.03) 0%, transparent 40%), /* Subtelny okrąg w tle */
-        radial-gradient(circle at 90% 10%, rgba(0, 188, 212, 0.03) 0%, transparent 40%); /* Drugi subtelny okrąg */
+        radial-gradient(circle at 10% 90%, rgba(63, 81, 181, 0.03) 0%, transparent 40%),
+        radial-gradient(circle at 90% 10%, rgba(0, 188, 212, 0.03) 0%, transparent 40%);
     z-index: 0;
     opacity: 0.7;
 }
 
 .breathe .container {
-    position: relative; /* Aby zawartość była nad pseudo-elementem tła */
+    position: relative;
     z-index: 1;
 }
 
 /* Nagłówek sekcji */
 .breathe h2 {
-    font-size: 3rem; /* Dopasuj rozmiar wg potrzeb */
+    font-size: clamp(2rem, 6vw, 3rem); /* Responsywny rozmiar czcionki */
     margin-bottom: 1.5rem;
-    color: var(--color-primary); /* Główny kolor tematu */
+    color: var(--color-primary, #3F51B5); /* Użyj zmiennej lub domyślnego koloru */
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
     letter-spacing: 1px;
 }
@@ -821,16 +821,16 @@ input {
 /* Wprowadzenie tekstowe */
 .breathe-intro {
     max-width: 700px;
-    margin: 0 auto var(--spacing-lg);
-    color: var(--color-text-light); /* Ciemniejszy szary dla lepszego kontrastu */
-    font-size: 1.1rem; /* Nieco mniejszy dla czytelności */
+    margin: 0 auto var(--spacing-lg, 3rem);
+    color: var(--color-text-light, #757575);
+    font-size: clamp(1rem, 2.5vw, 1.1rem);
     line-height: 1.7;
 }
 
 /* Kontener dla interaktywnej części ćwiczenia */
 .breathe-exercise {
-    max-width: 500px; /* Optymalna szerokość dla skupienia */
-    margin: 0 auto var(--spacing-lg);
+    max-width: 500px;
+    margin: 0 auto var(--spacing-lg, 3rem);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -838,10 +838,10 @@ input {
 
 /* Kontener otaczający okrąg i etykiety faz */
 .breathing-circle-container {
-    width: 250px; /* Rozmiar okręgu */
-    height: 250px;
-    margin: var(--spacing-md) auto var(--spacing-lg); /* Odstępy */
-    position: relative; /* Dla pozycjonowania absolutnego dzieci */
+    width: clamp(180px, 50vw, 250px); /* Responsywny rozmiar */
+    height: clamp(180px, 50vw, 250px);
+    margin: var(--spacing-md, 2rem) auto var(--spacing-lg, 3rem);
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -851,107 +851,107 @@ input {
 .breathing-circle {
     width: 100%;
     height: 100%;
-    border-radius: 50%; /* Idealne koło */
-    position: relative; /* Dla pozycjonowania tekstu instrukcji */
+    border-radius: 50%;
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #ffffff; /* Tło wewnętrznego koła (maski) */
+    background-color: #ffffff;
     box-shadow:
-        0 15px 35px rgba(63, 81, 181, 0.1),  /* Główny cień */
-        0 0 0 8px rgba(255, 255, 255, 0.6); /* Zewnętrzna biała poświata/obwódka */
+        0 15px 35px rgba(63, 81, 181, 0.1),
+        0 0 0 8px rgba(255, 255, 255, 0.6);
 
     /* Zmienna CSS dla kąta postępu, aktualizowana przez JS */
-    /* Gradient stożkowy tworzący pierścień postępu */
-    /* var(--color-primary) - kolor aktywnego postępu */
-    /* #e0e0e0 - kolor tła/nieaktywnej części pierścienia */
+    /* Ustawiamy kolor tła na początku, gradient będzie go zakrywał w miarę postępu */
+    background-color: #e0e0e0; /* Kolor tła/nieaktywnej części pierścienia */
     background-image: conic-gradient(
-        var(--color-primary) var(--progress-angle, 0deg),
-        #e0e0e0 var(--progress-angle, 0deg)
+        var(--color-primary, #3F51B5) var(--progress-angle, 0deg),
+        transparent var(--progress-angle, 0deg) /* Użyj transparent zamiast koloru tła */
     );
-    /* Płynne przejście przy zmianie kąta */
-    transition: background-image 0.2s linear;
+    transition: background-image 0.2s linear; /* Tylko dla debugowania, bo JS nadpisuje */
 
     /* Wewnętrzne koło (maska) tworzące efekt pierścienia */
     &::before {
         content: '';
         position: absolute;
-        /* Grubość pierścienia = 15px */
-        left: 15px;
-        right: 15px;
-        top: 15px;
-        bottom: 15px;
-        background: #ffffff; /* Kolor tła taki sam jak okręgu */
+        /* Grubość pierścienia responsywna */
+        left: clamp(10px, 6%, 15px);
+        right: clamp(10px, 6%, 15px);
+        top: clamp(10px, 6%, 15px);
+        bottom: clamp(10px, 6%, 15px);
+        background: #ffffff;
         border-radius: 50%;
-        z-index: 1; /* Musi być nad gradientem */
+        z-index: 1;
     }
 }
 
 /* Centralny tekst instrukcji wewnątrz okręgu */
 .breathing-instruction {
-    position: relative; /* Nad maską ::before */
-    z-index: 2;
-    font-size: 1.6rem; /* Wyraźna czcionka */
-    font-weight: 500; /* Lekko pogrubiona */
-    color: var(--color-dark); /* Główny kolor tekstu */
+    position: relative;
+    z-index: 2; /* Nad maską */
+    font-size: clamp(1.3rem, 5vw, 1.6rem); /* Responsywny rozmiar */
+    font-weight: 500;
+    color: var(--color-dark, #333);
     text-align: center;
-    padding: 0 15px; /* Zapobiega dotykaniu krawędzi */
-    line-height: 1.2; /* W razie dłuższego tekstu */
+    padding: 0 15px;
+    line-height: 1.2;
     transition: color 0.4s ease;
 }
 
 /* Etykiety faz (na zewnątrz okręgu) */
 .breathing-text {
     position: absolute;
-    font-size: 0.8rem;
-    color: var(--color-text-light); /* Stonowany kolor */
-    background-color: rgba(240, 240, 240, 0.8); /* Lekko przezroczyste tło */
+    font-size: clamp(0.7rem, 2vw, 0.8rem);
+    color: var(--color-text-light, #757575);
+    background-color: rgba(240, 240, 240, 0.8);
     padding: 5px 10px;
-    border-radius: var(--border-radius-sm); /* Lekko zaokrąglone rogi */
-    opacity: 0.6; /* Domyślnie mniej widoczne */
-    transition: all 0.4s ease; /* Płynne przejścia dla wszystkich zmian */
-    z-index: 3; /* Nad okręgiem */
-    pointer-events: none; /* Ignorowanie przez mysz */
+    border-radius: var(--border-radius-sm, 4px);
+    opacity: 0.6;
+    transition: all 0.4s ease;
+    z-index: 3;
+    pointer-events: none;
+    white-space: nowrap; /* Zapobiega łamaniu tekstu */
 }
 
 /* Dokładne pozycjonowanie etykiet faz */
-.phase-inhale { top: -15px; left: 50%; transform: translateX(-50%); } /* Góra */
-.phase-hold-1 { right: -25px; top: 50%; transform: translateY(-50%); } /* Prawo */
-.phase-exhale { bottom: -15px; left: 50%; transform: translateX(-50%); } /* Dół */
-.phase-hold-2 { left: -25px; top: 50%; transform: translateY(-50%); } /* Lewo */
+.phase-inhale { top: clamp(-18px, -8%, -15px); left: 50%; transform: translateX(-50%); }
+.phase-hold-1 { right: clamp(-30px, -12%, -25px); top: 50%; transform: translateY(-50%); }
+.phase-exhale { bottom: clamp(-18px, -8%, -15px); left: 50%; transform: translateX(-50%); }
+.phase-hold-2 { left: clamp(-30px, -12%, -25px); top: 50%; transform: translateY(-50%); }
 
 /* Styl aktywnej etykiety fazy */
 .breathing-text.active {
-    opacity: 1; /* Pełna widoczność */
-    color: var(--color-primary); /* Kolor główny */
-    font-weight: 600; /* Pogrubienie */
-    background-color: rgba(255, 255, 255, 0.95); /* Bardziej solidne tło */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtelny cień */
-    transform: scale(1.1); /* Lekkie powiększenie */
+    opacity: 1;
+    color: var(--color-primary, #3F51B5);
+    font-weight: 600;
+    background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transform: scale(1.1);
 }
-
-/* Dodatkowe przesunięcie aktywnej etykiety dla lepszego wyróżnienia */
+/* Dostosowanie transformacji dla aktywnego stanu */
 .phase-inhale.active { transform: translate(-50%, -5px) scale(1.1); }
 .phase-hold-1.active { transform: translate(5px, -50%) scale(1.1); }
 .phase-exhale.active { transform: translate(-50%, 5px) scale(1.1); }
 .phase-hold-2.active { transform: translate(-5px, -50%) scale(1.1); }
 
+
 /* Przyciski kontrolne (Start/Stop) */
 .breathe-controls {
     display: flex;
     justify-content: center;
-    gap: var(--spacing-md); /* Odstęp między przyciskami */
-    margin-top: var(--spacing-sm); /* Mniejszy margines górny */
-    margin-bottom: var(--spacing-lg); /* Margines dolny przed listą wskazówek */
-    width: 100%; /* Zajmują pełną dostępną szerokość kontenera */
+    flex-wrap: wrap; /* Zawijanie na mniejszych ekranach */
+    gap: var(--spacing-md, 1.5rem);
+    margin-top: var(--spacing-sm, 1rem);
+    margin-bottom: var(--spacing-lg, 3rem);
+    width: 100%;
 }
 
 /* Styl przycisków w sekcji breathe */
 .breathe-button {
-    padding: 12px 30px; /* Wygodny rozmiar */
-    background: linear-gradient(90deg, var(--color-primary) 0%, #5c6bc0 100%);
-    color: var(--color-text-on-dark);
-    border-radius: 50px; /* Zaokrąglone */
+    padding: 12px 30px;
+    background: linear-gradient(90deg, var(--color-primary, #3F51B5) 0%, #5c6bc0 100%);
+    color: var(--color-text-on-dark, #FFFFFF);
+    border-radius: 50px;
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     font-size: 1rem;
     font-weight: 600;
@@ -959,147 +959,114 @@ input {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     border: none;
     cursor: pointer;
-    min-width: 140px; /* Minimalna szerokość */
+    min-width: 140px;
     text-align: center;
+    flex-shrink: 0; /* Zapobiega kurczeniu się przycisków */
 }
 
 .breathe-button:hover:not(:disabled) {
-    background: linear-gradient(90deg, var(--color-secondary) 0%, #ff8a65 100%); /* Kolor hover */
-    transform: translateY(-3px) scale(1.03); /* Efekt podniesienia */
+    background: linear-gradient(90deg, var(--color-secondary, #FF5722) 0%, #ff8a65 100%);
+    transform: translateY(-3px) scale(1.03);
     box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
 }
 
 .breathe-button:disabled {
-    background: linear-gradient(90deg, #b0bec5 0%, #cfd8dc 100%); /* Wygląd nieaktywnego */
+    background: linear-gradient(90deg, #b0bec5 0%, #cfd8dc 100%);
     cursor: not-allowed;
     box-shadow: none;
     transform: none;
+    opacity: 0.7;
 }
 
-/* Specyficzny styl dla przycisku Stop */
 .breathe-button-stop {
-    background: linear-gradient(90deg, #757575 0%, #9e9e9e 100%); /* Szary przycisk stop */
+    background: linear-gradient(90deg, #757575 0%, #9e9e9e 100%);
 }
 
 .breathe-button-stop:hover:not(:disabled) {
-    background: linear-gradient(90deg, #f44336 0%, #e57373 100%); /* Czerwony na hover */
+    background: linear-gradient(90deg, #f44336 0%, #e57373 100%);
 }
 
 /* Sekcja ze wskazówkami */
 .breathe-tips {
-    margin-top: var(--spacing-md);
+    margin-top: var(--spacing-md, 2rem);
     text-align: left;
-    max-width: 100%; /* Zajmuje szerokość kontenera .breathe-exercise */
-    padding: 0 var(--spacing-sm); /* Dodatkowy padding boczny */
+    max-width: 100%;
+    padding: 0 var(--spacing-sm, 1rem);
 }
 
 .breathe-tips h3 {
-    margin-bottom: var(--spacing-sm);
-    color: var(--color-primary);
-    font-size: 1.3rem; /* Nieco mniejszy nagłówek */
-    text-align: center; /* Wyśrodkowanie */
+    margin-bottom: var(--spacing-sm, 1rem);
+    color: var(--color-primary, #3F51B5);
+    font-size: clamp(1.1rem, 4vw, 1.3rem);
+    text-align: center;
 }
 
 .breathe-tips ol {
-    padding-left: 1.5rem; /* Wcięcie listy */
-    list-style-position: outside; /* Kropki na zewnątrz */
+    padding-left: 1.5rem;
+    list-style-position: outside;
 }
 
 .breathe-tips li {
-    margin-bottom: var(--spacing-sm); /* Odstęp między punktami */
-    color: var(--color-text);
+    margin-bottom: var(--spacing-sm, 1rem);
+    color: var(--color-text, #333);
     line-height: 1.6;
+    font-size: clamp(0.9rem, 2.5vw, 1rem);
 }
 
 /* Komunikat o ukończeniu ćwiczenia */
 .completion-message {
-    margin-top: var(--spacing-lg);
-    padding: var(--spacing-md) var(--spacing-lg);
-    background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); /* Zielone tło sukcesu */
-    border-radius: var(--border-radius-md);
+    margin-top: var(--spacing-lg, 3rem);
+    padding: var(--spacing-md, 1.5rem) var(--spacing-lg, 2rem);
+    background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+    border-radius: var(--border-radius-md, 8px);
     text-align: center;
-    opacity: 0; /* Domyślnie ukryty */
-    transform: translateY(20px); /* Początkowa pozycja dla animacji */
+    opacity: 0;
+    transform: translateY(20px);
     transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    width: 100%; /* Pełna szerokość w kontenerze */
-    max-width: 450px; /* Maksymalna szerokość */
+    width: 100%;
+    max-width: 450px;
+    box-sizing: border-box; /* Uwzględnia padding w szerokości */
 }
 
 .completion-message.show {
-    opacity: 1; /* Pokaż */
-    transform: translateY(0); /* Animuj do pozycji */
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .success-icon {
-    display: inline-flex; /* Wyśrodkowanie ikony */
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 45px; /* Rozmiar ikony */
+    width: 45px;
     height: 45px;
-    background-color: #4CAF50; /* Zielony kolor sukcesu */
+    background-color: #4CAF50;
     color: white;
     border-radius: 50%;
     font-size: 24px;
-    margin-bottom: var(--spacing-sm);
-    line-height: 1; /* Dla lepszego wyśrodkowania ikony */
+    margin-bottom: var(--spacing-sm, 1rem);
+    line-height: 1;
 }
 
 .completion-message h3 {
-    color: #2E7D32; /* Ciemniejszy zielony dla tekstu */
+    color: #2E7D32;
     margin: 0 0 5px 0;
     font-size: 1.2rem;
 }
 
 .completion-message p {
-    color: #388E3C; /* Średni zielony dla tekstu */
+    color: #388E3C;
     margin: 0;
     font-size: 1rem;
 }
 
-/* Responsywność dla nowego designu */
-@media (max-width: 576px) {
-    .breathe h2 {
-        font-size: 2.5rem; /* Mniejszy nagłówek */
+/* Dodatkowe dostosowania responsywności */
+@media (max-width: 400px) {
+    .breathe-controls {
+        gap: var(--spacing-sm, 1rem); /* Mniejszy odstęp dla przycisków */
     }
-
-    .breathing-circle-container {
-        width: 200px; /* Mniejszy okrąg na małych ekranach */
-        height: 200px;
-    }
-
-    .breathing-circle::before {
-        left: 12px; right: 12px; top: 12px; bottom: 12px; /* Dostosuj grubość pierścienia */
-    }
-
-    .breathing-instruction {
-        font-size: 1.3rem; /* Mniejsza instrukcja centralna */
-    }
-
      /* Opcjonalnie: Ukryj zewnętrzne etykiety faz na bardzo małych ekranach */
     .breathing-text {
-         /* display: none; */
-        font-size: 0.7rem;
-        padding: 3px 6px;
-    }
-    .phase-inhale { top: -10px; }
-    .phase-hold-1 { right: -15px; }
-    .phase-exhale { bottom: -10px; }
-    .phase-hold-2 { left: -15px; }
-
-
-    .breathe-controls {
-        flex-direction: column; /* Przyciski jeden pod drugim */
-        align-items: center; /* Wyśrodkowanie przycisków */
-        gap: var(--spacing-sm); /* Mniejszy odstęp */
-    }
-
-    .breathe-button {
-        width: 80%; /* Przyciski zajmują większość szerokości */
-        max-width: 250px; /* Ale nie za szeroko */
-    }
-
-    .breathe-tips {
-        padding: 0; /* Usunięcie paddingu bocznego */
+        display: none;
     }
 }
 
