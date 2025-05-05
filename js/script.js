@@ -414,6 +414,8 @@ function initCardHoverEffects() {
 // Moduł: Box Breathing - NOWA IMPLEMENTACJA v2 (requestAnimationFrame)
 // ==============================================
 function initBoxBreathing() {
+    console.log('Inicjalizacja Box Breathing v2.1...'); // Log startowy
+
     // --- Konfiguracja ---
     const PHASES = [
         { name: 'inhale', text: 'Wdech', duration: 4000, selector: '.phase-inhale' },
@@ -421,25 +423,41 @@ function initBoxBreathing() {
         { name: 'exhale', text: 'Wydech', duration: 4000, selector: '.phase-exhale' },
         { name: 'hold2', text: 'Zatrzymaj', duration: 4000, selector: '.phase-hold-2' }
     ];
-    const TOTAL_CYCLES = 5; // Liczba pełnych cykli
+    const TOTAL_CYCLES = 5;
     const TOTAL_CYCLE_DURATION = PHASES.reduce((sum, phase) => sum + phase.duration, 0);
 
     // --- Elementy DOM ---
     const startBtn = document.getElementById('start-breathing');
     const stopBtn = document.getElementById('stop-breathing');
-    const breathingBox = document.querySelector('.breathing-box');
+    const breathingCircle = document.querySelector('.breathing-circle');
+    // Pobierz wszystkie etykiety faz
     const breathingTexts = PHASES.map(phase => document.querySelector(phase.selector));
-    const progressBar = document.querySelector('.breathing-progress');
-    const instructionTextElement = document.querySelector('.breathing-instruction');
-    const breatheExerciseContainer = document.querySelector('.breathe-exercise');
+    const instructionTextElement = document.querySelector('.breathing-circle .breathing-instruction');
+    const breatheExerciseContainer = document.querySelector('.breathe-exercise'); // Potrzebny do dodania komunikatu
 
-    // Sprawdzenie, czy wszystkie elementy istnieją
-    if (!startBtn || !stopBtn || !breathingBox || breathingTexts.some(el => !el) || !progressBar || !instructionTextElement || !breatheExerciseContainer) {
-        console.error('Box Breathing: Brakuje niezbędnych elementów DOM.');
-        // Opcjonalnie ukryj całą sekcję lub pokaż komunikat o błędzie
-        if(breatheExerciseContainer) breatheExerciseContainer.style.display = 'none';
-        return;
+    // --- Sprawdzenie istnienia elementów ---
+    let elementsMissing = false;
+    if (!startBtn) { console.error('Box Breathing Error: Nie znaleziono przycisku #start-breathing'); elementsMissing = true; }
+    if (!stopBtn) { console.error('Box Breathing Error: Nie znaleziono przycisku #stop-breathing'); elementsMissing = true; }
+    if (!breathingCircle) { console.error('Box Breathing Error: Nie znaleziono elementu .breathing-circle'); elementsMissing = true; }
+    if (!instructionTextElement) { console.error('Box Breathing Error: Nie znaleziono elementu .breathing-instruction wewnątrz .breathing-circle'); elementsMissing = true; }
+    if (!breatheExerciseContainer) { console.error('Box Breathing Error: Nie znaleziono kontenera .breathe-exercise'); elementsMissing = true; }
+    // Sprawdź, czy wszystkie teksty faz istnieją (jeśli są używane)
+    breathingTexts.forEach((el, index) => {
+        if (!el) {
+            console.warn(`Box Breathing Warning: Nie znaleziono etykiety fazy: ${PHASES[index].selector}`);
+            // Można kontynuować bez etykiet, ale warto o tym wiedzieć
+        }
+    });
+
+    if (elementsMissing) {
+        console.error('Box Breathing: Inicjalizacja przerwana z powodu braku elementów DOM.');
+        // Opcjonalnie: ukryj całą sekcję, jeśli brakuje kluczowych elementów
+        const breatheSection = document.getElementById('breathe');
+        if(breatheSection) breatheSection.style.display = 'none';
+        return; // Przerwij inicjalizację
     }
+    console.log('Box Breathing: Wszystkie wymagane elementy DOM znalezione.');
 
     // --- Zmienne stanu ---
     let isBreathing = false;
@@ -447,21 +465,21 @@ function initBoxBreathing() {
     let cycleStartTime = 0;
     let animationFrameId = null;
     let completedCycles = 0;
-    let naturalStop = false; // Czy zatrzymano po ukończeniu cykli
+    let naturalStop = false;
 
     // --- Główna pętla animacji ---
     function animationLoop(timestamp) {
         if (!isBreathing) return;
 
-        // Inicjalizacja czasu startowego przy pierwszym wywołaniu
         if (cycleStartTime === 0) {
-            cycleStartTime = timestamp;
+             cycleStartTime = timestamp; // Ustaw czas startu przy pierwszej klatce
+             console.log(`Animation started at: ${timestamp}`);
         }
 
         const elapsedTotalTime = timestamp - cycleStartTime;
         const elapsedCycleTime = elapsedTotalTime % TOTAL_CYCLE_DURATION;
 
-        // Określenie aktualnej fazy na podstawie czasu
+        // Określenie aktualnej fazy
         let phaseElapsedTime = 0;
         let calculatedPhaseIndex = 0;
         for (let i = 0; i < PHASES.length; i++) {
@@ -472,29 +490,33 @@ function initBoxBreathing() {
             phaseElapsedTime += PHASES[i].duration;
         }
 
-        // Aktualizacja UI, jeśli faza się zmieniła
+        // Aktualizacja UI tylko jeśli faza się zmieniła
         if (calculatedPhaseIndex !== currentPhaseIndex) {
+            console.log(`Changing phase from ${currentPhaseIndex} to ${calculatedPhaseIndex} at ${elapsedTotalTime}ms`);
             currentPhaseIndex = calculatedPhaseIndex;
             updateActivePhase(currentPhaseIndex);
+            updateInstructionText(currentPhaseIndex); // Aktualizuj też główny tekst
 
             // Sprawdzenie ukończenia cyklu
-            if (currentPhaseIndex === 0 && elapsedTotalTime > 100) { // Unikamy zliczenia na samym początku
-                completedCycles = Math.floor(elapsedTotalTime / TOTAL_CYCLE_DURATION);
-                console.log(`Ukończono cykl: ${completedCycles}`);
-                if (completedCycles >= TOTAL_CYCLES) {
-                    naturalStop = true; // Zaznacz naturalne zakończenie
-                    stopBreathing();
-                    return; // Zakończ pętlę
+            if (currentPhaseIndex === 0 && elapsedTotalTime > 100) {
+                let justCompletedCycles = Math.floor(elapsedTotalTime / TOTAL_CYCLE_DURATION);
+                 // Zliczaj tylko raz na cykl
+                if (justCompletedCycles > completedCycles) {
+                    completedCycles = justCompletedCycles;
+                    console.log(`Ukończono cykl: ${completedCycles}`);
+                    if (completedCycles >= TOTAL_CYCLES) {
+                        console.log('Osiągnięto maksymalną liczbę cykli.');
+                        naturalStop = true;
+                        stopBreathing(); // Zakończ ćwiczenie
+                        return; // Wyjdź z pętli
+                    }
                 }
             }
         }
 
-        // Aktualizacja paska postępu (0 do 1)
+        // Aktualizacja okręgu postępu w każdej klatce
         const progress = elapsedCycleTime / TOTAL_CYCLE_DURATION;
-        updateProgressBar(progress);
-
-        // Aktualizacja tekstu instrukcji
-        updateInstructionText(currentPhaseIndex);
+        updateProgressCircle(progress);
 
         // Kontynuuj pętlę
         animationFrameId = requestAnimationFrame(animationLoop);
@@ -503,125 +525,147 @@ function initBoxBreathing() {
     // --- Funkcje pomocnicze ---
     function updateActivePhase(activeIndex) {
         breathingTexts.forEach((text, index) => {
-            if (index === activeIndex) {
-                text.classList.add('active');
-            } else {
-                text.classList.remove('active');
+            if (text) { // Sprawdź, czy element istnieje
+                 if (index === activeIndex) {
+                    text.classList.add('active');
+                 } else {
+                    text.classList.remove('active');
+                 }
             }
         });
-
-        // Opcjonalnie: Dodaj klasę do głównego boxa dla stylizacji fazy
-        breathingBox.className = 'breathing-box'; // Reset klas faz
-        breathingBox.classList.add(`phase-${PHASES[activeIndex].name}`);
+        // Dodaj klasę do okręgu dla ewentualnej stylizacji
+        breathingCircle.className = 'breathing-circle'; // Reset
+        breathingCircle.classList.add(`phase-${PHASES[activeIndex].name}`);
     }
 
-    function updateProgressBar(progress) {
-         // Ogranicz progress do zakresu 0-1
-        const limitedProgress = Math.min(1, Math.max(0, progress));
-        progressBar.style.transform = `scaleX(${limitedProgress})`;
+    function updateProgressCircle(progress) {
+        // Używamy Math.min/max dla pewności, że wartość jest w zakresie 0-1
+        const angle = Math.min(1, Math.max(0, progress)) * 360;
+        // Ustawienie zmiennej CSS --progress-angle
+        breathingCircle.style.setProperty('--progress-angle', `${angle}deg`);
     }
 
     function updateInstructionText(phaseIndex) {
         const phase = PHASES[phaseIndex];
-        instructionTextElement.textContent = `${phase.text} (${phase.duration / 1000}s)`;
+        // Wyświetl nazwę fazy w centralnym miejscu
+        instructionTextElement.textContent = `${phase.text}`;
     }
 
     function resetUI() {
-        breathingTexts.forEach(text => text.classList.remove('active'));
-        updateProgressBar(0);
-        instructionTextElement.textContent = 'Naciśnij przycisk poniżej, aby rozpocząć';
-        breathingBox.className = 'breathing-box'; // Reset klas faz
+        console.log('Resetting UI...');
+        breathingTexts.forEach(text => { if(text) text.classList.remove('active'); });
+        updateProgressCircle(0); // Resetuj okrąg postępu
+        instructionTextElement.textContent = 'Rozpocznij'; // Tekst początkowy
+        breathingCircle.className = 'breathing-circle'; // Reset klas okręgu
+
         // Usuń ewentualny komunikat o ukończeniu
         const existingCompletion = breatheExerciseContainer.querySelector('.completion-message');
         if (existingCompletion) {
+            console.log('Removing existing completion message.');
             existingCompletion.remove();
         }
     }
 
     function showCompletionMessage() {
-        // Usuń stary komunikat, jeśli istnieje
+        console.log('Showing completion message.');
+         // Upewnij się, że kontener nadal istnieje
+        if (!breatheExerciseContainer) {
+             console.error("Cannot show completion message: container not found.");
+             return;
+        }
+        // Usuń stary komunikat, jeśli jakimś cudem pozostał
          const existingCompletion = breatheExerciseContainer.querySelector('.completion-message');
-        if (existingCompletion) existingCompletion.remove();
+         if (existingCompletion) existingCompletion.remove();
 
         // Utwórz nowy komunikat
         const completionMessage = document.createElement('div');
-        completionMessage.className = 'completion-message'; // Użyj istniejących stylów CSS
+        completionMessage.className = 'completion-message';
         completionMessage.innerHTML = `
-            <div class="success-icon">✓</div>
+            <div class="success-icon" aria-hidden="true">✓</div>
             <h3>Świetnie!</h3>
-            <p>Ukończyłeś ${completedCycles} cykli oddechowych.</p>
-        `;
+            <p>Ukończyłeś ${completedCycles} ${completedCycles === 1 ? 'cykl' : (completedCycles > 1 && completedCycles < 5 ? 'cykle' : 'cykli')} oddechowych.</p>
+        `; // Prosta obsługa liczby mnogiej
 
         breatheExerciseContainer.appendChild(completionMessage);
-        // Pokaż z animacją (jeśli .show ma zdefiniowane przejście w CSS)
-        setTimeout(() => completionMessage.classList.add('show'), 10);
+        // Pokaż z animacją
+        requestAnimationFrame(() => { // Użyj rAF dla pewności, że element jest w DOM
+             completionMessage.classList.add('show');
+        });
 
-         // Usuń wiadomość po 5 sekundach (opcjonalnie)
+        // Usuń wiadomość po 5 sekundach
         setTimeout(() => {
-            completionMessage.classList.remove('show');
-            setTimeout(() => {
-                if (completionMessage.parentNode) {
-                    completionMessage.remove();
-                }
-            }, 500); // Czas na animację zniknięcia
+             if (completionMessage.parentNode) {
+                 completionMessage.classList.remove('show');
+                 // Poczekaj na zakończenie animacji zanikania przed usunięciem
+                 completionMessage.addEventListener('transitionend', () => {
+                      if (completionMessage.parentNode) completionMessage.remove();
+                 }, { once: true });
+             }
         }, 5000);
     }
 
     // --- Funkcje Start/Stop ---
     function startBreathing() {
-        if (isBreathing) return; // Już działa
+        console.log('startBreathing called.');
+        if (isBreathing) return;
         isBreathing = true;
         naturalStop = false;
-        currentPhaseIndex = 0;
-        cycleStartTime = 0; // Zresetuj czas startowy
+        currentPhaseIndex = -1; // Ustaw na -1, aby wymusić aktualizację przy pierwszej klatce
+        cycleStartTime = 0;
         completedCycles = 0;
 
-        resetUI(); // Przygotuj UI
-        updateActivePhase(0); // Ustaw pierwszą fazę jako aktywną
+        resetUI(); // Przygotuj UI przed startem
+        // updateActivePhase(0); // Nie ustawiaj aktywnej fazy tutaj, pętla to zrobi
 
         startBtn.disabled = true;
         stopBtn.disabled = false;
-        startBtn.classList.add('clicked'); // Efekt kliknięcia
+        startBtn.classList.add('clicked');
         setTimeout(() => startBtn.classList.remove('clicked'), 300);
 
         // Rozpocznij pętlę animacji
+        console.log('Requesting animation frame...');
         animationFrameId = requestAnimationFrame(animationLoop);
-        console.log('Rozpoczęto ćwiczenie oddechowe.');
     }
 
     function stopBreathing() {
-        if (!isBreathing) return; // Już zatrzymane
+        console.log('stopBreathing called.');
+        if (!isBreathing) return;
         isBreathing = false;
         cancelAnimationFrame(animationFrameId); // Zatrzymaj pętlę
+        animationFrameId = null; // Wyczyść ID
 
         startBtn.disabled = false;
         stopBtn.disabled = true;
-        stopBtn.classList.add('clicked'); // Efekt kliknięcia
-        setTimeout(() => stopBtn.classList.remove('clicked'), 300);
+        // Dodaj efekt kliknięcia tylko jeśli przycisk jest faktycznie klikany
+        // (Tutaj jest to wywoływane programowo, więc pomijamy efekt)
+        // stopBtn.classList.add('clicked');
+        // setTimeout(() => stopBtn.classList.remove('clicked'), 300);
 
-        // Pokaż komunikat tylko jeśli zakończono naturalnie
         if (naturalStop) {
              showCompletionMessage();
-             naturalStop = false; // Reset flagi
-        } else {
-            // Zresetuj UI natychmiast, jeśli zatrzymano ręcznie
-            resetUI();
+             naturalStop = false;
         }
-
-
-        console.log('Zatrzymano ćwiczenie oddechowe.');
+        // Zawsze resetuj UI po zatrzymaniu (nawet naturalnym, bo komunikat jest osobno)
+        // ale z opóźnieniem, żeby komunikat był widoczny
+        if (!naturalStop) {
+             resetUI();
+        } else {
+             // Przy naturalnym stopie, resetujemy z opóźnieniem, żeby użytkownik zdążył zobaczyć ostatni stan
+             setTimeout(resetUI, 500); // Krótkie opóźnienie
+        }
     }
 
     // --- Inicjalizacja ---
+    // Dodaj event listenery do przycisków
     startBtn.addEventListener('click', startBreathing);
     stopBtn.addEventListener('click', stopBreathing);
 
-    // Ustaw stan początkowy przycisków
+    // Ustaw stan początkowy interfejsu
     startBtn.disabled = false;
     stopBtn.disabled = true;
-    resetUI(); // Ustaw początkowy stan UI
+    resetUI();
 
-    console.log('Box Breathing v2 zainicjowane.');
+    console.log('Box Breathing v2.1 zainicjowane pomyślnie.');
 }
 
 // ==============================================
