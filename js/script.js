@@ -629,7 +629,10 @@ function initBoxBreathing() {
     const progressBar = document.querySelector('.breathe-progress-bar');
     const boxSides = document.querySelectorAll('.box-side');
     
-    if (!startBtn || !stopBtn || !breathingBall || !boxTimer || !progressBar) return;
+    if (!startBtn || !stopBtn || !breathingBall || !boxTimer || !progressBar) {
+        console.error('Brakuje elementów potrzebnych do Box Breathing');
+        return;
+    }
     
     let breathingInterval;
     let currentPhase = 'idle';
@@ -666,7 +669,6 @@ function initBoxBreathing() {
         }
     }
     
-    // Funkcja do generowania dźwięku dla danej fazy
     function playPhaseSound(phase) {
         if (!audioEnabled || !audioContext) return;
         
@@ -689,48 +691,51 @@ function initBoxBreathing() {
                 break;
         }
         
-        // Typ fali - bardziej miękkie brzmienie
         oscillator.type = 'sine';
         
-        // Dodanie filtra dla bardziej przyjemnego dźwięku
         const filter = audioContext.createBiquadFilter();
         filter.type = 'lowpass';
         filter.frequency.value = 800;
         filter.Q.value = 1;
         
-        // Ustawienie głośności i wyciszania
-        gainNode.gain.value = 0.2;  // Niska głośność
+        gainNode.gain.value = 0.2;
         gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + 0.5);
         
-        // Podłączenie elementów
         oscillator.connect(filter);
         filter.connect(gainNode);
         gainNode.connect(audioContext.destination);
         
-        // Odtwarzanie dźwięku przez krótki czas
         oscillator.start();
         setTimeout(() => {
             oscillator.stop();
         }, 500);
     }
     
+    // Resetuj pozycję kulki do startowej przed rozpoczęciem
+    function resetBallPosition() {
+        breathingBall.style.animation = 'none';
+        breathingBall.offsetHeight; // Wymuś reflow
+        breathingBall.style.top = '-8px';
+        breathingBall.style.left = '50%';
+        breathingBall.style.transform = 'translateX(-50%)';
+        breathingBall.style.animation = '';
+    }
+    
     startBtn.addEventListener('click', function() {
-        // Inicjalizacja audio przy pierwszym kliknięciu
         if (!audioContext && !audioEnabled) {
             initAudio();
         }
         
+        resetBallPosition();
         startBreathing();
         startBtn.disabled = true;
         stopBtn.disabled = false;
         
-        // Dodaj animację pulsu do przycisku
         this.classList.add('clicked');
         setTimeout(() => {
             this.classList.remove('clicked');
         }, 300);
         
-        // Ogłoszenie dla czytników ekranu
         if (window.announceToScreenReader) {
             window.announceToScreenReader('Ćwiczenie oddechowe rozpoczęte');
         }
@@ -741,13 +746,11 @@ function initBoxBreathing() {
         startBtn.disabled = false;
         stopBtn.disabled = true;
         
-        // Dodaj animację pulsu do przycisku
         this.classList.add('clicked');
         setTimeout(() => {
             this.classList.remove('clicked');
         }, 300);
         
-        // Ogłoszenie dla czytników ekranu
         if (window.announceToScreenReader) {
             window.announceToScreenReader('Ćwiczenie oddechowe zatrzymane');
         }
@@ -757,7 +760,12 @@ function initBoxBreathing() {
         // Resetowanie stanu
         elapsedTime = 0;
         cyclesCompleted = 0;
+        
+        // Usuń wszystkie klasy przed rozpoczęciem
         breathingBall.classList.remove('inhale', 'hold-top', 'exhale', 'hold-bottom');
+        
+        // Usuń pozostałe style animacji
+        breathingBall.style.animation = '';
         
         // Czyszczenie aktywnych stron
         boxSides.forEach(side => side.classList.remove('active'));
@@ -841,11 +849,14 @@ function initBoxBreathing() {
         secondsLeft = phases[phase].duration;
         boxTimer.textContent = secondsLeft;
         
-        // Aktualizacja klas CSS dla animacji
+        // Aktualizacja klas CSS dla animacji - WAŻNE: Pełne usunięcie i ponowne dodanie klas
         breathingBall.classList.remove('inhale', 'hold-top', 'exhale', 'hold-bottom');
+        breathingBall.style.animation = 'none';
+        breathingBall.offsetHeight; // Wymuś reflow DOM
         
-        // Opóźnienie, aby zapewnić prawidłowe przejście animacji
+        // Dodanie właściwej klasy z małym opóźnieniem dla pewności
         setTimeout(() => {
+            breathingBall.style.animation = '';
             breathingBall.classList.add(phases[phase].class);
         }, 50);
         
@@ -864,12 +875,13 @@ function initBoxBreathing() {
     
     function stopBreathing() {
         clearInterval(breathingInterval);
+        
+        // Zatrzymanie wszystkich animacji
         breathingBall.classList.remove('inhale', 'hold-top', 'exhale', 'hold-bottom');
+        breathingBall.style.animation = 'none';
         
         // Resetowanie pozycji kulki do pozycji początkowej
-        breathingBall.style.top = '-8px';
-        breathingBall.style.left = '50%';
-        breathingBall.style.transform = 'translateX(-50%)';
+        resetBallPosition();
         
         boxTimer.textContent = '4';
         progressBar.style.width = '0';
