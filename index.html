@@ -234,199 +234,41 @@
     </section>
     
     <!-- Sekcja Box Breathing -->
-<section id="breathe" class="breathe section">
-    <div class="container">
-        <h2>Oddychaj rytmem 4-4-4-4</h2>
-        <p class="breathe-intro">
-            Wypróbuj ćwiczenie Box Breathing - technikę stosowaną przez komandosów i profesjonalistów w sytuacjach stresowych.
-        </p>
-        
-        <div class="breathe-exercise">
-            <div class="box-container">
-                <div class="breathing-square">
-                    <div class="box-side top-side"><span>Zatrzymaj</span></div>
-                    <div class="box-side right-side"><span>Wydech</span></div>
-                    <div class="box-side bottom-side"><span>Zatrzymaj</span></div>
-                    <div class="box-side left-side"><span>Wdech</span></div>
-                    <div class="breathing-ball"></div>
-                </div>
-                <div class="box-timer">4</div>
-            </div>
-            
-            <div class="breathe-controls">
-                <button id="start-breathing" class="breathe-button">Rozpocznij</button>
-                <button id="stop-breathing" class="breathe-button breathe-button-stop" disabled>Zatrzymaj</button>
-            </div>
-            
-            <div class="breathe-progress">
-                <div class="breathe-progress-bar"></div>
-            </div>
-        </div>
-        
-        <p class="breathe-quote">
-            "Oddech to most łączący życie z świadomością, który jednoczy twoje ciało z twoimi myślami." <br>— Thich Nhat Hanh
-        </p>
-    </div>
-</section>
-    
-    <!-- Sekcja Quiz/Test "Jak szybko żyjesz?" -->
-    <section id="quiz" class="quiz section">
+    <section id="breathe" class="breathe section">
         <div class="container">
-            <h2 data-aos="fade-up" data-aos-duration="1500" data-aos-once="true">Sprawdź swoje tempo życia</h2>
-            <p class="quiz-intro" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="200">
-                Odpowiedz na 5 prostych pytań, aby dowiedzieć się, czy żyjesz zbyt szybko.
+            <h2>Oddychaj rytmem 4-4-4-4</h2>
+            <p class="breathe-intro">
+                Wypróbuj ćwiczenie Box Breathing - technikę stosowaną przez komandosów i profesjonalistów w sytuacjach stresowych.
             </p>
             
-            <div class="quiz-container" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="400">
-                <div id="quiz-questions">
-                    <!-- Pytanie 1 -->
-                    <div class="quiz-question active" data-question="1">
-                        <h3>1. Jak często sprawdzasz powiadomienia na swoim telefonie?</h3>
-                        <div class="quiz-options">
-                            <label class="quiz-option">
-                                <input type="radio" name="q1" value="1">
-                                <span class="radio-custom"></span>
-                                <span>Kilka razy w tygodniu</span>
-                            </label>
-                            <label class="quiz-option">
-                                <input type="radio" name="q1" value="2">
-                                <span class="radio-custom"></span>
-                                <span>Raz dziennie</span>
-                            </label>
-                            <label class="quiz-option">
-                                <input type="radio" name="q1" value="3">
-                                <span class="radio-custom"></span>
-                                <span>Kilka razy dziennie</span>
-                            </label>
-                            <label class="quiz-option">
-                                <input type="radio" name="q1" value="4">
-                                <span class="radio-custom"></span>
-                                <span>Co godzinę lub częściej</span>
-                            </label>
-                        </div>
+            <div class="breathe-exercise">
+                <div class="box-container">
+                    <div class="breathing-square">
+                        <div class="box-side top-side"><span>Zatrzymaj</span></div>
+                        <div class="box-side right-side"><span>Wydech</span></div>
+                        <div class="box-side bottom-side"><span>Zatrzymaj</span></div>
+                        <div class="box-side left-side"><span>Wdech</span></div>
+                        <div class="breathing-ball"></div>
                     </div>
-                    
-                    <!-- Pytanie 2 (pojawi się po odpowiedzi na pytanie 1) -->
-                    <div class="quiz-question" data-question="2">
-                        <h3>2. Czy potrafisz zjeść posiłek bez odwracania uwagi (telefon, TV, praca)?</h3>
-                        <div class="quiz-options">
-                            <label class="quiz-option">
-                                <input type="radio" name="q2" value="1">
-                                <span class="radio-custom"></span>
-                                <span>Zawsze jem świadomie, skupiając się tylko na posiłku</span>
-                            </label>
-                            <label class="quiz-option">
-                                <input type="radio" name="q2" value="2">
-                                <span class="radio-custom"></span>
-                                <span>Większość posiłków jem bez rozpraszaczy</span>
-                            </label>
-                            <label class="quiz-option">
-                                <input type="radio" name="q2" value="3">
-                                <span class="radio-custom"></span>
-                                <span>Rzadko jem bez dodatkowych zajęć</span>
-                            </label>
-                            <label class="quiz-option">
-                                <input type="radio" name="q2" value="4">
-                                <span class="radio-custom"></span>
-                                <span>Prawie zawsze jem przy pracy/telefonie/TV</span>
-                            </label>
-                        </div>
-                    </div>
-                    
-                    <!-- Dodatkowe pytania 3-5 są w podobnym formacie -->
-                    <div class="quiz-question" data-question="3">
-                        <h3>3. Jak często czujesz, że nie masz na nic czasu?</h3>
-                        <div class="quiz-options">
-                            <label class="quiz-option">
-                                <input type="radio" name="q3" value="1">
-                                <span class="radio-custom"></span>
-                                <span>Rzadko lub nigdy</span>
-                            </label>
-                            <label class="quiz-option">
-                                <input type="radio" name="q3" value="2">
-                                <span class="radio-custom"></span>
-                                <span>Czasami</span>
-                            </label>
-                            <label class="quiz-option">
-                                <input type="radio" name="q3" value="3">
-                                <span class="radio-custom"></span>
-                                <span>Często</span>
-                            </label>
-                            <label class="quiz-option">
-                                <input type="radio" name="q3" value="4">
-                                <span class="radio-custom"></span>
-                                <span>Prawie codziennie</span>
-                            </label>
-                        </div>
-                    </div>
-                    
-                    <div class="quiz-question" data-question="4">
-                        <h3>4. Ile czasu dziennie spędzasz w ciszy, bez bodźców zewnętrznych?</h3>
-                        <div class="quiz-options">
-                            <label class="quiz-option">
-                                <input type="radio" name="q4" value="1">
-                                <span class="radio-custom"></span>
-                                <span>Ponad 30 minut</span>
-                            </label>
-                            <label class="quiz-option">
-                                <input type="radio" name="q4" value="2">
-                                <span class="radio-custom"></span>
-                                <span>15-30 minut</span>
-                            </label>
-                            <label class="quiz-option">
-                                <input type="radio" name="q4" value="3">
-                                <span class="radio-custom"></span>
-                                <span>5-15 minut</span>
-                            </label>
-                            <label class="quiz-option">
-                                <input type="radio" name="q4" value="4">
-                                <span class="radio-custom"></span>
-                                <span>Mniej niż 5 minut lub wcale</span>
-                            </label>
-                        </div>
-                    </div>
-                    
-                    <div class="quiz-question" data-question="5">
-                        <h3>5. Jak często wykonujesz kilka zadań jednocześnie?</h3>
-                        <div class="quiz-options">
-                            <label class="quiz-option">
-                                <input type="radio" name="q5" value="1">
-                                <span class="radio-custom"></span>
-                                <span>Rzadko, wolę skupić się na jednym zadaniu</span>
-                            </label>
-                            <label class="quiz-option">
-                                <input type="radio" name="q5" value="2">
-                                <span class="radio-custom"></span>
-                                <span>Czasami, gdy jest to konieczne</span>
-                            </label>
-                            <label class="quiz-option">
-                                <input type="radio" name="q5" value="3">
-                                <span class="radio-custom"></span>
-                                <span>Często, to mój typowy sposób pracy</span>
-                            </label>
-                            <label class="quiz-option">
-                                <input type="radio" name="q5" value="4">
-                                <span class="radio-custom"></span>
-                                <span>Prawie zawsze, inaczej nie zdążyłbym/nie zdążyłabym ze wszystkim</span>
-                            </label>
-                        </div>
-                    </div>
+                    <div class="box-timer">4</div>
                 </div>
                 
-                <div class="quiz-navigation">
-                    <button id="prev-question" class="quiz-nav-button" disabled>Poprzednie</button>
-                    <button id="next-question" class="quiz-nav-button">Następne</button>
-                    <button id="submit-quiz" class="quiz-nav-button submit-button" style="display: none;">Sprawdź wynik</button>
+                <div class="breathe-controls">
+                    <button id="start-breathing" class="breathe-button">Rozpocznij</button>
+                    <button id="stop-breathing" class="breathe-button breathe-button-stop" disabled>Zatrzymaj</button>
                 </div>
                 
-                <div id="quiz-result" class="quiz-result" style="display: none;">
-                    <h3>Twój wynik: <span id="result-score"></span>/20</h3>
-                    <div id="result-description"></div>
-                    <button id="retake-quiz" class="quiz-button">Spróbuj ponownie</button>
+                <div class="breathe-progress">
+                    <div class="breathe-progress-bar"></div>
                 </div>
             </div>
+            
+            <p class="breathe-quote">
+                "Oddech to most łączący życie z świadomością, który jednoczy twoje ciało z twoimi myślami." <br>— Thich Nhat Hanh
+            </p>
         </div>
     </section>
+    
     
     <!-- Sekcja z ebookiem -->
     <section id="ebook" class="ebook section">
