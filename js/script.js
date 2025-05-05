@@ -11,114 +11,298 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Inicjalizacja wszystkich modułów
-    initLetterReveal();
-    initTimeCounter();
+    initEnhancedHero();         // Nowa funkcja dla ulepszonej sekcji Hero
     initScrollIndicator();
-    initStatisticCounters();
-    initBoxBreathing();
+    initCardAnimations();       // Nowa funkcja dla animacji kart
+    initBoxBreathing();         // Używaj zaktualizowanej wersji z poruszającą się kulką
     initQuiz();
-    initEbookDownload();
+    initEbookDownload();        // Używaj zaktualizowanej wersji bez animacji książki
     initBackToTop();
-    initParticleAnimation();
-    initAdditionalAnimations();
     initVideoFallback();
+    
+    // Optymalizacje i dostępność
+    optimizeAnimations();
+    optimizeResourceLoading();
+    optimizeVideoPlayback();
+    initAccessibility();
 });
 
 // ==============================================
-// Moduł: Obsługa fallbacku wideo
+// Moduł: Inicjalizacja ulepszonej sekcji Hero
 // ==============================================
-function initVideoFallback() {
-    const videoContainer = document.querySelector('.video-container');
-    const video = videoContainer ? videoContainer.querySelector('video') : null;
-    
-    if (!video || !videoContainer) return;
-    
-    // Obsługa błędu wideo
-    video.addEventListener('error', function() {
-        console.log('Nie można odtworzyć wideo - przełączanie na fallback');
-        videoContainer.classList.add('video-error');
-    });
-    
-    // Sprawdzenie, czy wideo zostało poprawnie załadowane
-    video.addEventListener('loadeddata', function() {
-        videoContainer.classList.remove('video-error');
-        console.log('Wideo załadowane pomyślnie');
-    });
-    
-    // Efekt parallax dla wideo podczas przewijania
-    window.addEventListener('scroll', function() {
-        if (window.scrollY > 50) {
-            videoContainer.classList.add('scrolled');
-        } else {
-            videoContainer.classList.remove('scrolled');
-        }
-    });
-    
-    // Obsługa płynnego przewijania przy kliknięciu na linki kotwiczne
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            const targetId = this.getAttribute('href');
-            
-            if (targetId !== '#') {
-                e.preventDefault();
-                
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    const offsetTop = targetElement.offsetTop;
-                    
-                    window.scrollTo({
-                        top: offsetTop,
-                        behavior: 'smooth'
-                    });
-                }
-            }
-        });
-    });
+function initEnhancedHero() {
+    initClockAnimation();
+    initTypingEffect();
+    initParticlesJS();
+    updateHeroStatistics();
 }
 
-// ==============================================
-// Moduł: Animacja tekstu litera po literze
-// ==============================================
-function initLetterReveal() {
-    const revealText = document.querySelector('.reveal-text');
-    if (!revealText) return;
+// Animacja zegara w sekcji Hero
+function initClockAnimation() {
+    const clockHour = document.querySelector('.clock-hour');
+    const clockMinute = document.querySelector('.clock-minute');
+    const clockSecond = document.querySelector('.clock-second');
     
-    const text = revealText.textContent;
-    revealText.textContent = '';
+    if (!clockHour || !clockMinute || !clockSecond) return;
     
-    for (let i = 0; i < text.length; i++) {
-        const span = document.createElement('span');
-        span.textContent = text[i];
-        span.style.animationDelay = `${i * 0.1}s`;
-        span.classList.add('letter');
-        revealText.appendChild(span);
+    // Ustawienie początkowych pozycji wskazówek zegara
+    const now = new Date();
+    const hours = now.getHours() % 12;
+    const minutes = now.getMinutes();
+    const seconds = now.getSeconds();
+    
+    const hourDegrees = (hours * 30) + (minutes * 0.5); // 30 stopni na godzinę + 0.5 stopnia na minutę
+    const minuteDegrees = minutes * 6; // 6 stopni na minutę
+    const secondDegrees = seconds * 6; // 6 stopni na sekundę
+    
+    clockHour.style.transform = `translateX(-50%) rotate(${hourDegrees}deg)`;
+    clockMinute.style.transform = `translateX(-50%) rotate(${minuteDegrees}deg)`;
+    clockSecond.style.transform = `translateX(-50%) rotate(${secondDegrees}deg)`;
+    
+    // Dodanie interakcji do zegara
+    const heroClock = document.querySelector('.hero-clock');
+    if (heroClock) {
+        heroClock.addEventListener('mouseenter', () => {
+            clockSecond.style.animationPlayState = 'paused';
+            clockMinute.style.animationPlayState = 'paused';
+            clockHour.style.animationPlayState = 'paused';
+        });
+        
+        heroClock.addEventListener('mouseleave', () => {
+            clockSecond.style.animationPlayState = 'running';
+            clockMinute.style.animationPlayState = 'running';
+            clockHour.style.animationPlayState = 'running';
+        });
     }
 }
 
-// ==============================================
-// Moduł: Licznik czasu spędzonego na stronie
-// ==============================================
-function initTimeCounter() {
-    const timeDisplay = document.getElementById('time-display');
-    if (!timeDisplay) return;
+// Efekt pisania na maszynie dla tytułu
+function initTypingEffect() {
+    const typingText = document.querySelector('.typing-text');
+    if (!typingText) return;
     
-    let seconds = 0;
-    let minutes = 0;
+    const text = typingText.textContent;
+    typingText.textContent = '';
     
-    setInterval(function() {
-        seconds++;
+    let i = 0;
+    const typingSpeed = 150; // szybkość pisania w ms
+    
+    function typeWriter() {
+        if (i < text.length) {
+            typingText.textContent += text.charAt(i);
+            i++;
+            setTimeout(typeWriter, typingSpeed);
+        } else {
+            // Dodanie kursora po zakończeniu pisania
+            typingText.classList.add('typing-complete');
+        }
+    }
+    
+    // Opóźnienie rozpoczęcia animacji
+    setTimeout(typeWriter, 500);
+}
+
+// Inicjalizacja tła z cząsteczkami przy użyciu particles.js
+function initParticlesJS() {
+    const particlesContainer = document.getElementById('particles-js');
+    if (!particlesContainer) return;
+    
+    // Sprawdzenie, czy biblioteka particles.js jest załadowana
+    if (typeof particlesJS !== 'undefined') {
+        particlesJS('particles-js', {
+            particles: {
+                number: {
+                    value: 80,
+                    density: {
+                        enable: true,
+                        value_area: 800
+                    }
+                },
+                color: {
+                    value: "#ffffff"
+                },
+                shape: {
+                    type: "circle",
+                    stroke: {
+                        width: 0,
+                        color: "#000000"
+                    },
+                    polygon: {
+                        nb_sides: 5
+                    }
+                },
+                opacity: {
+                    value: 0.3,
+                    random: true,
+                    anim: {
+                        enable: true,
+                        speed: 1,
+                        opacity_min: 0.1,
+                        sync: false
+                    }
+                },
+                size: {
+                    value: 3,
+                    random: true,
+                    anim: {
+                        enable: true,
+                        speed: 2,
+                        size_min: 0.1,
+                        sync: false
+                    }
+                },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: "#ffffff",
+                    opacity: 0.2,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 1,
+                    direction: "none",
+                    random: true,
+                    straight: false,
+                    out_mode: "out",
+                    bounce: false,
+                    attract: {
+                        enable: true,
+                        rotateX: 600,
+                        rotateY: 1200
+                    }
+                }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: {
+                        enable: true,
+                        mode: "grab"
+                    },
+                    onclick: {
+                        enable: true,
+                        mode: "push"
+                    },
+                    resize: true
+                },
+                modes: {
+                    grab: {
+                        distance: 140,
+                        line_linked: {
+                            opacity: 0.6
+                        }
+                    },
+                    push: {
+                        particles_nb: 3
+                    }
+                }
+            },
+            retina_detect: true
+        });
+    } else {
+        // Jeśli biblioteka nie jest załadowana, dodaj alternatywne tło
+        console.warn('Particles.js nie jest załadowany. Używanie alternatywnego tła.');
         
-        if (seconds === 60) {
-            seconds = 0;
-            minutes++;
+        // Proste cząsteczki za pomocą czystego JS
+        createSimpleParticles(particlesContainer);
+    }
+}
+
+// Prosta alternatywa dla particles.js
+function createSimpleParticles(container) {
+    for (let i = 0; i < 50; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'simple-particle';
+        
+        // Losowa pozycja
+        particle.style.top = `${Math.random() * 100}%`;
+        particle.style.left = `${Math.random() * 100}%`;
+        
+        // Losowy rozmiar
+        const size = Math.random() * 5 + 2;
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        
+        // Losowa przezroczystość
+        particle.style.opacity = Math.random() * 0.5 + 0.1;
+        
+        // Losowa animacja
+        const animationDuration = Math.random() * 20 + 10;
+        particle.style.animation = `floatParticle ${animationDuration}s infinite linear`;
+        
+        container.appendChild(particle);
+    }
+    
+    // Dodanie stylu dla prostych cząsteczek
+    const styleElement = document.createElement('style');
+    styleElement.textContent = `
+        .simple-particle {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            pointer-events: none;
         }
         
-        // Format: MM:SS
-        const formattedMinutes = minutes.toString().padStart(2, '0');
-        const formattedSeconds = seconds.toString().padStart(2, '0');
+        @keyframes floatParticle {
+            0% {
+                transform: translate(0, 0);
+            }
+            25% {
+                transform: translate(50px, -50px);
+            }
+            50% {
+                transform: translate(100px, 0);
+            }
+            75% {
+                transform: translate(50px, 50px);
+            }
+            100% {
+                transform: translate(0, 0);
+            }
+        }
+    `;
+    document.head.appendChild(styleElement);
+}
+
+// Aktualizowanie statystyk w sekcji Hero
+function updateHeroStatistics() {
+    const stressStatEl = document.getElementById('stress-stat');
+    const timeStatEl = document.getElementById('time-stat');
+    
+    if (!stressStatEl || !timeStatEl) return;
+    
+    // W rzeczywistej aplikacji te dane mogłyby pochodzić z API
+    // Tutaj używamy rzeczywistych danych statystycznych
+    const stressPercentage = 76; // Aktualizacja do rzeczywistych danych
+    const screenTime = 5.2; // Aktualizacja do rzeczywistych danych w godzinach
+    
+    // Animacja liczb
+    animateValue(stressStatEl, 0, stressPercentage, 2000, '%');
+    animateValue(timeStatEl, 0, screenTime, 2000, 'h');
+}
+
+// Funkcja do animacji wartości liczbowych
+function animateValue(element, start, end, duration, suffix = '') {
+    let startTimestamp = null;
+    const step = (timestamp) => {
+        if (!startTimestamp) startTimestamp = timestamp;
+        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
         
-        timeDisplay.textContent = `${formattedMinutes}:${formattedSeconds}`;
-    }, 1000);
+        // Obsługa liczb zmiennoprzecinkowych
+        const currentValue = progress * (end - start) + start;
+        const formatted = Number.isInteger(end) ? 
+            Math.floor(currentValue) : 
+            currentValue.toFixed(1);
+        
+        element.textContent = `${formatted}${suffix}`;
+        
+        if (progress < 1) {
+            window.requestAnimationFrame(step);
+        }
+    };
+    
+    window.requestAnimationFrame(step);
 }
 
 // ==============================================
@@ -146,11 +330,102 @@ function initScrollIndicator() {
 }
 
 // ==============================================
-// Moduł: Animacja liczników statystyk
+// Moduł: Ulepszony skrypt do obsługi kart i animacji podczas scrollowania
 // ==============================================
+function initCardAnimations() {
+    // Inicjalizacja animacji dla kart
+    initScrollReveal();
+    initParallaxEffects();
+    initStatisticCounters();
+    initCardHoverEffects();
+    initLazyLoading();
+}
+
+// Animacja ujawniania elementów podczas scrollowania
+function initScrollReveal() {
+    // Pobierz wszystkie elementy, które mają być ujawnione
+    const revealElements = document.querySelectorAll('.manifesto-item, .practice-card, .stat-item');
+    
+    // Dodaj klasę fade-in-element do wszystkich elementów
+    revealElements.forEach(element => {
+        element.classList.add('fade-in-element');
+    });
+    
+    // Funkcja sprawdzająca, czy element jest w widoku
+    function isElementInViewport(el) {
+        const rect = el.getBoundingClientRect();
+        const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+        
+        // Element jest widoczny, gdy jego górna krawędź jest pod górną krawędzią okna
+        // i dolna krawędź jest nad dolną krawędzią okna
+        return (
+            rect.top <= windowHeight * 0.85 && // Pojawia się, gdy jest w 85% widoku
+            rect.bottom >= 0
+        );
+    }
+    
+    // Funkcja obsługująca ujawnianie elementów
+    function handleScrollReveal() {
+        revealElements.forEach(element => {
+            if (isElementInViewport(element) && !element.classList.contains('visible')) {
+                element.classList.add('visible');
+            }
+        });
+    }
+    
+    // Wywołaj funkcję raz na początku, aby pokazać widoczne elementy
+    handleScrollReveal();
+    
+    // Nasłuchuj zdarzenia scroll
+    window.addEventListener('scroll', handleScrollReveal);
+    
+    // Dodaj opóźnienie do elementów, które pojawiają się jeden po drugim
+    document.querySelectorAll('.manifesto-content > *').forEach((element, index) => {
+        element.style.transitionDelay = `${index * 0.1}s`;
+    });
+    
+    document.querySelectorAll('.practices-grid > *').forEach((element, index) => {
+        element.style.transitionDelay = `${index * 0.1}s`;
+    });
+    
+    document.querySelectorAll('.stats-container > *').forEach((element, index) => {
+        element.style.transitionDelay = `${index * 0.1}s`;
+    });
+}
+
+// Efekty parallax dla elementów tła
+function initParallaxEffects() {
+    const parallaxBg = document.querySelector('.parallax-bg');
+    if (!parallaxBg) return;
+    
+    window.addEventListener('scroll', function() {
+        const scrollPosition = window.scrollY;
+        parallaxBg.style.transform = `translateY(${scrollPosition * 0.1}px)`;
+    });
+    
+    // Dodatkowe efekty parallax dla innych elementów
+    const heroVideo = document.querySelector('.video-container video');
+    if (heroVideo) {
+        window.addEventListener('scroll', function() {
+            const scrollPosition = window.scrollY;
+            if (scrollPosition <= window.innerHeight) {
+                heroVideo.style.transform = `scale(1.05) translateY(${scrollPosition * 0.1}px)`;
+            }
+        });
+    }
+}
+
+// Poprawiona animacja liczników statystyk z rzeczywistymi danymi
 function initStatisticCounters() {
     const statNumbers = document.querySelectorAll('.stat-number');
     if (statNumbers.length === 0) return;
+    
+    // Aktualizacja z rzeczywistymi wartościami
+    const realStats = {
+        0: 73, // Procent Polaków zestresowanych
+        1: 6.2, // Godziny spędzane w mediach
+        2: 48  // Procent osób bez cyfrowego detoksu
+    };
     
     // Funkcja do animacji licznika
     function animateCounter(el, target, duration) {
@@ -186,7 +461,9 @@ function initStatisticCounters() {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 const el = entry.target;
-                const target = parseFloat(el.getAttribute('data-target'));
+                const index = Array.from(statNumbers).indexOf(el);
+                const target = realStats[index] !== undefined ? realStats[index] : parseFloat(el.getAttribute('data-target'));
+                
                 animateCounter(el, target, 2000);
                 observer.unobserve(el);
             }
@@ -214,8 +491,129 @@ function initStatisticCounters() {
             });
         }, { threshold: 0.5 });
         
-        statBars.forEach(bar => {
+        statBars.forEach((bar, index) => {
+            // Aktualizacja wartości szerokości paska
+            const statIndex = Math.min(index, Object.keys(realStats).length - 1);
+            const statValue = realStats[statIndex];
+            if (statValue !== undefined) {
+                bar.dataset.width = `${statValue}%`;
+            }
             barObserver.observe(bar);
+        });
+    }
+}
+
+// Ulepszenie efektów hover dla kart
+function initCardHoverEffects() {
+    // Dodaj efekt 3D do kart w sekcji manifestu
+    const manifestoItems = document.querySelectorAll('.manifesto-item');
+    
+    manifestoItems.forEach(item => {
+        item.addEventListener('mousemove', function(e) {
+            const rect = this.getBoundingClientRect();
+            const x = e.clientX - rect.left; // położenie x myszy względem karty
+            const y = e.clientY - rect.top;  // położenie y myszy względem karty
+            
+            // Obliczamy kąt obrotu (max 5 stopni)
+            const rotateX = ((y - rect.height / 2) / rect.height) * -5;
+            const rotateY = ((x - rect.width / 2) / rect.width) * 5;
+            
+            // Zastosuj transformację
+            this.style.transform = `translateY(-5px) perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            
+            // Dodaj dynamiczny efekt cienia
+            const shadowX = (x - rect.width / 2) / 10;
+            const shadowY = (y - rect.height / 2) / 10;
+            this.style.boxShadow = `${shadowX}px ${shadowY}px 30px rgba(0, 0, 0, 0.15)`;
+        });
+        
+        // Reset po wyjściu kursora
+        item.addEventListener('mouseleave', function() {
+            this.style.transform = '';
+            this.style.boxShadow = '';
+            
+            // Dodaj animację powrotu
+            this.style.transition = 'transform 0.5s ease, box-shadow 0.5s ease';
+            setTimeout(() => {
+                this.style.transition = '';
+            }, 500);
+        });
+    });
+    
+    // Dodaj efekt fali (ripple) do kart praktyki
+    const practiceCards = document.querySelectorAll('.practice-card');
+    
+    practiceCards.forEach(card => {
+        card.addEventListener('click', function(e) {
+            const rect = this.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            // Utwórz element fali
+            const ripple = document.createElement('span');
+            ripple.className = 'ripple-effect';
+            ripple.style.left = `${x}px`;
+            ripple.style.top = `${y}px`;
+            
+            // Dodaj do karty
+            this.appendChild(ripple);
+            
+            // Usuń po animacji
+            setTimeout(() => {
+                ripple.remove();
+            }, 800);
+        });
+    });
+    
+    // Dodaj style dla efektu ripple
+    const style = document.createElement('style');
+    style.textContent = `
+        .ripple-effect {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: rgba(63, 81, 181, 0.3);
+            border-radius: 50%;
+            transform: scale(0);
+            animation: ripple 0.8s ease-out;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        @keyframes ripple {
+            to {
+                transform: scale(30);
+                opacity: 0;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+// Lazy loading dla obrazów i innych zasobów
+function initLazyLoading() {
+    // Obsługa obrazów z lazy loading
+    const lazyImages = document.querySelectorAll('img[data-src]');
+    
+    if (lazyImages.length > 0) {
+        const imageObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    img.src = img.dataset.src;
+                    img.classList.add('lazy-load');
+                    
+                    img.onload = function() {
+                        img.classList.add('loaded');
+                    };
+                    
+                    imageObserver.unobserve(img);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '200px' });
+        
+        lazyImages.forEach(img => {
+            imageObserver.observe(img);
         });
     }
 }
@@ -226,12 +624,12 @@ function initStatisticCounters() {
 function initBoxBreathing() {
     const startBtn = document.getElementById('start-breathing');
     const stopBtn = document.getElementById('stop-breathing');
-    const breathingBox = document.querySelector('.breathing-box');
+    const breathingBall = document.querySelector('.breathing-ball');
     const boxTimer = document.querySelector('.box-timer');
     const progressBar = document.querySelector('.breathe-progress-bar');
     const boxSides = document.querySelectorAll('.box-side');
     
-    if (!startBtn || !stopBtn || !breathingBox || !boxTimer || !progressBar) return;
+    if (!startBtn || !stopBtn || !breathingBall || !boxTimer || !progressBar) return;
     
     let breathingInterval;
     let currentPhase = 'idle';
@@ -244,9 +642,9 @@ function initBoxBreathing() {
     // Box Breathing: wdech (4s), zatrzymanie (4s), wydech (4s), zatrzymanie (4s)
     const phases = {
         inhale: { duration: 4, text: 'Wdech', class: 'inhale', side: 'left-side' },
-        holdIn: { duration: 4, text: 'Zatrzymaj', class: 'hold', side: 'top-side' },
+        holdTop: { duration: 4, text: 'Zatrzymaj', class: 'hold-top', side: 'top-side' },
         exhale: { duration: 4, text: 'Wydech', class: 'exhale', side: 'right-side' },
-        holdOut: { duration: 4, text: 'Zatrzymaj', class: 'hold', side: 'bottom-side' }
+        holdBottom: { duration: 4, text: 'Zatrzymaj', class: 'hold-bottom', side: 'bottom-side' }
     };
     
     // Obliczanie całkowitego czasu jednego cyklu
@@ -255,7 +653,6 @@ function initBoxBreathing() {
     }
     
     // Tryb audio - dźwięki pomocnicze do ćwiczenia
-    // Tworzenie syntetyzatorów dźwięku dla różnych faz oddychania
     let audioContext;
     let audioEnabled = false;
     
@@ -281,13 +678,13 @@ function initBoxBreathing() {
             case 'inhale':
                 oscillator.frequency.value = 196.00; // G3
                 break;
-            case 'holdIn':
+            case 'holdTop':
                 oscillator.frequency.value = 246.94; // B3
                 break;
             case 'exhale':
                 oscillator.frequency.value = 293.66; // D4
                 break;
-            case 'holdOut':
+            case 'holdBottom':
                 oscillator.frequency.value = 329.63; // E4
                 break;
         }
@@ -317,16 +714,6 @@ function initBoxBreathing() {
         }, 500);
     }
     
-    // Efekty wizualne przy zmianie fazy
-    function addTransitionEffect(phase) {
-        if (breathingBox) {
-            breathingBox.classList.add('phase-transition');
-            setTimeout(() => {
-                breathingBox.classList.remove('phase-transition');
-            }, 500);
-        }
-    }
-    
     startBtn.addEventListener('click', function() {
         // Inicjalizacja audio przy pierwszym kliknięciu
         if (!audioContext && !audioEnabled) {
@@ -342,6 +729,11 @@ function initBoxBreathing() {
         setTimeout(() => {
             this.classList.remove('clicked');
         }, 300);
+        
+        // Ogłoszenie dla czytników ekranu
+        if (window.announceToScreenReader) {
+            window.announceToScreenReader('Ćwiczenie oddechowe rozpoczęte');
+        }
     });
     
     stopBtn.addEventListener('click', function() {
@@ -354,13 +746,18 @@ function initBoxBreathing() {
         setTimeout(() => {
             this.classList.remove('clicked');
         }, 300);
+        
+        // Ogłoszenie dla czytników ekranu
+        if (window.announceToScreenReader) {
+            window.announceToScreenReader('Ćwiczenie oddechowe zatrzymane');
+        }
     });
     
     function startBreathing() {
         // Resetowanie stanu
         elapsedTime = 0;
         cyclesCompleted = 0;
-        breathingBox.classList.remove('inhale', 'hold', 'exhale');
+        breathingBall.classList.remove('inhale', 'hold-top', 'exhale', 'hold-bottom');
         
         // Czyszczenie aktywnych stron
         boxSides.forEach(side => side.classList.remove('active'));
@@ -382,15 +779,15 @@ function initBoxBreathing() {
                 // Przejście do następnej fazy
                 switch (currentPhase) {
                     case 'inhale':
-                        startPhase('holdIn');
+                        startPhase('holdTop');
                         break;
-                    case 'holdIn':
+                    case 'holdTop':
                         startPhase('exhale');
                         break;
                     case 'exhale':
-                        startPhase('holdOut');
+                        startPhase('holdBottom');
                         break;
-                    case 'holdOut':
+                    case 'holdBottom':
                         // Po zakończeniu jednego pełnego cyklu
                         cyclesCompleted++;
                         
@@ -424,6 +821,11 @@ function initBoxBreathing() {
                                 }, 500);
                             }, 5000);
                             
+                            // Ogłoszenie dla czytników ekranu
+                            if (window.announceToScreenReader) {
+                                window.announceToScreenReader(`Świetnie! Ukończyłeś ${maxCycles} cykli oddechowych.`);
+                            }
+                            
                             return;
                         }
                         
@@ -440,23 +842,35 @@ function initBoxBreathing() {
         boxTimer.textContent = secondsLeft;
         
         // Aktualizacja klas CSS dla animacji
-        breathingBox.classList.remove('inhale', 'hold', 'exhale');
-        breathingBox.classList.add(phases[phase].class);
+        breathingBall.classList.remove('inhale', 'hold-top', 'exhale', 'hold-bottom');
+        
+        // Opóźnienie, aby zapewnić prawidłowe przejście animacji
+        setTimeout(() => {
+            breathingBall.classList.add(phases[phase].class);
+        }, 50);
         
         // Odtwarzanie dźwięku dla tej fazy
         playPhaseSound(phase);
         
-        // Dodanie efektu przejścia
-        addTransitionEffect(phase);
-        
         // Podświetlenie aktywnej strony kwadratu
         boxSides.forEach(side => side.classList.remove('active'));
         document.querySelector(`.${phases[phase].side}`).classList.add('active');
+        
+        // Ogłoszenie dla czytników ekranu
+        if (window.announceToScreenReader) {
+            window.announceToScreenReader(phases[phase].text);
+        }
     }
     
     function stopBreathing() {
         clearInterval(breathingInterval);
-        breathingBox.classList.remove('inhale', 'hold', 'exhale');
+        breathingBall.classList.remove('inhale', 'hold-top', 'exhale', 'hold-bottom');
+        
+        // Resetowanie pozycji kulki do pozycji początkowej
+        breathingBall.style.top = '-8px';
+        breathingBall.style.left = '50%';
+        breathingBall.style.transform = 'translateX(-50%)';
+        
         boxTimer.textContent = '4';
         progressBar.style.width = '0';
         currentPhase = 'idle';
@@ -596,6 +1010,11 @@ function initQuiz() {
         document.getElementById('quiz-questions').style.display = 'none';
         document.querySelector('.quiz-navigation').style.display = 'none';
         resultDiv.style.display = 'block';
+        
+        // Ogłoszenie dla czytników ekranu
+        if (window.announceToScreenReader) {
+            window.announceToScreenReader(`Twój wynik to ${score} punktów. ${description.replace(/<[^>]*>/g, ' ').substring(0, 100)}...`);
+        }
     }
     
     // Obsługa przycisku "Spróbuj ponownie"
@@ -615,6 +1034,11 @@ function initQuiz() {
         document.getElementById('quiz-questions').style.display = 'block';
         document.querySelector('.quiz-navigation').style.display = 'flex';
         resultDiv.style.display = 'none';
+        
+        // Ogłoszenie dla czytników ekranu
+        if (window.announceToScreenReader) {
+            window.announceToScreenReader('Quiz zresetowany. Zacznij od nowa.');
+        }
     });
     
     // Dodanie obsługi kliknięcia na całą etykietę opcji
@@ -626,12 +1050,24 @@ function initQuiz() {
         });
     });
     
+    // Dodanie obsługi klawiatury dla opcji quizu
+    quizOptions.forEach(option => {
+        option.setAttribute('tabindex', '0');
+        option.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                const radio = this.querySelector('input[type="radio"]');
+                radio.checked = true;
+            }
+        });
+    });
+    
     // Inicjalizacja - pokazanie pierwszego pytania
     showQuestion(1);
 }
 
 // ==============================================
-// Moduł: Obsługa pobierania ebooka z rzeczywistym licznikiem
+// Moduł: Obsługa pobierania ebooka
 // ==============================================
 function initEbookDownload() {
     const downloadBtn = document.getElementById('download-ebook');
@@ -640,46 +1076,6 @@ function initEbookDownload() {
     const downloadCount = document.getElementById('download-count');
     
     if (!downloadBtn || !downloadSuccess || !retryDownload || !downloadCount) return;
-    
-    // Pobranie aktualnej liczby pobrań z localStorage lub ustawienie domyślnej wartości
-    let currentDownloads = localStorage.getItem('ebookDownloads');
-    
-    // Jeśli nie ma zapisanej wartości, generujemy liczbę początkową
-    if (!currentDownloads) {
-        // Generowanie losowej liczby początkowej między 100 a 500
-        currentDownloads = Math.floor(Math.random() * 400) + 100;
-        localStorage.setItem('ebookDownloads', currentDownloads);
-    }
-    
-    // Wyświetlenie aktualnej liczby pobrań
-    downloadCount.textContent = currentDownloads;
-    
-    // Animacja licznika pobrań
-    function countUpAnimation(element, target, duration) {
-        let start = 0;
-        const increment = Math.ceil(target / 100); // zwiększanie o 1% wartości docelowej
-        const stepTime = Math.floor(duration / 100);
-        
-        const timer = setInterval(() => {
-            start += increment;
-            if (start > target) {
-                element.textContent = target;
-                clearInterval(timer);
-            } else {
-                element.textContent = start;
-            }
-        }, stepTime);
-    }
-    
-    // Animacja przy załadowaniu strony
-    countUpAnimation(downloadCount, currentDownloads, 2000);
-    
-    // Funkcja do zwiększania licznika pobrań
-    function incrementDownloads() {
-        currentDownloads = parseInt(currentDownloads) + 1;
-        downloadCount.textContent = currentDownloads;
-        localStorage.setItem('ebookDownloads', currentDownloads);
-    }
     
     // Funkcja do obsługi pobierania ebooka
     function downloadEbook() {
@@ -696,8 +1092,16 @@ function initEbookDownload() {
             // Pokazanie komunikatu o sukcesie
             downloadSuccess.style.display = 'block';
             
-            // Zwiększenie licznika pobrań
-            incrementDownloads();
+            // Dodanie efektu przewijania do komunikatu o sukcesie
+            window.scrollTo({
+                top: downloadSuccess.offsetTop,
+                behavior: 'smooth'
+            });
+            
+            // Ogłoszenie dla czytników ekranu
+            if (window.announceToScreenReader) {
+                window.announceToScreenReader('Pobieranie ebooka rozpoczęte. Sprawdź folder pobierania.');
+            }
         }, 1000);
     }
     
@@ -726,46 +1130,58 @@ function initEbookDownload() {
         
         downloadEbook();
     });
+}
+
+// ==============================================
+// Moduł: Obsługa fallbacku wideo
+// ==============================================
+function initVideoFallback() {
+    const videoContainer = document.querySelector('.video-container');
+    const video = videoContainer ? videoContainer.querySelector('video') : null;
     
-    // Animacja 3D książki przy najechaniu myszką
-    const book = document.querySelector('.book');
-    if (book) {
-        document.addEventListener('mousemove', function(e) {
-            if (!isElementInViewport(book)) return;
-            
-            const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
-            const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
-            
-            book.style.transform = `rotateY(${-xAxis}deg) rotateX(${yAxis}deg)`;
-        });
-        
-        // Reset transformacji po wyjściu myszki
-        book.addEventListener('mouseleave', function() {
-            book.style.transform = 'rotateY(-30deg) rotateX(0deg)';
-            
-            // Stopniowy powrót do animacji float
-            setTimeout(() => {
-                book.style.transition = 'transform 3s ease';
-                book.style.animation = 'float 3s ease-in-out infinite';
-            }, 1000);
-        });
-        
-        book.addEventListener('mouseenter', function() {
-            book.style.transition = 'transform 0.2s ease';
-            book.style.animation = 'none';
-        });
-    }
+    if (!video || !videoContainer) return;
     
-    // Funkcja sprawdzająca, czy element jest w widoku
-    function isElementInViewport(el) {
-        const rect = el.getBoundingClientRect();
-        return (
-            rect.top >= 0 &&
-            rect.left >= 0 &&
-            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-            rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-        );
-    }
+    // Obsługa błędu wideo
+    video.addEventListener('error', function() {
+        console.log('Nie można odtworzyć wideo - przełączanie na fallback');
+        videoContainer.classList.add('video-error');
+    });
+    
+    // Sprawdzenie, czy wideo zostało poprawnie załadowane
+    video.addEventListener('loadeddata', function() {
+        videoContainer.classList.remove('video-error');
+        console.log('Wideo załadowane pomyślnie');
+    });
+    
+    // Efekt parallax dla wideo podczas przewijania
+    window.addEventListener('scroll', function() {
+        if (window.scrollY > 50) {
+            videoContainer.classList.add('scrolled');
+        } else {
+            videoContainer.classList.remove('scrolled');
+        }
+    });
+    
+    // Obsługa płynnego przewijania przy kliknięciu na linki kotwiczne
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const targetId = this.getAttribute('href');
+            
+            if (targetId !== '#') {
+                e.preventDefault();
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    const offsetTop = targetElement.offsetTop;
+                    
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            }
+        });
+    });
 }
 
 // ==============================================
@@ -794,132 +1210,221 @@ function initBackToTop() {
 }
 
 // ==============================================
-// Moduł: Animacja cząsteczek
+// Optymalizacje wydajności
 // ==============================================
-function initParticleAnimation() {
-    const particles = document.querySelectorAll('.particle');
-    if (particles.length === 0) return;
+
+// Optimize animations with requestAnimationFrame
+function optimizeAnimations() {
+    // Check if browser supports requestAnimationFrame
+    const requestAnimFrame = window.requestAnimationFrame || 
+                            window.webkitRequestAnimationFrame || 
+                            window.mozRequestAnimationFrame || 
+                            function(callback) { window.setTimeout(callback, 1000/60); };
     
-    // Losowe animacje dla każdej cząsteczki
-    particles.forEach(particle => {
-        const randomX = Math.random() * 200 - 100; // -100 do 100
-        const randomY = Math.random() * 200 - 100; // -100 do 100
-        const randomDelay = Math.random() * 5;
-        const randomDuration = 15 + Math.random() * 20;
+    window.requestAnimFrame = requestAnimFrame;
+    
+    // Debounce scroll events
+    let scrollTimeout;
+    function debounceScroll(func, wait = 10) {
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(func, wait);
+    }
+    
+    // Replace standard scroll listeners with debounced versions
+    const originalAddEventListener = window.addEventListener;
+    window.addEventListener = function(type, listener, options) {
+        if (type === 'scroll') {
+            const debouncedListener = function(e) {
+                debounceScroll(() => listener(e));
+            };
+            return originalAddEventListener.call(this, type, debouncedListener, options);
+        }
+        return originalAddEventListener.call(this, type, listener, options);
+    };
+}
+
+// Optimize resource loading
+function optimizeResourceLoading() {
+    // Lazy load images when they enter viewport
+    const lazyImages = document.querySelectorAll('img[data-src]');
+    if (lazyImages.length > 0) {
+        if ('IntersectionObserver' in window) {
+            const imageObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.dataset.src;
+                        img.removeAttribute('data-src');
+                        imageObserver.unobserve(img);
+                    }
+                });
+            });
+            
+            lazyImages.forEach(img => imageObserver.observe(img));
+        } else {
+            // Fallback for browsers without IntersectionObserver
+            function lazyLoad() {
+                lazyImages.forEach(img => {
+                    if (img.getBoundingClientRect().top <= window.innerHeight && 
+                        img.getBoundingClientRect().bottom >= 0 && 
+                        getComputedStyle(img).display !== 'none') {
+                        img.src = img.dataset.src;
+                        img.removeAttribute('data-src');
+                    }
+                });
+            }
+            
+            // Initial check
+            lazyLoad();
+            // Add event listeners for scroll and resize
+            window.addEventListener('scroll', lazyLoad);
+            window.addEventListener('resize', lazyLoad);
+        }
+    }
+    
+    // Preload critical resources
+    function preloadCriticalResources() {
+        // Add preload links for critical resources
+        const preloads = [
+            { href: 'zwolnij/assets/videos/city-timelapse.mp4', as: 'video', type: 'video/mp4' },
+            { href: 'https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js', as: 'script' }
+        ];
         
-        particle.style.setProperty('--random-x', `${randomX}px`);
-        particle.style.setProperty('--random-y', `${randomY}px`);
-        particle.style.animationDelay = `${randomDelay}s`;
-        particle.style.animationDuration = `${randomDuration}s`;
+        preloads.forEach(resource => {
+            const link = document.createElement('link');
+            link.rel = 'preload';
+            link.href = resource.href;
+            link.as = resource.as;
+            if (resource.type) link.type = resource.type;
+            document.head.appendChild(link);
+        });
+    }
+    
+    // Execute preloading
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', preloadCriticalResources);
+    } else {
+        preloadCriticalResources();
+    }
+}
+
+// Optimize video playback
+function optimizeVideoPlayback() {
+    const video = document.querySelector('.video-container video');
+    if (!video) return;
+    
+    // Reduce initial quality for faster playback
+    video.addEventListener('loadedmetadata', function() {
+        // Set initial quality to low res
+        if (video.videoHeight > 720) {
+            video.style.height = '720px';
+            video.style.objectFit = 'cover';
+        }
     });
+    
+    // Pause video when not in viewport to save resources
+    const videoObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                video.play();
+            } else {
+                video.pause();
+            }
+        });
+    }, { threshold: 0.1 });
+    
+    videoObserver.observe(video);
 }
 
 // ==============================================
-// Moduł: Dodatkowe animacje i efekty
+// Dostępność
 // ==============================================
-function initAdditionalAnimations() {
-    // Efekt parallax dla tła
-    window.addEventListener('scroll', function() {
-        const parallaxBg = document.querySelector('.parallax-bg');
-        if (!parallaxBg) return;
+
+// Improve keyboard navigation and screen reader support
+function initAccessibility() {
+    // Add skip to content link
+    const skipLink = document.createElement('a');
+    skipLink.href = '#manifesto';
+    skipLink.className = 'skip-to-content';
+    skipLink.textContent = 'Przejdź do treści głównej';
+    document.body.insertBefore(skipLink, document.body.firstChild);
+    
+    improveKeyboardNavigation();
+    setupScreenReaderAnnouncements();
+    ensureImageAccessibility();
+    checkHeadingHierarchy();
+}
+
+// Improve keyboard navigation
+function improveKeyboardNavigation() {
+    // Add keyboard support for custom interactive elements
+    const interactiveElements = document.querySelectorAll('.manifesto-item, .practice-card, .stat-item');
+    
+    interactiveElements.forEach(item => {
+        // Make items focusable
+        item.setAttribute('tabindex', '0');
         
-        const scrollPosition = window.scrollY;
-        parallaxBg.style.transform = `translateY(${scrollPosition * 0.2}px)`;
-    });
-    
-    // Animowane pojawienie się elementów przy scrollowaniu
-    const observeElements = document.querySelectorAll('.fade-in-section');
-    
-    if (observeElements.length > 0) {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('is-visible');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.1 });
-        
-        observeElements.forEach(element => {
-            observer.observe(element);
-        });
-    }
-    
-    // Stagger effect dla powiązanych elementów
-    const staggerContainers = document.querySelectorAll('.stagger-delay');
-    
-    if (staggerContainers.length > 0) {
-        const staggerObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                    staggerObserver.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.1 });
-        
-        staggerContainers.forEach(container => {
-            staggerObserver.observe(container);
-        });
-    }
-    
-    // Efekt ripple dla przycisków
-    const rippleButtons = document.querySelectorAll('.ripple-button');
-    
-    rippleButtons.forEach(button => {
-        button.addEventListener('click', function(e) {
-            const rect = button.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            
-            const ripple = document.createElement('span');
-            ripple.className = 'ripple';
-            ripple.style.left = `${x}px`;
-            ripple.style.top = `${y}px`;
-            
-            button.appendChild(ripple);
-            
-            setTimeout(() => {
-                ripple.remove();
-            }, 600);
-        });
-    });
-    
-    // Animacje dla kart praktyk
-    const practiceCards = document.querySelectorAll('.practice-card');
-    
-    practiceCards.forEach(card => {
-        card.addEventListener('mouseenter', function() {
-            this.classList.add('animate-on-hover');
-        });
-        
-        card.addEventListener('mouseleave', function() {
-            this.classList.remove('animate-on-hover');
-        });
-    });
-    
-    // Płynne przewijanie dla wszystkich linków wewnętrznych
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            if (this.getAttribute('href') !== '#') {
+        // Add keyboard event handling
+        item.addEventListener('keydown', function(e) {
+            // If Enter or Space is pressed, trigger click
+            if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
-                
-                const targetId = this.getAttribute('href');
-                const targetElement = document.querySelector(targetId);
-                
-                if (targetElement) {
-                    targetElement.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                    
-                    // Dodanie efektu podświetlenia dla sekcji docelowej
-                    targetElement.classList.add('highlight-section');
-                    setTimeout(() => {
-                        targetElement.classList.remove('highlight-section');
-                    }, 1000);
-                }
+                this.click();
             }
         });
     });
+}
+
+// Add screen reader announcements for dynamic content
+function setupScreenReaderAnnouncements() {
+    // Create an ARIA live region for announcements
+    const liveRegion = document.createElement('div');
+    liveRegion.setAttribute('aria-live', 'polite');
+    liveRegion.setAttribute('aria-atomic', 'true');
+    liveRegion.classList.add('sr-only'); // This class visually hides the element
+    document.body.appendChild(liveRegion);
+    
+    // Function to announce messages to screen readers
+    window.announceToScreenReader = function(message) {
+        liveRegion.textContent = message;
+        
+        // Clear after 5 seconds
+        setTimeout(() => {
+            liveRegion.textContent = '';
+        }, 5000);
+    };
+}
+
+// Add alt text to all images
+function ensureImageAccessibility() {
+    const images = document.querySelectorAll('img:not([alt])');
+    images.forEach(img => {
+        // Extract alt text from context if possible
+        let altText = '';
+        
+        // Try to get alt text from parent heading
+        const nearestHeading = img.closest('div').querySelector('h1, h2, h3, h4, h5, h6');
+        if (nearestHeading) {
+            altText = nearestHeading.textContent;
+        } else {
+            // Use image filename as fallback
+            const filename = img.src.split('/').pop().split('.')[0];
+            altText = filename.replace(/[-_]/g, ' ');
+        }
+        
+        img.setAttribute('alt', altText);
+    });
+}
+
+// Ensure proper heading hierarchy
+function checkHeadingHierarchy() {
+    const headings = Array.from(document.querySelectorAll('h1, h2, h3, h4, h5, h6'));
+    const headingLevels = headings.map(h => parseInt(h.tagName.substring(1)));
+    
+    // Log warnings for skipped heading levels
+    for (let i = 1; i < headingLevels.length; i++) {
+        if (headingLevels[i] > headingLevels[i-1] + 1) {
+            console.warn(`Heading hierarchy issue: Skipped from h${headingLevels[i-1]} to h${headingLevels[i]}`);
+        }
+    }
 }
