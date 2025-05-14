@@ -6,62 +6,60 @@
     <meta name="description" content="Zwolnij tempo swojego życia. Odkryj, jak żyć wolniej i bardziej świadomie w świecie ciągłego pośpiechu.">
     <meta name="keywords" content="slow living, zwolnienie tempa, stres, odpoczynek, mindfulness, uważność">
     <meta name="author" content="Zwolnij. Movement">
-    <meta property="og:title" content="Zwolnij. | Czas na refleksję">
+    <meta property="og:title" content="Masz 5 minut? | Zatrzymaj się na chwilę i odpocznij">
     <meta property="og:description" content="Odkryj, jak żyć wolniej i bardziej świadomie w świecie ciągłego pośpiechu.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://twoja-nazwa-użytkownika.github.io/zwolnij-landing-page/">
     <meta property="og:image" content="assets/images/og-image.jpg">
-    <title>Zwolnij. | Czas na refleksję</title>
+    <title>Masz 5 minut? | Zatrzymaj się na chwilę i odpocznij</title>
 
     <link rel="icon" type="image/png" href="assets/images/favicon.png">
     <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png">
-
-    <link rel="preload" href="city-timelapse.mp4" as="video" type="video/mp4">
-    <link rel="preload" href="assets/fonts/marcellus-regular.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="assets/fonts/inter-regular.woff2" as="font" type="font/woff2" crossorigin>
-
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Marcellus&display=swap" rel="stylesheet">
+    <!-- Zmiana czcionek na bardziej ręcznie pisane / zabawne -->
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@300;400;700&display=swap" rel="stylesheet">
 
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
-    <link rel="stylesheet" href="css/style.css"> </head>
+    <link rel="stylesheet" href="css/style.css">
+</head>
 <body>
     <a href="#manifesto" class="skip-to-content">Przejdź do treści głównej</a>
 
     <section class="hero">
-        <div class="video-container">
-            <video autoplay loop muted playsinline aria-label="Szybkie tempo życia w mieście - timelapse">
-                <source src="city-timelapse.mp4" type="video/mp4">
-                <source src="city-timelapse.webm" type="video/webm">
-                Twoja przeglądarka nie obsługuje odtwarzania wideo.
-            </video>
-            <div class="video-fallback"></div>
-        </div>
-
-        <div class="interactive-particles" id="particles-js"></div>
-
-        <div class="hero-clock">
-            <div class="clock-face">
-                <div class="clock-hour"></div>
-                <div class="clock-minute"></div>
-                <div class="clock-second"></div>
-                <div class="clock-center"></div>
-            </div>
-            <div class="clock-slow-overlay">
-                <svg class="clock-slow-icon" viewBox="0 0 24 24" width="30" height="30" aria-hidden="true">
-                    <path d="M15 1H9v2h6V1zm-4 13h2V8h-2v6zm8.03-6.61l1.42-1.42c-.43-.51-.9-.99-1.41-1.41l-1.42 1.42C16.07 4.74 14.12 4 12 4c-4.97 0-9 4.03-9 9s4.02 9 9 9 9-4.03 9-9c0-2.12-.74-4.07-1.97-5.61zM12 20c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z" fill="currentColor"/>
-                </svg>
-            </div>
+        <!-- Zamiast video-container dodajemy ilustrację w stylu plakatu -->
+        <div class="poster-illustration">
+            <!-- Chmury stylizowane -->
+            <svg class="clouds" viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg">
+                <path d="M30,50 Q40,40 50,50 Q60,40 70,50 Q75,30 85,50 Q95,40 100,50 Q110,35 120,50 Q135,35 140,50 Q155,30 160,50 Q170,40 180,50" fill="white" />
+            </svg>
+            
+            <!-- Ilustracja człowieka z głową w chmurach -->
+            <svg class="person-illustration" viewBox="0 0 100 150" xmlns="http://www.w3.org/2000/svg">
+                <!-- Ciało -->
+                <rect x="40" y="70" width="20" height="40" fill="#64B5F6" />
+                <!-- Głowa - częściowo w chmurach -->
+                <rect x="40" y="50" width="20" height="20" fill="#FFCCBC" />
+                <!-- Ręce -->
+                <rect x="30" y="75" width="10" height="5" fill="#FFCCBC" />
+                <rect x="60" y="75" width="10" height="5" fill="#FFCCBC" />
+                <!-- Nogi -->
+                <rect x="40" y="110" width="8" height="20" fill="#FFCCBC" />
+                <rect x="52" y="110" width="8" height="20" fill="#FFCCBC" />
+            </svg>
         </div>
 
         <div class="hero-content">
             <div class="typing-container">
                 <h1 class="hero-title">
-                    <span class="typing-text">Zwolnij.</span>
+                    <span class="typing-text">Masz 5 minut?</span>
                 </h1>
             </div>
+            <p class="hero-subtitle">
+                Zatrzymaj się na chwilę i odpocznij
+            </p>
             <div class="cta-buttons">
                 <a href="#manifesto" class="cta-button pulse">
                     Zacznij teraz
@@ -156,12 +154,14 @@
     </section>
 
     <section id="breathe" class="breathe section">
-        <div class="container"> <h2 data-aos="fade-up" data-aos-duration="1500" data-aos-once="true">Oddychaj świadomie</h2>
+        <div class="container">
+            <h2 data-aos="fade-up" data-aos-duration="1500" data-aos-once="true">Oddychaj świadomie</h2>
             <p class="breathe-intro" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="200">
                 Technika Box Breathing (oddychanie pudełkowe) jest prostym, ale skutecznym narzędziem do uspokojenia umysłu i zmniejszenia stresu. Użyj poniższego ćwiczenia, aby znaleźć chwilę spokoju.
             </p>
 
-            <div class="breathe-exercise" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="400"> <div class="breathing-circle-container">
+            <div class="breathe-exercise" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="400">
+                <div class="breathing-circle-container">
                     <div class="breathing-circle">
                         <div class="breathing-instruction">Rozpocznij</div>
                     </div>
@@ -176,8 +176,9 @@
                     <button id="stop-breathing" class="breathe-button breathe-button-stop" disabled>Zatrzymaj</button>
                 </div>
 
-                <div class="breathe-tips"> <h3 data-aos="fade-up" data-aos-duration="1500" data-aos-once="true">Jak praktykować:</h3>
-                     <ol>
+                <div class="breathe-tips">
+                    <h3 data-aos="fade-up" data-aos-duration="1500" data-aos-once="true">Jak praktykować:</h3>
+                    <ol>
                         <li data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="100">Znajdź spokojne miejsce i przyjmij wygodną pozycję</li>
                         <li data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="200">Wdychaj powietrze przez nos licząc do 4</li>
                         <li data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="300">Zatrzymaj oddech licząc do 4</li>
@@ -185,34 +186,41 @@
                         <li data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="500">Zatrzymaj oddech licząc do 4</li>
                         <li data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="600">Powtórz cykl 5-10 razy</li>
                     </ol>
-                </div> </div> </div> </section> <section id="ebook" class="ebook section">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="event-info" class="ebook section">
         <div class="container">
-            <h2 data-aos="fade-up" data-aos-duration="1500" data-aos-once="true">Pobierz darmowy ebook</h2>
-            <p data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="200">Praktyczny przewodnik po technikach zwalniania tempa życia.</p>
+            <h2 data-aos="fade-up" data-aos-duration="1500" data-aos-once="true">Spotkanie na żywo</h2>
+            <p data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="200">
+                Dołącz do nas na spotkaniu, gdzie będziemy wspólnie praktykować techniki relaksacyjne i mindfulness.
+            </p>
 
             <div class="ebook-container" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="400">
                 <div class="ebook-info">
-                    <h3>Co znajdziesz w środku?</h3>
+                    <h3>Masz 5 minut? - warsztaty</h3>
                     <ul class="ebook-features">
                         <li data-aos="fade-right" data-aos-duration="1000" data-aos-once="true" data-aos-delay="200">
                             <span class="feature-icon">✓</span>
-                            <span>12 praktycznych ćwiczeń na każdy dzień</span>
+                            <span>Kiedy: 22.05.2025, godz. 16:00</span>
                         </li>
                         <li data-aos="fade-right" data-aos-duration="1000" data-aos-once="true" data-aos-delay="300">
                             <span class="feature-icon">✓</span>
-                            <span>Plan 30-dniowego wyzwania spowolnienia</span>
+                            <span>Gdzie: Kampus Uniwersytetu Gdańskiego</span>
                         </li>
                         <li data-aos="fade-right" data-aos-duration="1000" data-aos-once="true" data-aos-delay="400">
                             <span class="feature-icon">✓</span>
-                            <span>Techniki redukcji stresu i niepokoju</span>
+                            <span>Praktyki relaksacyjne i oddechowe</span>
                         </li>
                         <li data-aos="fade-right" data-aos-duration="1000" data-aos-once="true" data-aos-delay="500">
                             <span class="feature-icon">✓</span>
-                            <span>Wywiady z ekspertami mindfulness</span>
+                            <span>Wstęp wolny</span>
                         </li>
                     </ul>
                     <a href="#" id="download-ebook" class="download-button">
-                        <span class="button-text">Pobierz bezpłatnie</span>
+                        <span class="button-text">Zapisz się teraz</span>
                         <svg class="button-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                             <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z" fill="currentColor"/>
                         </svg>
@@ -224,8 +232,8 @@
                 <svg class="success-icon" viewBox="0 0 24 24" width="48" height="48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                     <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z" fill="currentColor"/>
                 </svg>
-                <h3>Pobieranie rozpoczęte!</h3>
-                <p>Dziękujemy za zainteresowanie naszym ebookiem. Jeśli pobieranie nie rozpoczęło się automatycznie, <a href="#" id="retry-download">kliknij tutaj</a>.</p>
+                <h3>Zapisano pomyślnie!</h3>
+                <p>Dziękujemy za zainteresowanie naszymi warsztatami. Na podany adres email wysłaliśmy potwierdzenie.</p>
             </div>
         </div>
     </section>
@@ -237,7 +245,6 @@
     </button>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script src="js/script.js"></script>
     <div aria-live="polite" aria-atomic="true" class="sr-only"></div>
 </body>
