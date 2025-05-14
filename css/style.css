@@ -1,22 +1,22 @@
 /* Zmienne CSS dla kolorów i czasów animacji */
 :root {
-    /* Nowa paleta kolorów - bardziej wyrazista i kontrastowa */
-    --color-background: #FFFFFF;
-    --color-primary: #3F51B5;     /* Indygo - główny kolor */
-    --color-secondary: #FF5722;   /* Głęboki pomarańczowy */
-    --color-accent: #00BCD4;      /* Turkusowy */
-    --color-dark: #212121;        /* Głęboki ciemny */
-    --color-text: #333333;        /* Ciemny tekst */
-    --color-text-light: #757575;  /* Średnio-szary tekst */
+    /* Nowa paleta kolorów - inspirowana plakatem */
+    --color-background: #FFEB3B; /* Żółte tło jak na plakacie */
+    --color-primary: #F44336;    /* Czerwony kolor dla głównego tekstu */
+    --color-secondary: #E91E63;  /* Różowy jako kolor uzupełniający */
+    --color-accent: #3F51B5;     /* Niebieski akcent */
+    --color-dark: #212121;       /* Ciemny */
+    --color-text: #333333;       /* Ciemny tekst */
+    --color-text-light: #424242; /* Średnio-ciemny tekst */
     --color-text-on-dark: #FFFFFF; /* Biały tekst na ciemnym tle */
     --color-white: #FFFFFF;
     --color-light-gray: #F5F5F5;  /* Jasnoszary */
     --color-muted: #9E9E9E;       /* Szary */
     
     /* Gradienty */
-    --gradient-primary: linear-gradient(135deg, #3F51B5 0%, #303F9F 100%);
-    --gradient-secondary: linear-gradient(135deg, #FF5722 0%, #FF8A65 100%);
-    --gradient-accent: linear-gradient(135deg, #00BCD4 0%, #4DD0E1 100%);
+    --gradient-primary: linear-gradient(135deg, #F44336 0%, #FF5722 100%);
+    --gradient-secondary: linear-gradient(135deg, #E91E63 0%, #F44336 100%);
+    --gradient-accent: linear-gradient(135deg, #3F51B5 0%, #673AB7 100%);
     --gradient-dark: linear-gradient(135deg, #212121 0%, #424242 100%);
     
     /* Czasy animacji */
@@ -25,8 +25,8 @@
     --transition-slow: 1.5s ease-in-out;
     
     /* Czcionki */
-    --font-heading: 'Marcellus', serif;
-    --font-body: 'Inter', sans-serif;
+    --font-heading: 'Comic Sans MS', 'Chalkboard SE', cursive; /* Zmiana na bardziej ręcznie pisaną czcionkę */
+    --font-body: 'Comic Sans MS', 'Chalkboard SE', cursive;    /* Dla spójności */
     
     /* Border-radius */
     --border-radius-sm: 4px;
@@ -67,14 +67,17 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
-    font-weight: normal;
+    font-weight: bold;
     margin-bottom: var(--spacing-md);
+    color: var(--color-primary);
 }
 
 h2 {
     font-size: 2.5rem;
     position: relative;
-    color: var(--color-dark);
+    color: var(--color-primary);
+    text-transform: uppercase;
+    letter-spacing: 2px;
 }
 
 h2::after {
@@ -126,7 +129,7 @@ input {
     overflow: hidden;
 }
 
-/* Ulepszona sekcja Hero */
+/* Ulepszona sekcja Hero - zmieniona */
 .hero {
     position: relative;
     height: 100vh;
@@ -135,231 +138,48 @@ input {
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    color: var(--color-text-on-dark);
+    color: var(--color-primary);
     text-align: center;
+    background-color: var(--color-background);
 }
 
+/* Ukrywamy wideo i dodajemy ilustrację w stylu plakatu */
 .video-container {
+    display: none;
+}
+
+/* Dodanie ilustracji w stylu plakatu */
+.poster-illustration {
     position: absolute;
-    top: 0;
-    left: 0;
     width: 100%;
     height: 100%;
-    z-index: -2;
-    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 0;
 }
 
-/* Dodanie gradientu nakładającego się na wideo dla lepszej czytelności tekstu */
-.video-container::after {
-    content: '';
+.clouds {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-        to bottom,
-        rgba(0, 0, 0, 0.7) 0%,
-        rgba(0, 0, 0, 0.5) 50%,
-        rgba(0, 0, 0, 0.7) 100%
-    );
-    z-index: 1;
+    top: 30%;
+    width: 80%;
+    max-width: 500px;
+    height: auto;
 }
 
-.video-container video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    filter: brightness(0.6) blur(1px);
-    transition: transform 8s ease;
-    transform: scale(1.05);
-    animation: subtle-zoom 20s infinite alternate ease-in-out;
-}
-
-@keyframes subtle-zoom {
-    0% {
-        transform: scale(1);
-    }
-    100% {
-        transform: scale(1.1);
-    }
-}
-
-/* Fallback dla wideo w przypadku problemów z załadowaniem */
-.video-fallback {
+.person-illustration {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, #1a237e 0%, #303f9f 50%, #3949ab 100%);
-    opacity: 0;
-    transition: opacity 0.5s ease;
-    z-index: -1;
-}
-
-.video-error .video-fallback {
-    opacity: 1;
-}
-
-/* Interaktywne tło z cząsteczkami */
-.interactive-particles {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-}
-
-/* Animowany zegar z efektem spowolnienia */
-.hero-clock {
-    position: absolute;
-    width: 150px;
-    height: 150px;
-    right: 10%;
-    top: 25%;
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 50%;
-    backdrop-filter: blur(5px);
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2), inset 0 0 10px rgba(255, 255, 255, 0.1);
+    top: 40%;
+    width: 80%;
+    max-width: 300px;
+    height: auto;
     z-index: 2;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    animation: pulse-subtle 4s infinite alternate ease-in-out, float 6s infinite ease-in-out;
-}
-
-@keyframes pulse-subtle {
-    0% {
-        transform: scale(1);
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2), inset 0 0 10px rgba(255, 255, 255, 0.1);
-    }
-    100% {
-        transform: scale(1.05);
-        box-shadow: 0 0 30px rgba(63, 81, 181, 0.3), inset 0 0 15px rgba(255, 255, 255, 0.2);
-    }
-}
-
-@keyframes float {
-    0%, 100% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-10px);
-    }
-}
-
-.clock-face {
-    position: relative;
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.05);
-    border: 2px solid rgba(255, 255, 255, 0.3);
-}
-
-.clock-hour, .clock-minute, .clock-second {
-    position: absolute;
-    bottom: 50%;
-    left: 50%;
-    transform-origin: bottom center;
-    background-color: white;
-    border-radius: 4px;
-}
-
-.clock-hour {
-    width: 4px;
-    height: 30px;
-    transform: translateX(-50%) rotate(0deg);
-    background-color: rgba(255, 255, 255, 0.9);
-    animation: clock-hour-move 43200s linear infinite;
-}
-
-.clock-minute {
-    width: 3px;
-    height: 40px;
-    transform: translateX(-50%) rotate(0deg);
-    background-color: rgba(255, 255, 255, 0.7);
-    animation: clock-minute-move 3600s linear infinite;
-}
-
-.clock-second {
-    width: 2px;
-    height: 50px;
-    transform: translateX(-50%) rotate(0deg);
-    background-color: var(--color-secondary);
-    animation: clock-second-move 60s linear infinite;
-}
-
-@keyframes clock-hour-move {
-    from { transform: translateX(-50%) rotate(0deg); }
-    to { transform: translateX(-50%) rotate(360deg); }
-}
-
-@keyframes clock-minute-move {
-    from { transform: translateX(-50%) rotate(0deg); }
-    to { transform: translateX(-50%) rotate(360deg); }
-}
-
-@keyframes clock-second-move {
-    from { transform: translateX(-50%) rotate(0deg); }
-    to { transform: translateX(-50%) rotate(360deg); }
-}
-
-.clock-center {
-    position: absolute;
-    width: 8px;
-    height: 8px;
-    background-color: var(--color-secondary);
-    border-radius: 50%;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 5;
-}
-
-.clock-slow-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: rgba(63, 81, 181, 0.2);
-    opacity: 0;
-    transition: opacity 0.5s ease;
-    z-index: 6;
-}
-
-.hero-clock:hover .clock-slow-overlay {
-    opacity: 1;
-}
-
-.hero-clock:hover .clock-hour {
-    animation-play-state: paused;
-}
-
-.hero-clock:hover .clock-minute {
-    animation-play-state: paused;
-}
-
-.hero-clock:hover .clock-second {
-    animation-play-state: paused;
-}
-
-.clock-slow-icon {
-    color: white;
-    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
 }
 
 .hero-content {
     max-width: 1000px;
     padding: 0 var(--spacing-md);
-    z-index: 1;
+    z-index: 3;
     position: relative;
     animation: fadeInUp 1.5s ease forwards;
 }
@@ -375,28 +195,25 @@ input {
     }
 }
 
-/* Efekt pisania na maszynie */
+/* Efekt pisania na maszynie - zmieniony */
 .typing-container {
     display: inline-block;
     margin-bottom: var(--spacing-md);
 }
 
 .hero-title {
-    font-size: 7rem;
+    font-size: 5rem;
     margin-bottom: var(--spacing-md);
     position: relative;
-    text-shadow: 0 0 20px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 0, 0, 0.6);
     letter-spacing: 3px;
+    color: var(--color-primary);
+    text-transform: uppercase;
+    font-weight: bold;
 }
 
 .typing-text {
     position: relative;
     display: inline-block;
-    background: linear-gradient(90deg, #ffffff 20%, #e0e0e0 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.3));
 }
 
 .typing-text::after {
@@ -404,7 +221,7 @@ input {
     position: absolute;
     right: -15px;
     top: 0;
-    color: white;
+    color: var(--color-primary);
     font-weight: 700;
     animation: blink 0.8s infinite;
 }
@@ -418,8 +235,7 @@ input {
     font-size: 2rem;
     margin-bottom: var(--spacing-lg);
     font-weight: 300;
-    color: rgba(255, 255, 255, 0.95);
-    text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+    color: var(--color-text);
     max-width: 700px;
     margin-left: auto;
     margin-right: auto;
@@ -444,15 +260,14 @@ input {
 .cta-button {
     display: inline-block;
     padding: 16px 40px;
-    background: linear-gradient(90deg, var(--color-primary) 0%, #5c6bc0 100%);
+    background: var(--color-primary);
     color: var(--color-text-on-dark);
     font-size: 1.3rem;
     font-weight: 500;
     border-radius: 50px;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     letter-spacing: 1px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3), 0 0 20px rgba(63, 81, 181, 0.5);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     border: 2px solid rgba(255, 255, 255, 0.2);
     overflow: hidden;
     position: relative;
@@ -460,26 +275,11 @@ input {
     animation: fadeIn 1.5s ease 1.2s forwards;
 }
 
-.cta-button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: all 0.6s ease;
-}
-
 .cta-button:hover {
-    background: linear-gradient(90deg, var(--color-secondary) 0%, #ff8a65 100%);
+    background: var(--color-secondary);
     color: var(--color-text-on-dark);
     transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3), 0 0 30px rgba(255, 87, 34, 0.5);
-}
-
-.cta-button:hover::before {
-    left: 100%;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
 }
 
 .scroll-indicator {
@@ -492,7 +292,7 @@ input {
     align-items: center;
     cursor: pointer;
     transition: opacity var(--transition-fast);
-    color: var(--color-text-on-dark);
+    color: var(--color-primary);
 }
 
 .scroll-indicator:hover {
@@ -503,7 +303,7 @@ input {
     display: block;
     width: 30px;
     height: 50px;
-    border: 2px solid var(--color-text-on-dark);
+    border: 2px solid var(--color-primary);
     border-radius: 15px;
     position: relative;
     margin-bottom: var(--spacing-xs);
@@ -516,7 +316,7 @@ input {
     left: 50%;
     width: 6px;
     height: 6px;
-    background-color: var(--color-text-on-dark);
+    background-color: var(--color-primary);
     border-radius: 50%;
     transform: translateX(-50%);
     animation: scrollIndicator 1.5s infinite;
@@ -539,9 +339,9 @@ input {
     }
 }
 
-/* Sekcja Manifest */
+/* Sekcja Manifest - zmieniona */
 .manifesto {
-    background-color: var(--color-white);
+    background-color: var(--color-background);
     text-align: center;
     position: relative;
     padding: var(--spacing-lg) 0;
@@ -555,7 +355,7 @@ input {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1IiBoZWlnaHQ9IjUiPgo8cmVjdCB3aWR0aD0iNSIgaGVpZ2h0PSI1IiBmaWxsPSIjMzMzIiBmaWxsLW9wYWNpdHk9IjAuMDMiPjwvcmVjdD4KPC9zdmc+');
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1IiBoZWlnaHQ9IjUiPgo8cmVjdCB3aWR0aD0iNSIgaGVpZ2h0PSI1IiBmaWxsPSIjRjQ0MzM2IiBmaWxsLW9wYWNpdHk9IjAuMDUiPjwvcmVjdD4KPC9zdmc+');
     background-size: 200px;
     opacity: 0.1;
     z-index: 0;
@@ -594,7 +394,7 @@ input {
     position: relative;
     overflow: hidden;
     box-shadow: var(--shadow-md);
-    border: 1px solid var(--color-light-gray);
+    border: 3px dashed var(--color-primary);
     transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
                 box-shadow 0.5s ease,
                 border-color 0.5s ease;
@@ -606,7 +406,7 @@ input {
 .manifesto-item:hover {
     transform: translateY(-10px);
     box-shadow: var(--shadow-lg);
-    border-color: rgba(63, 81, 181, 0.2);
+    border-color: var(--color-secondary);
 }
 
 .manifesto-number {
@@ -627,7 +427,7 @@ input {
 .manifesto-item h3 {
     font-size: 1.5rem;
     margin-bottom: var(--spacing-md);
-    color: var(--color-secondary);
+    color: var(--color-primary);
     position: relative;
     padding-bottom: var(--spacing-xs);
 }
@@ -639,7 +439,7 @@ input {
     left: 0;
     width: 50px;
     height: 2px;
-    background-color: var(--color-secondary);
+    background-color: var(--color-primary);
     transition: width 0.5s ease;
 }
 
@@ -648,14 +448,14 @@ input {
 }
 
 .manifesto-item p {
-    color: var(--color-text-light);
+    color: var(--color-text);
     line-height: 1.8;
     font-size: 1.05rem;
 }
 
-/* Sekcja Praktyki */
+/* Sekcja Praktyki - zmieniona */
 .practices {
-    background-color: var(--color-light-gray);
+    background-color: var(--color-background);
     text-align: center;
     padding: var(--spacing-xl) 0;
 }
@@ -676,7 +476,7 @@ input {
     box-shadow: var(--shadow-md);
     display: flex;
     flex-direction: column;
-    border: 1px solid var(--color-light-gray);
+    border: 3px dashed var(--color-primary);
     position: relative;
     overflow: hidden;
     transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
@@ -687,32 +487,17 @@ input {
     backface-visibility: hidden;
 }
 
-.practice-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 5px;
-    height: 0;
-    background: var(--gradient-primary);
-    transition: height 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    z-index: 1;
-}
-
 .practice-card:hover {
     transform: translateY(-10px);
     box-shadow: var(--shadow-lg);
-}
-
-.practice-card:hover::before {
-    height: 100%;
+    border-color: var(--color-secondary);
 }
 
 .practice-icon {
     margin-bottom: var(--spacing-md);
     color: var(--color-primary);
     font-size: 1.2rem;
-    background-color: rgba(63, 81, 181, 0.1);
+    background-color: rgba(244, 67, 54, 0.1);
     width: 60px;
     height: 60px;
     display: flex;
@@ -733,7 +518,7 @@ input {
 .practice-card h3 {
     font-size: 1.4rem;
     margin-bottom: var(--spacing-sm);
-    color: var(--color-dark);
+    color: var(--color-primary);
     transition: color 0.3s ease, transform 0.3s ease;
     font-weight: 600;
     position: relative;
@@ -741,12 +526,12 @@ input {
 }
 
 .practice-card:hover h3 {
-    color: var(--color-primary);
+    color: var(--color-secondary);
     transform: translateX(5px);
 }
 
 .practice-card p {
-    color: var(--color-text-light);
+    color: var(--color-text);
     line-height: 1.7;
     margin-bottom: var(--spacing-md);
     flex-grow: 1;
@@ -775,21 +560,15 @@ input {
     transform: translateX(8px);
 }
 
-/* Box Breathing CSS - Przeprojektowany */
-/* ============================================= */
-/* CSS dla Sekcji Box Breathing (Nowy Design)    */
-/* ============================================= */
-
-/* Główny kontener sekcji #breathe */
+/* Sekcja Box Breathing - zmieniona */
 .breathe {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); /* Jasne, spokojne tło */
+    background: var(--color-background);
     text-align: center;
-    padding: var(--spacing-xl, 6rem) 0; /* Użyj zdefiniowanych odstępów lub domyślnych */
+    padding: var(--spacing-xl, 6rem) 0;
     position: relative;
     overflow: hidden;
 }
 
-/* Opcjonalne: subtelne wzory tła dla sekcji */
 .breathe::before {
     content: '';
     position: absolute;
@@ -798,56 +577,27 @@ input {
     width: 100%;
     height: 100%;
     background:
-        radial-gradient(circle at 10% 90%, rgba(63, 81, 181, 0.03) 0%, transparent 40%),
-        radial-gradient(circle at 90% 10%, rgba(0, 188, 212, 0.03) 0%, transparent 40%);
+        radial-gradient(circle at 10% 90%, rgba(244, 67, 54, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at 90% 10%, rgba(233, 30, 99, 0.05) 0%, transparent 40%);
     z-index: 0;
     opacity: 0.7;
 }
 
-.breathe .container {
-    position: relative;
-    z-index: 1;
-}
-
-/* Nagłówek sekcji */
 .breathe h2 {
-    font-size: clamp(2rem, 6vw, 3rem); /* Responsywny rozmiar czcionki */
+    font-size: clamp(2rem, 6vw, 3rem);
     margin-bottom: 1.5rem;
-    color: var(--color-primary, #3F51B5); /* Użyj zmiennej lub domyślnego koloru */
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    color: var(--color-primary);
     letter-spacing: 1px;
 }
 
-/* Wprowadzenie tekstowe */
 .breathe-intro {
     max-width: 700px;
     margin: 0 auto var(--spacing-lg, 3rem);
-    color: var(--color-text-light, #757575);
+    color: var(--color-text);
     font-size: clamp(1rem, 2.5vw, 1.1rem);
     line-height: 1.7;
 }
 
-/* Kontener dla interaktywnej części ćwiczenia */
-.breathe-exercise {
-    max-width: 500px;
-    margin: 0 auto var(--spacing-lg, 3rem);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-/* Kontener otaczający okrąg i etykiety faz */
-.breathing-circle-container {
-    width: clamp(180px, 50vw, 250px); /* Responsywny rozmiar */
-    height: clamp(180px, 50vw, 250px);
-    margin: var(--spacing-md, 2rem) auto var(--spacing-lg, 3rem);
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Główny element - okrąg ze wskaźnikiem postępu */
 .breathing-circle {
     width: 100%;
     height: 100%;
@@ -858,99 +608,46 @@ input {
     justify-content: center;
     background-color: #ffffff;
     box-shadow:
-        0 15px 35px rgba(63, 81, 181, 0.1),
+        0 15px 35px rgba(244, 67, 54, 0.1),
         0 0 0 8px rgba(255, 255, 255, 0.6);
-
-    /* Zmienna CSS dla kąta postępu, aktualizowana przez JS */
-    /* Ustawiamy kolor tła na początku, gradient będzie go zakrywał w miarę postępu */
-    background-color: #e0e0e0; /* Kolor tła/nieaktywnej części pierścienia */
+    background-color: #f5f5f5;
     background-image: conic-gradient(
-        var(--color-primary, #3F51B5) var(--progress-angle, 0deg),
-        transparent var(--progress-angle, 0deg) /* Użyj transparent zamiast koloru tła */
+        var(--color-primary) var(--progress-angle, 0deg),
+        transparent var(--progress-angle, 0deg)
     );
-    transition: background-image 0.2s linear; /* Tylko dla debugowania, bo JS nadpisuje */
-
-    /* Wewnętrzne koło (maska) tworzące efekt pierścienia */
-    &::before {
-        content: '';
-        position: absolute;
-        /* Grubość pierścienia responsywna */
-        left: clamp(10px, 6%, 15px);
-        right: clamp(10px, 6%, 15px);
-        top: clamp(10px, 6%, 15px);
-        bottom: clamp(10px, 6%, 15px);
-        background: #ffffff;
-        border-radius: 50%;
-        z-index: 1;
-    }
+    transition: background-image 0.2s linear;
 }
 
-/* Centralny tekst instrukcji wewnątrz okręgu */
 .breathing-instruction {
     position: relative;
-    z-index: 2; /* Nad maską */
-    font-size: clamp(1.3rem, 5vw, 1.6rem); /* Responsywny rozmiar */
+    z-index: 2;
+    font-size: clamp(1.3rem, 5vw, 1.6rem);
     font-weight: 500;
-    color: var(--color-dark, #333);
+    color: var(--color-primary);
     text-align: center;
     padding: 0 15px;
     line-height: 1.2;
     transition: color 0.4s ease;
 }
 
-/* Etykiety faz (na zewnątrz okręgu) */
 .breathing-text {
     position: absolute;
     font-size: clamp(0.7rem, 2vw, 0.8rem);
-    color: var(--color-text-light, #757575);
-    background-color: rgba(240, 240, 240, 0.8);
+    color: var(--color-text);
+    background-color: rgba(255, 255, 255, 0.8);
     padding: 5px 10px;
     border-radius: var(--border-radius-sm, 4px);
     opacity: 0.6;
     transition: all 0.4s ease;
     z-index: 3;
     pointer-events: none;
-    white-space: nowrap; /* Zapobiega łamaniu tekstu */
+    white-space: nowrap;
 }
 
-/* Dokładne pozycjonowanie etykiet faz */
-.phase-inhale { top: clamp(-18px, -8%, -15px); left: 50%; transform: translateX(-50%); }
-.phase-hold-1 { right: clamp(-30px, -12%, -25px); top: 50%; transform: translateY(-50%); }
-.phase-exhale { bottom: clamp(-18px, -8%, -15px); left: 50%; transform: translateX(-50%); }
-.phase-hold-2 { left: clamp(-30px, -12%, -25px); top: 50%; transform: translateY(-50%); }
-
-/* Styl aktywnej etykiety fazy */
-.breathing-text.active {
-    opacity: 1;
-    color: var(--color-primary, #3F51B5);
-    font-weight: 600;
-    background-color: rgba(255, 255, 255, 0.95);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    transform: scale(1.1);
-}
-/* Dostosowanie transformacji dla aktywnego stanu */
-.phase-inhale.active { transform: translate(-50%, -5px) scale(1.1); }
-.phase-hold-1.active { transform: translate(5px, -50%) scale(1.1); }
-.phase-exhale.active { transform: translate(-50%, 5px) scale(1.1); }
-.phase-hold-2.active { transform: translate(-5px, -50%) scale(1.1); }
-
-
-/* Przyciski kontrolne (Start/Stop) */
-.breathe-controls {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap; /* Zawijanie na mniejszych ekranach */
-    gap: var(--spacing-md, 1.5rem);
-    margin-top: var(--spacing-sm, 1rem);
-    margin-bottom: var(--spacing-lg, 3rem);
-    width: 100%;
-}
-
-/* Styl przycisków w sekcji breathe */
 .breathe-button {
     padding: 12px 30px;
-    background: linear-gradient(90deg, var(--color-primary, #3F51B5) 0%, #5c6bc0 100%);
-    color: var(--color-text-on-dark, #FFFFFF);
+    background: var(--color-primary);
+    color: var(--color-text-on-dark);
     border-radius: 50px;
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     font-size: 1rem;
@@ -961,118 +658,18 @@ input {
     cursor: pointer;
     min-width: 140px;
     text-align: center;
-    flex-shrink: 0; /* Zapobiega kurczeniu się przycisków */
+    flex-shrink: 0;
 }
 
 .breathe-button:hover:not(:disabled) {
-    background: linear-gradient(90deg, var(--color-secondary, #FF5722) 0%, #ff8a65 100%);
+    background: var(--color-secondary);
     transform: translateY(-3px) scale(1.03);
     box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
 }
 
-.breathe-button:disabled {
-    background: linear-gradient(90deg, #b0bec5 0%, #cfd8dc 100%);
-    cursor: not-allowed;
-    box-shadow: none;
-    transform: none;
-    opacity: 0.7;
-}
-
-.breathe-button-stop {
-    background: linear-gradient(90deg, #757575 0%, #9e9e9e 100%);
-}
-
-.breathe-button-stop:hover:not(:disabled) {
-    background: linear-gradient(90deg, #f44336 0%, #e57373 100%);
-}
-
-/* Sekcja ze wskazówkami */
-.breathe-tips {
-    margin-top: var(--spacing-md, 2rem);
-    text-align: left;
-    max-width: 100%;
-    padding: 0 var(--spacing-sm, 1rem);
-}
-
-.breathe-tips h3 {
-    margin-bottom: var(--spacing-sm, 1rem);
-    color: var(--color-primary, #3F51B5);
-    font-size: clamp(1.1rem, 4vw, 1.3rem);
-    text-align: center;
-}
-
-.breathe-tips ol {
-    padding-left: 1.5rem;
-    list-style-position: outside;
-}
-
-.breathe-tips li {
-    margin-bottom: var(--spacing-sm, 1rem);
-    color: var(--color-text, #333);
-    line-height: 1.6;
-    font-size: clamp(0.9rem, 2.5vw, 1rem);
-}
-
-/* Komunikat o ukończeniu ćwiczenia */
-.completion-message {
-    margin-top: var(--spacing-lg, 3rem);
-    padding: var(--spacing-md, 1.5rem) var(--spacing-lg, 2rem);
-    background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
-    border-radius: var(--border-radius-md, 8px);
-    text-align: center;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    width: 100%;
-    max-width: 450px;
-    box-sizing: border-box; /* Uwzględnia padding w szerokości */
-}
-
-.completion-message.show {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.success-icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 45px;
-    height: 45px;
-    background-color: #4CAF50;
-    color: white;
-    border-radius: 50%;
-    font-size: 24px;
-    margin-bottom: var(--spacing-sm, 1rem);
-    line-height: 1;
-}
-
-.completion-message h3 {
-    color: #2E7D32;
-    margin: 0 0 5px 0;
-    font-size: 1.2rem;
-}
-
-.completion-message p {
-    color: #388E3C;
-    margin: 0;
-    font-size: 1rem;
-}
-
-/* Dodatkowe dostosowania responsywności */
-@media (max-width: 400px) {
-    .breathe-controls {
-        gap: var(--spacing-sm, 1rem); /* Mniejszy odstęp dla przycisków */
-    }
-     /* Opcjonalnie: Ukryj zewnętrzne etykiety faz na bardzo małych ekranach */
-    .breathing-text {
-        display: none;
-    }
-}
-
-/* Sekcja z ebookiem */
+/* Sekcja z ebookiem - zmieniona */
 .ebook {
-    background-color: var(--color-white);
+    background-color: var(--color-background);
     text-align: center;
     position: relative;
     overflow: hidden;
@@ -1087,30 +684,17 @@ input {
     width: 100%;
     height: 100%;
     background-image: 
-        radial-gradient(circle at 10% 10%, rgba(63, 81, 181, 0.05) 0%, transparent 50%),
-        radial-gradient(circle at 90% 90%, rgba(255, 87, 34, 0.05) 0%, transparent 50%);
+        radial-gradient(circle at 10% 10%, rgba(244, 67, 54, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 90% 90%, rgba(233, 30, 99, 0.05) 0%, transparent 50%);
     z-index: 0;
-}
-
-.ebook .container {
-    position: relative;
-    z-index: 1;
 }
 
 .ebook p {
     max-width: 600px;
     margin: 0 auto var(--spacing-lg);
-    color: var(--color-text-light);
+    color: var(--color-text);
     font-size: 1.1rem;
     line-height: 1.6;
-}
-
-.ebook-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    max-width: 800px;
-    margin: 0 auto;
 }
 
 .ebook-info {
@@ -1121,30 +705,14 @@ input {
     background-color: white;
     border-radius: var(--border-radius-lg);
     box-shadow: var(--shadow-md);
-    border: 1px solid rgba(63, 81, 181, 0.1);
+    border: 3px dashed var(--color-primary);
 }
 
 .ebook-info h3 {
     margin-bottom: var(--spacing-md);
     font-size: 1.5rem;
-    color: var(--color-dark);
+    color: var(--color-primary);
     font-weight: 600;
-}
-
-.ebook-features {
-    list-style: none;
-    margin-bottom: var(--spacing-lg);
-}
-
-.ebook-features li {
-    margin-bottom: var(--spacing-sm);
-    display: flex;
-    align-items: center;
-    transition: transform var(--transition-fast);
-}
-
-.ebook-features li:hover {
-    transform: translateX(5px);
 }
 
 .feature-icon {
@@ -1166,7 +734,7 @@ input {
     justify-content: center;
     gap: 10px;
     padding: var(--spacing-md) var(--spacing-lg);
-    background: var(--gradient-secondary);
+    background: var(--color-primary);
     color: var(--color-text-on-dark);
     border-radius: var(--border-radius-md);
     font-size: 1.2rem;
@@ -1174,50 +742,17 @@ input {
     cursor: pointer;
     transition: all var(--transition-fast);
     text-decoration: none;
-    box-shadow: 0 5px 15px rgba(255, 87, 34, 0.3);
+    box-shadow: 0 5px 15px rgba(244, 67, 54, 0.3);
     position: relative;
     overflow: hidden;
     width: 100%;
     margin-top: var(--spacing-md);
 }
 
-.download-button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: all 0.6s ease;
-}
-
 .download-button:hover {
-    background: linear-gradient(45deg, var(--color-secondary) 0%, #ff8a65 100%);
+    background: var(--color-secondary);
     transform: translateY(-5px) scale(1.05);
-    box-shadow: 0 15px 25px rgba(255, 87, 34, 0.4);
-}
-
-.download-button:hover::before {
-    left: 100%;
-}
-
-.download-button .button-icon {
-    transition: transform var(--transition-fast);
-}
-
-.download-button:hover .button-icon {
-    transform: translateY(3px);
-}
-
-.download-success {
-    max-width: 500px;
-    margin: var(--spacing-lg) auto 0;
-    padding: var(--spacing-md);
-    background-color: rgba(76, 175, 80, 0.1);
-    border-radius: var(--border-radius-md);
-    text-align: center;
-    animation: fadeInUp 0.5s ease forwards;
+    box-shadow: 0 15px 25px rgba(233, 30, 99, 0.4);
 }
 
 /* Przycisk powrotu do góry */
@@ -1251,138 +786,6 @@ input {
     transform: translateY(-5px);
 }
 
-/* Animacje */
-.bounce {
-    animation: bounce 2s infinite;
-}
-
-@keyframes bounce {
-    0%, 20%, 50%, 80%, 100% {
-        transform: translateY(0);
-    }
-    40% {
-        transform: translateY(-20px);
-    }
-    60% {
-        transform: translateY(-10px);
-    }
-}
-
-.pulse {
-    animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-    0% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.05);
-    }
-    100% {
-        transform: scale(1);
-    }
-}
-
-.rotating {
-    animation: rotating 8s linear infinite;
-}
-
-@keyframes rotating {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-.shake {
-    animation: shake 0.5s;
-}
-
-@keyframes shake {
-    0%, 100% {
-        transform: translateX(0);
-    }
-    10%, 30%, 50%, 70%, 90% {
-        transform: translateX(-5px);
-    }
-    20%, 40%, 60%, 80% {
-        transform: translateX(5px);
-    }
-}
-
-.hover-float {
-    transition: transform 0.3s ease;
-}
-
-.hover-float:hover {
-    transform: translateY(-10px);
-}
-
-/* Animacja dla przycisków */
-.clicked {
-    animation: click-effect 0.3s ease forwards;
-}
-
-@keyframes click-effect {
-    0% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(0.95);
-    }
-    100% {
-        transform: scale(1);
-    }
-}
-
-/* Wsparcie dla Intersection Observer (płynne pojawianie się przy scrollowaniu) */
-.fade-in-element {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.8s ease, transform 0.8s ease;
-}
-
-.fade-in-element.visible {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* Accessibility styles */
-:focus {
-    outline: 2px solid var(--color-primary);
-    outline-offset: 2px;
-}
-
-.skip-to-content {
-    position: absolute;
-    top: -40px;
-    left: 0;
-    background: var(--color-primary);
-    color: white;
-    padding: 8px;
-    z-index: 1000;
-    transition: top 0.3s;
-}
-
-.skip-to-content:focus {
-    top: 0;
-}
-
-.sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border-width: 0;
-}
-
 /* Enhanced Mobile Responsiveness */
 @media (max-width: 992px) {
     h2 {
@@ -1396,28 +799,6 @@ input {
     
     .hero-title {
         font-size: 4rem;
-    }
-    
-    .box-container {
-        width: 250px;
-        height: 250px;
-    }
-    
-    .breathing-box {
-        width: 200px;
-        height: 200px;
-    }
-    
-    .hero-clock {
-        right: 5%;
-        top: 15%;
-        width: 120px;
-        height: 120px;
-    }
-    
-    .clock-face {
-        width: 100px;
-        height: 100px;
     }
 }
 
@@ -1446,35 +827,6 @@ input {
         gap: var(--spacing-sm);
     }
     
-    .hero-clock {
-        display: none;
-    }
-    
-    /* Box Breathing for medium screens */
-    .breathing-box {
-        width: 220px;
-        height: 220px;
-    }
-    
-    .breathing-text {
-        font-size: 0.9rem;
-        padding: 8px;
-    }
-    
-    .breathe-button {
-        padding: 10px 20px;
-        font-size: 0.9rem;
-    }
-    
-    /* Improve touchable elements for mobile */
-    button, 
-    .cta-button, 
-    .download-button,
-    .practice-link {
-        min-height: 44px; /* Minimum touch target size */
-        padding: 12px 20px;
-    }
-    
     .manifesto-content, 
     .practices-grid {
         grid-template-columns: 1fr;
@@ -1482,7 +834,6 @@ input {
 }
 
 @media (max-width: 576px) {
-    /* Hero section */
     .hero-title {
         font-size: 2.5rem !important;
     }
@@ -1498,15 +849,9 @@ input {
         font-size: 1.1rem !important;
     }
     
-    /* Box Breathing for small screens */
     .breathing-box {
         width: 180px;
         height: 180px;
-    }
-    
-    .breathing-text {
-        font-size: 0.8rem;
-        padding: 6px;
     }
     
     .breathe-controls {
@@ -1518,24 +863,6 @@ input {
     .breathe-button {
         width: 200px;
     }
-    
-    /* Cards improvements */
-    .manifesto-item, 
-    .practice-card {
-        padding: var(--spacing-md);
-    }
-    
-    /* Ebook section */
-    .ebook-info {
-        padding: var(--spacing-md);
-    }
-    
-    .back-to-top {
-        bottom: 20px;
-        right: 20px;
-        width: 40px;
-        height: 40px;
-    }
 }
 
 /* Fix animations on mobile */
@@ -1545,29 +872,5 @@ input {
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
         scroll-behavior: auto !important;
-    }
-}
-
-/* Touch-friendly hover effects */
-@media (hover: none) {
-    .manifesto-item:hover,
-    .practice-card:hover {
-        transform: none;
-    }
-    
-    .cta-button:hover,
-    .download-button:hover {
-        transform: none;
-    }
-    
-    /* Use active state instead for touch devices */
-    .manifesto-item:active,
-    .practice-card:active {
-        transform: scale(0.98);
-    }
-    
-    .cta-button:active,
-    .download-button:active {
-        transform: scale(0.95);
     }
 }
