@@ -18,12 +18,10 @@ document.addEventListener('DOMContentLoaded', function() {
     initBoxBreathing();         // Zupełnie nowa implementacja Box Breathing
     initEbookDownload();
     initBackToTop();
-    initVideoFallback();
 
     // Optymalizacje i dostępność
     optimizeAnimations();
     optimizeResourceLoading();
-    optimizeVideoPlayback();
     initAccessibility();
 });
 
@@ -357,17 +355,6 @@ function initParallaxEffects() {
         const scrollPosition = window.scrollY;
         parallaxBg.style.transform = `translateY(${scrollPosition * 0.1}px)`;
     });
-
-    // Dodatkowe efekty parallax dla innych elementów
-    const heroVideo = document.querySelector('.video-container video');
-    if (heroVideo) {
-        window.addEventListener('scroll', function() {
-            const scrollPosition = window.scrollY;
-            if (scrollPosition <= window.innerHeight) {
-                heroVideo.style.transform = `scale(1.05) translateY(${scrollPosition * 0.1}px)`;
-            }
-        });
-    }
 }
 
 // Ulepszenie efektów hover dla kart
@@ -678,53 +665,6 @@ function initEbookDownload() {
     });
 }
 
-// ==============================================
-// Moduł: Obsługa fallbacku wideo
-// ==============================================
-function initVideoFallback() {
-    const videoContainer = document.querySelector('.video-container');
-    const video = videoContainer ? videoContainer.querySelector('video') : null;
-
-    if (!video || !videoContainer) return;
-
-    video.addEventListener('error', function() {
-        console.error('Video Error: Nie można odtworzyć wideo - przełączanie na fallback.');
-        videoContainer.classList.add('video-error');
-    });
-
-    video.addEventListener('loadeddata', function() {
-        videoContainer.classList.remove('video-error');
-        console.log('Wideo załadowane pomyślnie.');
-    });
-
-    // Usuń parallax scroll dla wideo, może powodować problemy wydajnościowe
-    // window.addEventListener('scroll', function() {
-    //     if (window.scrollY > 50) {
-    //         videoContainer.classList.add('scrolled');
-    //     } else {
-    //         videoContainer.classList.remove('scrolled');
-    //     }
-    // });
-
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            const targetId = this.getAttribute('href');
-            if (targetId && targetId !== '#') {
-                e.preventDefault();
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    const offsetTop = targetElement.offsetTop;
-                    window.scrollTo({
-                        top: offsetTop,
-                        behavior: 'smooth'
-                    });
-                    // Opcjonalnie: ustaw focus na elemencie docelowym dla dostępności
-                    // setTimeout(() => targetElement.focus(), 1000); // Z opóźnieniem po scrollu
-                }
-            }
-        });
-    });
-}
 
 // ==============================================
 // Moduł: Przycisk powrotu do góry
@@ -847,40 +787,6 @@ function optimizeResourceLoading() {
 }
 
 
-function optimizeVideoPlayback() {
-    const video = document.querySelector('.video-container video');
-    if (!video) return;
-
-    // Usuń optymalizację jakości - może powodować problemy z responsywnością
-    // video.addEventListener('loadedmetadata', function() { ... });
-
-    // Pause video when not in viewport
-    if ('IntersectionObserver' in window) {
-        const videoObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                const videoElement = entry.target; // Użyj targetu z entry
-                 if (entry.isIntersecting) {
-                    // Sprawdź, czy użytkownik nie preferuje ograniczonego ruchu
-                    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-                    if (!prefersReducedMotion) {
-                         videoElement.play().catch(err => {
-                              // Ignoruj błędy autoodtwarzania, przeglądarka może blokować
-                         });
-                    } else {
-                        videoElement.pause(); // Pauzuj, jeśli użytkownik ma włączone ograniczenie ruchu
-                    }
-                 } else {
-                    videoElement.pause();
-                 }
-            });
-        }, { threshold: 0.1 }); // Zmniejszony próg dla szybszej reakcji
-
-        videoObserver.observe(video);
-    } else {
-         // Bez IntersectionObserver, wideo będzie odtwarzane cały czas
-         // Można dodać fallback oparty na scroll, ale jest mniej wydajny
-    }
-}
 
 // ==============================================
 // Dostępność (funkcje pozostawione bez zmian, ale potencjalnie do przeglądu)
